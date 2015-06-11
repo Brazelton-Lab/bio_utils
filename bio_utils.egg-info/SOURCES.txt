@@ -1,0 +1,8 @@
+setup.py
+bio_utils/__init__.py
+bio_utils.egg-info/PKG-INFO
+bio_utils.egg-info/SOURCES.txt
+bio_utils.egg-info/dependency_links.txt
+bio_utils.egg-info/not-zip-safe
+bio_utils.egg-info/requires.txt
+bio_utils.egg-info/top_level.txt
