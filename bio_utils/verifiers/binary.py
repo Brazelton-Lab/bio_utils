@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 
-'''Guesses if a file is binary or not'''
+'''Guesses if a file is binary or not
+
+Usage:
+
+    binary.py <binaryFile>
+'''
 
 __version__ = '1.1.0.0'
 

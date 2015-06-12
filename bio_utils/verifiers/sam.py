@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 
-'''Verifies a SAM file'''
+'''Verifies a SAM file
+
+
+Usage:
+
+    sam.py <samFile>'''
 
 __version__ = '1.1.0.0'
 

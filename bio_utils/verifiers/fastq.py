@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 
-'''Verifies a FASTQ file'''
+'''Verifies a FASTQ file
+
+Usage:
+
+    fastq.py <fastqFile>
+'''
 
 __version__ = '1.0.0.0'
 

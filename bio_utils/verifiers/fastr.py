@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 
-'''Verifies a FASTR file, compressed or decompressed'''
+'''Verifies a FASTR file, compressed or decompressed
+
+Usage:
+
+    fastr <fastrFile>
+'''
 
 __version__ = '1.1.0.0'
 

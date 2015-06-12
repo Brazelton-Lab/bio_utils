@@ -11,6 +11,11 @@ These scripts are designed in a generic and flexible manner so that most if not 
 can do so with little to no modification of bio_utils itself. To accomplish this task, all scripts are importable
 Python library modules and accomplish only one generic task each.
 
+Bugs
+=====
+
+There are currently no known bugs in bio_utils. Please email Alex Hyer at theonehyer@gmail.com with bugs and typos.
+
 Requirements
 ============
 
@@ -35,11 +40,12 @@ iterators
 ---------
 
 iterators simply contains a number of file iterators for reading, parsing, and returning lines of a file as dictionaries.
-See individual scripts for dictionary structure.
+screed is used for reading FASTA and FASTQ files. See individual scripts for dictionary structure.
 
 Scripts:
 * fastr: reads, parses, and returns lines of a FASTR file {'name':, 'description':, 'sequence':}
 * gff3: reads, parses, and returns lines of a GFF3 file {'seqid':, 'source':, 'type':, 'start':, 'end':, 'score':, 'strand':, 'phase':, 'attributes':}
+* m8: reads, parses, and returns lines of a M8 file {'queryID':, 'subjectID':, 'percIdentical':, 'alignLen':, 'mismatchCount':, 'gapCount':, 'queryStart':, 'queryEnd':, 'subjectStart':, 'subjectEnd':, 'eValue':, 'bitScore':}
 * sam: reads, parses, and returns lines of a SAM file {'qname':, 'flag':, 'rname':, 'pos':, 'mapq':, 'cigar':, 'rnext':, 'pnext':, 'tlen':, 'seq':, 'qual':}
 
 verifiers
@@ -55,4 +61,23 @@ Scripts:
 * fastq: verifies a FASTQ file
 * fastr: verifies a FASTR file
 * gff3: verifies a GFF3 file
+* m8: verifies a M8 file
 * sam: verifies a SAM file
+
+blast_tools
+-----------
+
+blast_tools contains a variety of scripts to assist with filtering and using BLAST data.
+All scripts except blast_to_cigar are also stand-alone programs.
+
+Scripts:
+* blast_to_cigar: convert BLAST+ XML alignment lines to a CIGAR line
+* m8_evalue_filter: filters a M8 file by e-value
+* subject_sequence_filter: recover subject FASTA sequences for BLAST hits below a given e-value
+
+Contributors
+============
+
+Alex Hyer (theonehyer@gmail.com)
+
+Chris Thornton

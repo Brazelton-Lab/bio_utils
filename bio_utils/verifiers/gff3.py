@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 
-'''Verifies a GFF3 file'''
+'''Verifies a GFF3 file
+
+Usage:
+
+    gff3.py <gff3File>
+'''
 
 __version__ = '1.1.0.0'
 

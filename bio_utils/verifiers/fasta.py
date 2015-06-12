@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 
-'''Verifies a FASTA file'''
+'''Verifies a FASTA file
+
+Usage:
+
+    fasta.py <fastaFile>
+'''
 
 __version__ = '1.1.0.0'
 
