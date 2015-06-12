@@ -2,10 +2,12 @@
 
 '''Verifies a GFF3 file'''
 
-__version__ = '1.0.0.0'
+__version__ = '1.1.0.0'
 
+import argparse
 from line_verifier import verify_lines
 from bio_utils.iterators.gff3 import gff3_iter
+import sys
 
 def gff3_verifier(handle, log_file = None):
     '''Returns True if GFF3 file is valid and False if file is not valid'''
@@ -23,3 +25,19 @@ def gff3_verifier(handle, log_file = None):
     delimiter = r'\t'
     gff3Status = verify_lines(lines, regex, delimiter, log_file = log_file)
     return gff3Status
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description = __doc__,
+                                     formatter_class = argparse.\
+                                     RawDescriptionHelpFormatter)
+    parser.add_argument('gff3File',
+                        help = 'GFF3 file to verify')
+    args = parser.parse_args()
+
+    with open(args.gff3File, 'rU') as in_handle:
+        valid = gff3_verifier(in_handle)
+    if valid:
+        print('{} is valid'.format(args.gff3File))
+    else:
+        print('{} is not valid'.format(args.gff3File))
+    sys.exit(0)

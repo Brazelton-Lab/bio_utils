@@ -2,10 +2,12 @@
 
 '''Verifies a SAM file'''
 
-__version__ = '1.0.0.0'
+__version__ = '1.1.0.0'
 
+import argparse
 from line_verifier import verify_lines
 from iterators.sam import sam_iter
+import sys
 
 def sam_verifier(handle, log_file = None):
     '''Returns True if SAM file is valid and False if file is not valid'''
@@ -48,3 +50,19 @@ def sam_verifier(handle, log_file = None):
     delimiter = r'\t'
     samStatus = verify_lines(lines, regex, delimiter, log_file = log_file)
     return samStatus
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description = __doc__,
+                                     formatter_class = argparse.\
+                                     RawDescriptionHelpFormatter)
+    parser.add_argument('samFile',
+                        help = 'SAM file to verify')
+    args = parser.parse_args()
+
+    with open(args.samFile, 'rU') as in_handle:
+        valid = sam_verifier(in_handle)
+    if valid:
+        print('{} is valid'.format(args.samFile))
+    else:
+        print('{} is not valid'.format(args.samFile))
+    sys.exit(0)

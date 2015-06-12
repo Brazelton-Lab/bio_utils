@@ -2,8 +2,9 @@
 
 '''Guesses if a file is binary or not'''
 
-__version__ = '1.0.0.0'
+__version__ = '1.1.0.0'
 
+import argparse
 import string
 import sys
 
@@ -21,3 +22,19 @@ def binary_verifier(handle):
         return True
     else:
         return False
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description = __doc__,
+                                     formatter_class = argparse.\
+                                     RawDescriptionHelpFormatter)
+    parser.add_argument('binaryFile',
+                        help = 'file to verify if binary')
+    args = parser.parse_args()
+
+    with open(args.binaryFile, 'rU') as in_handle:
+        valid = binary_verifier(in_handle)
+    if valid:
+        print('{} is probably a binary file'.format(args.binaryFile))
+    else:
+        print('{} is probably a binary file'.format(args.binaryFile))
+    sys.exit(0)

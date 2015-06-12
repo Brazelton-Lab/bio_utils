@@ -3,7 +3,7 @@ from __future__ import print_function
 
 '''General function for analyzing lines against a regex'''
 
-__version__ = '1.0.0.0'
+__version__ = '1.0.1.0'
 
 import codecs
 try:
@@ -43,8 +43,8 @@ def verify_lines(lines, regex, delimiter, log_file = None):
                               + 'library/re.html for information '\
                               + 'on how to interpret regular expression.\n'\
                               + 'The entire entry containing the error '\
-                              + 'follows:\n\n{}\n'
-                              + .format(lineSegment, regexSegment, line)
+                              + 'follows:\n\n{}\n'.format(lineSegment,
+                                                          regexSegment, line)
                     try:
                         output(message, 1, 1, log_file = log_file)
                     except:
