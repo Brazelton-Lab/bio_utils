@@ -1,5 +1,7 @@
 argparse
 codecs
+collections
+copy
 metameta
 re
 screed

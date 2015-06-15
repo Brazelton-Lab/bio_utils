@@ -72,8 +72,9 @@ All scripts except blast_to_cigar are also stand-alone programs.
 
 Scripts:
 * blast_to_cigar: convert BLAST+ XML alignment lines to a CIGAR line
-* m8_evalue_filter: filters a M8 file by e-value
-* subject_sequence_filter: recover subject FASTA sequences for BLAST hits below a given e-value
+* filter_m8_evalue: filters a M8 (BLAST+ output format 6) file by e-value
+* retrieve_query_sequences: recover query FASTA sequences for BLAST hits below a given e-value
+* retrieve_subject_sequences: recover subject FASTA sequences for BLAST hits below a given e-value
 
 Contributors
 ============

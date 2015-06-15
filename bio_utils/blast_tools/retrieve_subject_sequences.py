@@ -4,36 +4,42 @@
 
 import argparse
 from bio_utils.iterators.m8 import m8_iter
+from collections import defaultdict
+import copy
 from screed.fasta import fasta_iter
 import sys
 
-__version__ = '1.0.0.0'
+__version__ = '1.0.1.0'
 
-def subject_sequence_filter(fasta_handle, m8_handle, e_value):
+def subject_sequence_retriever(fasta_handle, m8_handle, e_value):
     '''Returns FASTA entries for subject sequences from BLAST hits
 
     Stores M8 entries with e-values below the e_value cutoff. Then iterates
     through the FASTA file and if an entry matches the subject of an M8
     entry, it's sequence is extracted and returned as a FASTA entry.'''
 
-    filtered_m8 = {}
+    filtered_m8 = defaultdict(list)
     for m8Entry in m8_iter(m8_handle):
         if float(m8Entry['eValue']) <= e_value:
-            filtered_m8[m8Entry['subjectID']] =\
-                    [int(m8Entry['subjectStart']), int(m8Entry['subjectEnd'])]
+            filtered_m8[m8Entry['subjectID']].append(\
+                (int(m8Entry['subjectStart']), int(m8Entry['subjectEnd']),\
+                 float(m8Entry['eValue'])))
     for fastaEntry in fasta_iter(fasta_handle):
         if fastaEntry['name'] in filtered_m8:
-            subjectSequence = ''
-            start = filtered_m8[fastaEntry['name']][0] - 1
-            end = filtered_m8[fastaEntry['name']][1] - 1
-            if start < end:
-                subjectSequence = fastaEntry['sequence'][start:end]
-            elif start > end:
-                subjectSequence = fastaEntry['sequence'][end:start][::-1]
-            else:
-                subjectSequence = fastaEntry['sequence'][start]
-            fastaEntry['sequence'] = subjectSequence
-            yield fastaEntry
+            for pair in filtered_m8[fastaEntry['name']]:
+                subjectSequence = ''
+                start = pair[0] - 1
+                end = pair[1] - 1
+                if start < end:
+                    querySequence = fastaEntry['sequence'][start:end]
+                elif start > end:
+                    querySequence = fastaEntry['sequence'][end:start][::-1]
+                else:
+                    querySequence = fastaEntry['sequence'][start]
+                yieldEntry = copy.deepcopy(fastaEntry)
+                yieldEntry['sequence'] = querySequence
+                yieldEntry['eValue'] = pair[2]
+                yield yieldEntry
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description = __doc__,

@@ -1,12 +1,12 @@
 Metadata-Version: 1.1
 Name: bio-utils
-Version: 0.3.0.0
+Version: 0.4.0.0
 Summary: importable functions often used by bioinformatic scripts
 Home-page: https://github.com/Brazelton-Lab/bio_utils/
 Author: Alex Hyer
 Author-email: theonehyer@gmail.com
 License: GPL
-Download-URL: https://github.com/Brazelton-Lab/metameta/tarball/0.3.0.0
+Download-URL: https://github.com/Brazelton-Lab/metameta/tarball/0.4.0.0
 Description: UNKNOWN
 Keywords: bioinformatics iterators verifiers verify iterate utilities
 Platform: UNKNOWN
