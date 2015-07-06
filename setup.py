@@ -27,14 +27,6 @@ setup(name = 'bio_utils',
       include_package_data = True,
       zip_safe = False,
       install_requires = [
-          'argparse',
-          'codecs',
-          'collections',
-          'copy',
-          'metameta',
-          're',
-          'screed',
-          'string',
-          'sys'
+          'screed'
           ]
       )
