@@ -3,7 +3,7 @@
 from setuptools import setup
 
 setup(name = 'bio_utils',
-      version = '0.4.2.0',
+      version = '0.4.3.0',
       description = 'importable functions often used by bioinformatic scripts',
       classifiers = [
           'Development Status :: 6 - Mature',
@@ -19,13 +19,11 @@ setup(name = 'bio_utils',
       keywords = 'bioinformatics iterators verifiers verify iterate utilities',
       url = 'https://github.com/Brazelton-Lab/bio_utils/',
       download_url = 'https://github.com/Brazelton-Lab/metameta/tarball/'\
-                      + '0.4.2.0',
+                      + '0.4.3.0',
       author = 'Alex Hyer',
       author_email = 'theonehyer@gmail.com',
       license = 'GPL',
-      packages = ['bio_utils.iterators',
-                  'bio_utils.verifiers',
-                  'bio_utils.blast_tools'],
+      packages = ['bio_utils'],
       include_package_data = True,
       zip_safe = False,
       install_requires = [
