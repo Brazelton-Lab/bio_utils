@@ -10,13 +10,13 @@ Usage:
 __version__ = '1.0.0.0'
 
 import argparse
-from line_verifier import verify_lines
+from bio_utils.verifiers.line_verifier import verify_lines
 from bio_utils.iterators.m8 import m8_iter
 import sys
 
 def m8_verifier(handle, log_file = None):
     '''Returns True if M8 file is valid and False if file is not valid'''
-    
+
     lines = []
     for m8Entry in m8_iter(handle):
         entry = '{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\n'.format(\
@@ -25,7 +25,7 @@ def m8_verifier(handle, log_file = None):
             m8Entry['queryStart'], m8Entry['queryEnd'],\
             m8Entry['subjectStart'], m8Entry['subjectEnd'], m8Entry['eValue'],\
             m8Entry['bitScore'])
-        lines.append(entry)        
+        lines.append(entry)
     regex = r'^.+\t.+\t\d+\.?\d*\t\d+\t\d+\t\d+\t\d+\t\d+\t\d+\t\d+\t'\
             + r'\d+\.?\d*(e-)?\d*\t\d+\.?\d*\n$'
     delimiter = r'\t'

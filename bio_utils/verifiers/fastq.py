@@ -10,13 +10,13 @@ Usage:
 __version__ = '1.0.0.0'
 
 import argparse
-from line_verifier import verify_lines
+from bio_utils.verifiers.line_verifier import verify_lines
 from screed.fastq import fastq_iter
 import sys
 
 def fastq_verifier(handle, log_file = None):
     '''Returns True if FASTQ file is valid and False if file is not valid'''
-    
+
     lines = []
     for fastqEntry in fastq_iter(handle):
         entry = '@{}\n{}\n+\n{}\n'.format(fastqEntry['name'],

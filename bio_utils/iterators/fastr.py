@@ -2,10 +2,10 @@
 
 '''Screed-esque iterator for FASTR files'''
 
-__version__ = '1.0.0.0'
+__version__ = '1.0.1.0'
 
-from metameta.metameta_utils.compress_fastr import compress_fastr
-from metameta.metameta_utils.decompress_fastr import decompress_fastr
+from metameta.metameta_utils.fastr_utils import compress_fastr
+from metameta.metameta_utils.fastr_utils import decompress_fastr
 
 def fastr_iter(handle, parse_description = True, line = None,\
                compressed = None):

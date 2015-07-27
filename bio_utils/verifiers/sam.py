@@ -10,13 +10,13 @@ Usage:
 __version__ = '1.1.0.0'
 
 import argparse
-from line_verifier import verify_lines
-from iterators.sam import sam_iter
+from bio_utils.verifiers.line_verifier import verify_lines
+from bio_utils.iterators.sam import sam_iter
 import sys
 
 def sam_verifier(handle, log_file = None):
     '''Returns True if SAM file is valid and False if file is not valid'''
-    
+
     lines = []
     for samEntry in sam_iter(handle):
         entry = '{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t%s{}\t{}\n'.format( \

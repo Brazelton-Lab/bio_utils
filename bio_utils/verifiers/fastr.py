@@ -10,13 +10,13 @@ Usage:
 __version__ = '1.1.0.0'
 
 import argparse
-from line_verifier import verify_lines
+from bio_utils.verifiers.line_verifier import verify_lines
 from bio_utils.iterators.fastr import fastr_iter
 import sys
 
 def fastr_verifier(handle, log_file = None):
     '''Returns True if FASTR file is valid and False if file is not valid'''
-    
+
     lines = []
     for fastrEntry in fastr_iter(handle):
         entry = '+{}\n{}\n'.format(fastrEntry['name'], fastrEntry['sequence'])

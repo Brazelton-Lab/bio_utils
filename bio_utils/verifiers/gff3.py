@@ -10,13 +10,13 @@ Usage:
 __version__ = '1.1.0.0'
 
 import argparse
-from line_verifier import verify_lines
+from bio_utils.verifiers.line_verifier import verify_lines
 from bio_utils.iterators.gff3 import gff3_iter
 import sys
 
 def gff3_verifier(handle, log_file = None):
     '''Returns True if GFF3 file is valid and False if file is not valid'''
-    
+
     lines = []
     for gff3Entry in gff3_iter(handle):
         entry = '{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\n'.format(\
