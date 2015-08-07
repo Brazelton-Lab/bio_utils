@@ -2,7 +2,7 @@
 
 '''Screed-esque iterator for FASTA files'''
 
-__version__ = '1.0.2.0'
+__version__ = '1.0.3.0'
 
 def fasta_iter(handle, parse_description=True):
     '''
@@ -41,7 +41,7 @@ def fasta_iter(handle, parse_description=True):
         while line and not line.startswith('>'):
             sequenceList.append(line.strip())
             line = handle.next()
-        last_ine = line
+        last_line = line
 
         data['sequence'] = ''.join(sequenceList)
         yield data
