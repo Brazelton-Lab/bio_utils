@@ -2,7 +2,7 @@
 
 '''Screed-esque iterator for GFF3 files (not headers)'''
 
-__version__ = '1.2.1.0'
+__version__ = '1.2.2.0'
 
 def gff3_iter(handle, prokka=False):
     '''
@@ -13,11 +13,11 @@ def gff3_iter(handle, prokka=False):
 
     for line in handle:
 
-        if line.startswith('##'):
-            continue
-
         if line == '##FASTA\n':
             break
+
+        if line.startswith('##'):
+            continue
 
         line = line.strip()
         data = {}
