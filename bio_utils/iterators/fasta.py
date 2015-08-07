@@ -2,7 +2,7 @@
 
 '''Screed-esque iterator for FASTA files'''
 
-__version__ = '1.0.1.0'
+__version__ = '1.0.2.0'
 
 def fasta_iter(handle, parse_description=True):
     '''
@@ -10,7 +10,12 @@ def fasta_iter(handle, parse_description=True):
     is a handle to a file opened for reading.
     '''
 
+    last_line = None
+
     for line in handle:
+
+        if last_line is not None:
+            line = last_line
 
         if not line.startswith('>'):
             raise IOError("Bad FASTA format: no '>' at beginning of line")
@@ -36,6 +41,7 @@ def fasta_iter(handle, parse_description=True):
         while line and not line.startswith('>'):
             sequenceList.append(line.strip())
             line = handle.next()
+        last_ine = line
 
         data['sequence'] = ''.join(sequenceList)
         yield data
