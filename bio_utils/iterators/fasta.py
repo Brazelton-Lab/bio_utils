@@ -2,7 +2,7 @@
 
 '''Screed-esque iterator for FASTA files'''
 
-__version__ = '1.0.0.0'
+__version__ = '1.0.1.0'
 
 def fasta_iter(handle, parse_description=True):
     '''
@@ -16,7 +16,7 @@ def fasta_iter(handle, parse_description=True):
             raise IOError("Bad FASTA format: no '>' at beginning of line")
 
         line = line.strip()
-        data ={}
+        data = {}
         if parse_description: # Try to grab the name and optional description
             try:
                 data['name'], data['description'] = line[1:].split(' ', 1)
@@ -30,4 +30,12 @@ def fasta_iter(handle, parse_description=True):
         data['name'] = data['name'].strip()
         data['description'] = data['description'].strip()
 
+        # Collect sequence lines into a list
+        sequenceList = []
+        line = handle.next()
+        while line and not line.startswith('>'):
+            sequenceList.append(line.strip())
+            line = handle.next()
+
+        data['sequence'] = ''.join(sequenceList)
         yield data
