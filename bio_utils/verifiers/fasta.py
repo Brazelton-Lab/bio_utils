@@ -7,7 +7,7 @@ Usage:
     fasta.py <fastaFile>
 '''
 
-__version__ = '1.1.0.0'
+__version__ = '1.2.0.0'
 
 import argparse
 from bio_utils.verifiers.line_verifier import verify_lines
@@ -26,7 +26,8 @@ def fasta_verifier(handle, log_file = None):
     fastaStatus = verify_lines(lines, regex, delimiter, log_file = log_file)
     return fastaStatus
 
-if __name__ == '__main__':
+
+def main():
     parser = argparse.ArgumentParser(description = __doc__,
                                      formatter_class = argparse.\
                                      RawDescriptionHelpFormatter)
@@ -40,4 +41,8 @@ if __name__ == '__main__':
         print('{} is valid'.format(args.fastaFile))
     else:
         print('{} is not valid'.format(args.fastaFile))
+
+
+if __name__ == '__main__':
+    main()
     sys.exit(0)

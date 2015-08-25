@@ -7,7 +7,7 @@ Usage:
     gff3.py <gff3File>
 '''
 
-__version__ = '1.1.0.0'
+__version__ = '1.2.0.0'
 
 import argparse
 from bio_utils.verifiers.line_verifier import verify_lines
@@ -31,7 +31,8 @@ def gff3_verifier(handle, log_file = None):
     gff3Status = verify_lines(lines, regex, delimiter, log_file = log_file)
     return gff3Status
 
-if __name__ == '__main__':
+
+def main():
     parser = argparse.ArgumentParser(description = __doc__,
                                      formatter_class = argparse.\
                                      RawDescriptionHelpFormatter)
@@ -45,4 +46,8 @@ if __name__ == '__main__':
         print('{} is valid'.format(args.gff3File))
     else:
         print('{} is not valid'.format(args.gff3File))
+
+
+if __name__ == '__main__':
+    main()
     sys.exit(0)

@@ -56,7 +56,8 @@ def sam_verifier(handle, log_file = None):
     samStatus = verify_lines(lines, regex, delimiter, log_file = log_file)
     return samStatus
 
-if __name__ == '__main__':
+
+def main():
     parser = argparse.ArgumentParser(description = __doc__,
                                      formatter_class = argparse.\
                                      RawDescriptionHelpFormatter)
@@ -70,4 +71,8 @@ if __name__ == '__main__':
         print('{} is valid'.format(args.samFile))
     else:
         print('{} is not valid'.format(args.samFile))
+
+
+if __name__ == '__main__':
+    main()
     sys.exit(0)

@@ -7,7 +7,7 @@ Usage:
     fastq.py <fastqFile>
 '''
 
-__version__ = '1.0.0.0'
+__version__ = '1.1.0.0'
 
 import argparse
 from bio_utils.verifiers.line_verifier import verify_lines
@@ -28,7 +28,8 @@ def fastq_verifier(handle, log_file = None):
     fastqStatus = verify_lines(lines, regex, delimiter, log_file = log_file)
     return fastqStatus
 
-if __name__ == '__main__':
+
+def main():
     parser = argparse.ArgumentParser(description = __doc__,
                                      formatter_class = argparse.\
                                      RawDescriptionHelpFormatter)
@@ -42,4 +43,8 @@ if __name__ == '__main__':
         print('{} is valid'.format(args.fastqFile))
     else:
         print('{} is not valid'.format(args.fastqFile))
+
+
+if __name__ == '__main__':
+    main()
     sys.exit(0)

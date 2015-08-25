@@ -7,7 +7,7 @@ Usage:
     binary.py <binaryFile>
 """
 
-__version__ = '1.1.0.0'
+__version__ = '1.2.0.0'
 
 import argparse
 import string
@@ -29,7 +29,7 @@ def binary_verifier(handle):
         return False
 
 
-if __name__ == '__main__':
+def main():
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.
                                      RawDescriptionHelpFormatter)
@@ -43,4 +43,7 @@ if __name__ == '__main__':
         print('{} is probably a binary file'.format(args.binaryFile))
     else:
         print('{} is probably a binary file'.format(args.binaryFile))
+
+if __name__ == '__main__':
+    main()
     sys.exit(0)

@@ -7,7 +7,7 @@ Usage:
     m8.py <m8File>
 '''
 
-__version__ = '1.0.0.0'
+__version__ = '1.1.0.0'
 
 import argparse
 from bio_utils.verifiers.line_verifier import verify_lines
@@ -32,7 +32,8 @@ def m8_verifier(handle, log_file = None):
     m8Status = verify_lines(lines, regex, delimiter, log_file = log_file)
     return m8Status
 
-if __name__ == '__main__':
+
+def main():
     parser = argparse.ArgumentParser(description = __doc__,
                                      formatter_class = argparse.\
                                      RawDescriptionHelpFormatter)
@@ -46,4 +47,8 @@ if __name__ == '__main__':
         print('{} is valid'.format(args.m8File))
     else:
         print('{} is not valid'.format(args.m8File))
+
+
+if __name__ == '__main__':
+    main()
     sys.exit(0)

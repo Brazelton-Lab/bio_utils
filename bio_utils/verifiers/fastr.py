@@ -7,7 +7,7 @@ Usage:
     fastr <fastrFile>
 '''
 
-__version__ = '1.1.0.0'
+__version__ = '1.2.0.0'
 
 import argparse
 from bio_utils.verifiers.line_verifier import verify_lines
@@ -26,7 +26,8 @@ def fastr_verifier(handle, log_file = None):
     fastrStatus = verify_lines(lines, regex, delimiter, log_file = log_file)
     return fastrStatus
 
-if __name__ == '__main__':
+
+def main():
     parser = argparse.ArgumentParser(description = __doc__,
                                      formatter_class = argparse.\
                                      RawDescriptionHelpFormatter)
@@ -40,4 +41,8 @@ if __name__ == '__main__':
         print('{} is valid'.format(args.fastrFile))
     else:
         print('{} is not valid'.format(args.fastrFile))
+
+
+if __name__ == '__main__':
+    main()
     sys.exit(0)
