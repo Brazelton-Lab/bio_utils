@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
-from setuptools import setup, find_packages
+from setuptools import setup
 
 setup(name = 'bio_utils',
-      version = '0.5.4.2',
+      version = '0.5.4.3',
       description = 'importable functions often used by bioinformatic scripts',
       classifiers = [
           'Development Status :: 6 - Mature',
@@ -38,7 +38,12 @@ setup(name = 'bio_utils',
               'fastr_verifier = bio_utils.verifiers.fastr:main',
               'gff3_verifier = bio_utils.verifiers.gff3:main',
               'm8_verifier = bio_utils.verifiers.m8:main',
-              'binary_sam = bio_utils.verifiers.sam:main'
+              'binary_sam = bio_utils.verifiers.sam:main',
+              'filter_m8_evalue = bio_utils.blast_tools.filter_m8_evalue:main',
+              'retrieve_query_sequences = bio_utils.blast_tools.'
+                                          'retrieve_query_sequences:main',
+              'retrieve_subject_sequences = bio_utils.blast_tools.'
+                                          'retrieve_subject_sequences:main',
           ]
       }
       )

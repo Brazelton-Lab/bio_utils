@@ -9,7 +9,7 @@ import copy
 from screed.fasta import fasta_iter
 import sys
 
-__version__ = '1.0.1.0'
+__version__ = '1.1.0.0'
 
 def subject_sequence_retriever(fasta_handle, m8_handle, e_value):
     '''Returns FASTA entries for subject sequences from BLAST hits
@@ -41,7 +41,8 @@ def subject_sequence_retriever(fasta_handle, m8_handle, e_value):
                 yieldEntry['eValue'] = pair[2]
                 yield yieldEntry
 
-if __name__ == '__main__':
+
+def main():
     parser = argparse.ArgumentParser(description = __doc__,
                                      formatter_class = argparse.\
                                      RawDescriptionHelpFormatter)
@@ -70,4 +71,8 @@ if __name__ == '__main__':
                             out_handle.write(entry)
                 else:
                     print(entry)
+
+
+if __name__ == '__main__':
+    main()
     sys.exit(0)

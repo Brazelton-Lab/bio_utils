@@ -10,7 +10,7 @@ from screed.fasta import fasta_iter
 from screed.fastq import fastq_iter
 import sys
 
-__version__ = '1.0.0.0'
+__version__ = '1.1.0.0'
 
 def query_sequence_retriever(fastaq_handle, m8_handle, e_value,\
                              fastaq = 'fasta'):
@@ -45,7 +45,9 @@ def query_sequence_retriever(fastaq_handle, m8_handle, e_value,\
                 yieldEntry['eValue'] = pair[2]
                 yield yieldEntry
 
-if __name__ == '__main__':
+
+
+def main():
     parser = argparse.ArgumentParser(description = __doc__,
                                      formatter_class = argparse.\
                                      RawDescriptionHelpFormatter)
@@ -57,7 +59,7 @@ if __name__ == '__main__':
                         help = 'upper e-value cutoff')
     parser.add_argument('--fastq',
                         action = 'store_true',
-                        help = 'specifies that input is ')
+                        help = 'specifies that input is FASTQ')
     parser.add_argument('output',
                         default = None,
                         nargs = '?',
@@ -79,5 +81,9 @@ if __name__ == '__main__':
                             out_handle.write(entry)
                 else:
                     print(entry)
+
+
+if __name__ == '__main__':
+    main()
     sys.exit(0)
 

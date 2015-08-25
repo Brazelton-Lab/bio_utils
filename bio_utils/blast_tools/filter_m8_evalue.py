@@ -13,7 +13,7 @@ import argparse
 from bio_utils.iterators.m8 import m8_iter
 import sys
 
-__version__ = '1.0.0.0'
+__version__ = '1.1.0.0'
 
 def m8_evalue_filter(handle, e_value):
     '''Returns lines from handle with e-value below or equal to e_value'''
@@ -22,7 +22,8 @@ def m8_evalue_filter(handle, e_value):
         if float(m8Entry['eValue']) <= e_value:
             yield m8Entry
 
-if __name__ == '__main__':
+
+def main():
     parser = argparse.ArgumentParser(description = __doc__,
                                      formatter_class = argparse.\
                                      RawDescriptionHelpFormatter)
@@ -50,4 +51,7 @@ if __name__ == '__main__':
                     out_handle.write(entry)
             else:
                 print(entry)
+
+if __name__ == '__main__':
+    main()
     sys.exit(0)
