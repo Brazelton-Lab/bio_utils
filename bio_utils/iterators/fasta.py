@@ -1,14 +1,16 @@
 #!/usr/bin/env python
 
-'''Screed-esque iterator for FASTA files'''
+"""Screed-esque iterator for FASTA files"""
 
-__version__ = '1.0.4.0'
+__version__ = '1.0.5.1'
+__author__ = 'Alex Hyer'
+
 
 def fasta_iter(handle, parse_description=True):
-    '''
+    """
     Iterator over the given FASTA file handle, returning records. handle
     is a handle to a file opened for reading.
-    '''
+    """
 
     header = handle.next()
 
@@ -19,10 +21,10 @@ def fasta_iter(handle, parse_description=True):
 
         header = header.strip()
         data = {}
-        if parse_description: # Try to grab the name and optional description
+        if parse_description:  # Try to grab the name and optional description
             try:
                 data['name'], data['description'] = header[1:].split(' ', 1)
-            except ValueError: # No optional description
+            except ValueError:  # No optional description
                 data['name'] = header[1:]
                 data['description'] = ''
         else:
@@ -33,11 +35,11 @@ def fasta_iter(handle, parse_description=True):
         data['description'] = data['description'].strip()
 
         # Collect sequence lines into a list
-        sequenceList = []
+        sequence_list = []
         while line and not line.startswith('>'):
-            sequenceList.append(line.strip())
+            sequence_list.append(line.strip())
             line = handle.next()
         header = line
 
-        data['sequence'] = ''.join(sequenceList)
+        data['sequence'] = ''.join(sequence_list)
         yield data

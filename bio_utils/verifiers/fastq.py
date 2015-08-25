@@ -1,40 +1,44 @@
 #!/usr/bin/env python
 
-'''Verifies a FASTQ file
+from __future__ import print_function
+
+"""Verifies a FASTQ file
 
 Usage:
 
-    fastq.py <fastqFile>
-'''
+    fastq_verifier <fastqFile>
+"""
 
-__version__ = '1.1.0.0'
+__version__ = '1.2.0.1'
+__author__ = 'Alex Hyer'
 
 import argparse
 from bio_utils.verifiers.line_verifier import verify_lines
 from screed.fastq import fastq_iter
 import sys
 
-def fastq_verifier(handle, log_file = None):
-    '''Returns True if FASTQ file is valid and False if file is not valid'''
+
+def fastq_verifier(handle):
+    """Returns True if FASTQ file is valid and False if file is not valid"""
 
     lines = []
-    for fastqEntry in fastq_iter(handle):
-        entry = '@{}\n{}\n+\n{}\n'.format(fastqEntry['name'],
-                                          fastqEntry['sequence'],
-                                          fastqEntry['quality'])
+    for fastq_entry in fastq_iter(handle):
+        entry = '@{}\n{}\n+\n{}\n'.format(fastq_entry['name'],
+                                          fastq_entry['sequence'],
+                                          fastq_entry['quality'])
         lines.append(entry)
     regex = r'^@.+\n[ACGTURYKMSWBDHVNX]+\n\+.*\n.+\n$'
     delimiter = r'\n'
-    fastqStatus = verify_lines(lines, regex, delimiter, log_file = log_file)
-    return fastqStatus
+    fastq_status = verify_lines(lines, regex, delimiter)
+    return fastq_status
 
 
 def main():
-    parser = argparse.ArgumentParser(description = __doc__,
-                                     formatter_class = argparse.\
+    parser = argparse.ArgumentParser(description=__doc__,
+                                     formatter_class=argparse.
                                      RawDescriptionHelpFormatter)
     parser.add_argument('fastqFile',
-                        help = 'FASTQ file to verify')
+                        help='FASTQ file to verify')
     args = parser.parse_args()
 
     with open(args.fastqFile, 'rU') as in_handle:

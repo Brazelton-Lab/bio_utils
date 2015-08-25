@@ -1,38 +1,42 @@
 #!/usr/bin/env python
 
-'''Verifies a FASTA file
+from __future__ import print_function
+
+"""Verifies a FASTA file
 
 Usage:
 
-    fasta.py <fastaFile>
-'''
+    fasta_verifier <fastaFile>
+"""
 
-__version__ = '1.2.0.0'
+__version__ = '1.3.0.1'
+__author__ = 'Alex Hyer'
 
 import argparse
 from bio_utils.verifiers.line_verifier import verify_lines
-from screed.fasta import fasta_iter
+from bio_utils.iterators.fasta import fasta_iter
 import sys
 
-def fasta_verifier(handle, log_file = None):
-    '''Returns True if FASTA file is valid and False if file is not valid'''
+
+def fasta_verifier(handle):
+    """Returns True if FASTA file is valid and False if file is not valid"""
 
     lines = []
-    for fastaEntry in fasta_iter(handle, parse_description = False):
+    for fastaEntry in fasta_iter(handle, parse_description=False):
         entry = '>{}\n{}\n'.format(fastaEntry['name'], fastaEntry['sequence'])
         lines.append(entry)
     regex = r'^>.+\n[ACGTURYKMSWBDHVNX]+\n$'
     delimiter = r'\n'
-    fastaStatus = verify_lines(lines, regex, delimiter, log_file = log_file)
-    return fastaStatus
+    fasta_status = verify_lines(lines, regex, delimiter)
+    return fasta_status
 
 
 def main():
-    parser = argparse.ArgumentParser(description = __doc__,
-                                     formatter_class = argparse.\
+    parser = argparse.ArgumentParser(description=__doc__,
+                                     formatter_class=argparse.
                                      RawDescriptionHelpFormatter)
     parser.add_argument('fastaFile',
-                        help = 'FASTA file to verify')
+                        help='FASTA file to verify')
     args = parser.parse_args()
 
     with open(args.fastaFile, 'rU') as in_handle:
