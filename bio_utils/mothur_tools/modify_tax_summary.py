@@ -23,10 +23,12 @@ Optional Arguments:
 """
 
 import argparse
-import bio_utils.file_tools.file_check as file_check
+from bio_utils.file_tools.file_check import IOChecker
+import os
 import sys
+import textwrap
 
-__version__ = '0.0.0.2'
+__version__ = '0.0.0.3'
 __author__ = 'Chris Thornton, Alex Hyer'
 
 
@@ -65,7 +67,16 @@ def parse_tax_file(tax_file):
     return new_header, taxonomy
 
 
+def split_args(arguments):
+    """Further split arguments"""
+
+    arguments = [i.lstrip() for i in arguments.split(',')]
+    return arguments
+
+
 def write_output(taxonomy, taxon, out_handle):
+    """Write properly formatted Mothur taxonomy output"""
+
     output = taxonomy[taxon]['level'] + '\t' + taxon + '\t' + \
              taxonomy[taxon]['phylogeny'] + '\t' + \
              '\t'.join(taxonomy[taxon]['data']) + '\n'
@@ -77,7 +88,7 @@ def main():
                                      formatter_class=argparse.
                                      RawDescriptionHelpFormatter)
     parser.add_argument('tax_file', metavar='taxonomy summary file',
-                        type=file_check.read_check,
+                        type=IOChecker.read_check(),
                         help='Mothur generated taxonomy summary file')
     parser.add_argument('-l', '--tax_levels', metavar='Rank', dest='rank',
                         nargs='*',
@@ -105,13 +116,15 @@ def main():
         'species': 7,
         'strain': 8
     }
-    outfile = file_check.write_check(args.tax_file + '.mod')
-    tax_files = [('{0}.{1}'.format(args.tax_file, rank), tax_levels[rank]) \
+    tax_file = os.path.basename(args.tax_file)
+    outfile = IOChecker(tax_file + '.mod')
+    outfile.write_check()
+    tax_files = [('{0}.{1}'.format(tax_file, rank), tax_levels[rank])
                  for rank in args.rank]
     header, taxonomy = parse_tax_file(args.tax_file)
 
     # edit taxon name to include full taxonomic classifications
-    with open(outfile, 'w') as out_handle:
+    with open(outfile.name(), 'w') as out_handle:
         out_handle.write(header + '\n')
         for taxon in sorted(taxonomy):
             phylogeny = None
@@ -130,11 +143,12 @@ def main():
 
     # write outfiles for given (or default) levels
     for tax_file in tax_files:
-        out_name = file_check.write_check(tax_file[0])
+        out_name = IOChecker(tax_file[0])
+        out_name.write_check()
         rank = tax_file[1]
         tax_subset = [i for i in taxonomy
                       if (len(i.split('.')) - 1) == rank]
-        with open(out_name, 'w') as out:
+        with open(out_name.name(), 'w') as out:
             out.write(header + '\n')
             for taxon in sorted(tax_subset):
                 write_output(taxonomy, taxon, out)
