@@ -26,7 +26,7 @@ import argparse
 import bio_utils.file_tools.file_check as file_check
 import sys
 
-__version__ = '0.0.0.1'
+__version__ = '0.0.0.2'
 __author__ = 'Chris Thornton, Alex Hyer'
 
 
@@ -80,7 +80,6 @@ def main():
                         type=file_check.read_check,
                         help='Mothur generated taxonomy summary file')
     parser.add_argument('-l', '--tax_levels', metavar='Rank', dest='rank',
-                        type=list,
                         nargs='*',
                         default='family genus',
                         choices=[
