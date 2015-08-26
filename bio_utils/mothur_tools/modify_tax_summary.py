@@ -100,7 +100,7 @@ def main():
         'domain': 1,
         'phylum': 2,
         'class': 3,
-        'order' : 4,
+        'order': 4,
         'family': 5,
         'genus': 6,
         'species': 7,
