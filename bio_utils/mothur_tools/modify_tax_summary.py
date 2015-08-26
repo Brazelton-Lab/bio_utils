@@ -19,16 +19,25 @@ Required Arguments:
 
 Optional Arguments:
 
-    --tax_levels    List which taxonomic ranks to create separate files for
+    --tax_levels    List which taxonomic ranks to create separate files for.
+                    This needs to be a comma separated list containing
+                    only values from the following list:
+                        domain
+                        phylum
+                        class
+                        order
+                        family
+                        genus
+                        species
+                        strain
 """
 
 import argparse
 from bio_utils.file_tools.file_check import IOChecker
 import os
 import sys
-import textwrap
 
-__version__ = '0.0.0.3'
+__version__ = '1.0.0.0'
 __author__ = 'Chris Thornton, Alex Hyer'
 
 
@@ -62,15 +71,33 @@ def parse_tax_file(tax_file):
             rank_level = split_line[level_index]
             data = [split_line[i] for i in range(len(split_line))
                     if i not in col_order]
-            taxonomy[rank_id] = {'taxon': taxon, 'level': rank_level,
-                                 'data': data}
+            taxonomy[rank_id] = {
+                'taxon': taxon, 'level': rank_level,
+                'data': data
+                }
     return new_header, taxonomy
 
 
 def split_args(arguments):
-    """Further split arguments"""
+    """Further split arguments and checks them"""
 
+    choices = [
+        'domain',
+        'phylum',
+        'class',
+        'order',
+        'family',
+        'genus',
+        'species',
+        'strain'
+    ]
     arguments = [i.lstrip() for i in arguments.split(',')]
+    for argument in arguments:
+        if argument not in choices:
+            print('Error: {0} not in {1}\n'.format(
+                argument, '\n'.join(arguments)
+            ))
+            sys.exit(1)
     return arguments
 
 
@@ -91,21 +118,12 @@ def main():
                         type=IOChecker.read_check(),
                         help='Mothur generated taxonomy summary file')
     parser.add_argument('-l', '--tax_levels', metavar='Rank', dest='rank',
-                        nargs='*',
-                        default='family genus',
-                        choices=[
-                            'domain',
-                            'phylum',
-                            'class',
-                            'order',
-                            'family',
-                            'genus',
-                            'species',
-                            'strain'
-                        ],
+                        default='family,genus',
                         help='Space separated list of ranks for output files')
     args = parser.parse_args()
 
+    IOChecker(args.tax_file).read_check()
+    args.rank = split_args(args.rank)
     tax_levels = {
         'domain': 1,
         'phylum': 2,
@@ -134,7 +152,7 @@ def main():
                 clade = '.'.join(split_rank[0:index + 1])
                 phylogeny_rank.append(clade)
             phylogeny = ';'.join([taxonomy[i]['taxon'] \
-                for i in phylogeny_rank if i != '0'])
+                                  for i in phylogeny_rank if i != '0'])
             if phylogeny:
                 taxonomy[taxon]['phylogeny'] = phylogeny
             else:

@@ -14,38 +14,46 @@ __version__ = '0.0.0.1'
 __author__ = 'Chris Thornton, Alex Hyer'
 
 
-def read_check(file):
-    """Ensure that the user has permissions to read a file"""
+class IOChecker:
 
-    try:
-        test_handle = open(file, 'rU')
-    except IOError as error:
-        print('You do no have permission to read {0}'.format(file))
-        print(error)
-        sys.exit(1)
-    else:
-        test_handle.close()
-    return file
+    def __init__(self, file):
+        self.file = file
 
+    def name(self):
+        """Return file name"""
 
-def write_check(file):
-    """Ensure that the user has permissions to write to a file"""
+        return self.file
 
-    try:
-        test_handle = open(file, 'a')
-    except IOError as error:
-        print('You do no have permission to write to {0}'.format(file))
-        print(error)
-        sys.exit(1)
-    else:
-        test_handle.close()
-    return file
+    def read_check(self):
+        """Ensure that the user has permissions to read a file"""
 
+        try:
+            test_handle = open(self.file, 'rU')
+        except IOError as error:
+            print('You do no have permission to read {0}'.format(self.file))
+            print(error)
+            sys.exit(1)
+        else:
+            test_handle.close()
+        return self.file
 
-def io_check(file):
-    """Ensure that the user has permissions to read and write to a file"""
+    def write_check(self):
+        """Ensure that the user has permissions to write to a file"""
 
-    read_check(file)
-    write_check(file)
+        try:
+            test_handle = open(self.file, 'a')
+        except IOError as error:
+            print('You do no have permission to write {0}'.format(self.file))
+            print(error)
+            sys.exit(1)
+        else:
+            test_handle.close()
+        return self.file
 
-    return file
+    def io_check(self):
+        """Ensure that the user has permissions to read and write to a file"""
+
+        self.read_check()
+        self.write_check()
+
+        return self.file
