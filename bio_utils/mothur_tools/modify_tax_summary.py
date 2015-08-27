@@ -36,8 +36,9 @@ import argparse
 from bio_utils.file_tools.file_check import IOChecker
 import os
 import sys
+import textwrap
 
-__version__ = '1.0.0.0'
+__version__ = '1.0.1.0'
 __author__ = 'Chris Thornton, Alex Hyer'
 
 
@@ -56,8 +57,8 @@ def parse_tax_file(tax_file):
             level_index = index_map['taxlevel']
         except KeyError:
             print('Error: Cannot parse header')
-            print('Error: Please verify that the header is formatted \
-                  correctly in the taxonomy summary file')
+            textwrap.fill('Error: Please verify that the header is formatted '
+                          'correctly in the taxonomy summary file', 79)
             sys.exit(1)
         col_order = [level_index, rank_index, taxon_index]
         sample_info = [header[i] for i in range(len(header))
@@ -164,12 +165,12 @@ def main():
         out_name = IOChecker(tax_file[0])
         out_name.write_check()
         rank = tax_file[1]
-        tax_subset = [i for i in taxonomy
-                      if (len(i.split('.')) - 1) == rank]
-        with open(out_name.name(), 'w') as out:
-            out.write(header + '\n')
+        tax_subset = [taxon for taxon in taxonomy
+                      if (len(taxon.split('.')) - 1) == rank]
+        with open(out_name.name(), 'w') as out_handle:
+            out_handle.write(header + '\n')
             for taxon in sorted(tax_subset):
-                write_output(taxonomy, taxon, out)
+                write_output(taxonomy, taxon, out_handle)
 
 
 if __name__ == '__main__':
