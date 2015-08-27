@@ -65,7 +65,6 @@ returning lines of a file as dictionaries. screed is used for reading
 FASTQ files. See individual scripts for dictionary structure.
 
 Scripts:
-
 * fasta: reads, parses, and returns lines of a FASTA file
          {'name':, 'description':, 'sequence':}
          Note: This function is identical to the SCREED FASTA
@@ -112,6 +111,13 @@ mothur_tools contains scripts that perform various modifications to MOTHUR
 scripts in mothur_tools are stand-alone programs and executable as
 "[script_name]"
 
+Scripts:
+* convert_count_to_shared: effectively bypasses OTU generation while allowing normal
+                           downstream MOTHUR analysis by converting a MOTHUR count_table
+                           file to a MOTHUR shared file
+* group_from_filenames: creates a MOTHUR group file from one or more FASTA files,
+                        this script is much easier to use then allowing MOTHUR to
+                        create the group file
 * modify_tax_summary: modify the taxonomy summary file from MOTHUR
                       by adding full phylogeny to the taxon field
                       and optionally create taxonomy summary files

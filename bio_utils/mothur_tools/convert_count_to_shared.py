@@ -31,7 +31,7 @@ __version__ = '1.0.0.0'
 __author__ = 'Alex Hyer, William Brazelton'
 
 import argparse
-from bio_utils.file_tools.file_check import IOChecker
+from bio_utils.file_tools.file_check import FileChecker
 import sys
 
 
@@ -56,9 +56,9 @@ def main():
                         help='MOTHUR count file to convert to shared file')
     args = parser.parse_args()
 
-    count_file = IOChecker(args.count_file)
+    count_file = FileChecker(args.count_file)
     count_file.read_check()
-    out_name = IOChecker(count_file.name() + '.shared')
+    out_name = FileChecker(count_file.name() + '.shared')
     out_name.write_check()
 
     count_table = read_count_file(count_file.name())

@@ -30,15 +30,23 @@ Optional Arguments:
                         genus
                         species
                         strain
+
+Output:
+
+    The primary output file is a '.mod' file which is the MOTHUR taxonomy
+    summary file with the full phylogeny in the taxon field. Additionally,
+    for each taxon rank specified, a '.[tax_level]' file is created which
+    is essentially the '.mod' file but only includes entries at the given
+    taxonomic level.
 """
 
 import argparse
-from bio_utils.file_tools.file_check import IOChecker
+from bio_utils.file_tools.file_check import FileChecker
 import os
 import sys
 import textwrap
 
-__version__ = '1.0.1.0'
+__version__ = '1.1.0.0'
 __author__ = 'Chris Thornton, Alex Hyer'
 
 
@@ -57,8 +65,9 @@ def parse_tax_file(tax_file):
             level_index = index_map['taxlevel']
         except KeyError:
             print('Error: Cannot parse header')
-            textwrap.fill('Error: Please verify that the header is formatted '
-                          'correctly in the taxonomy summary file', 79)
+            print(textwrap.fill('Error: Please verify that the header is '
+                                'formatted correctly in the taxonomy summary '
+                                'file', 79))
             sys.exit(1)
         col_order = [level_index, rank_index, taxon_index]
         sample_info = [header[i] for i in range(len(header))
@@ -116,14 +125,14 @@ def main():
                                      formatter_class=argparse.
                                      RawDescriptionHelpFormatter)
     parser.add_argument('tax_file', metavar='taxonomy summary file',
-                        type=IOChecker.read_check(),
+                        type=FileChecker.read_check(),
                         help='Mothur generated taxonomy summary file')
     parser.add_argument('-l', '--tax_levels', metavar='Rank', dest='rank',
                         default='family,genus',
                         help='Space separated list of ranks for output files')
     args = parser.parse_args()
 
-    IOChecker(args.tax_file).read_check()
+    FileChecker(args.tax_file).read_check()
     args.rank = split_args(args.rank)
     tax_levels = {
         'domain': 1,
@@ -136,14 +145,14 @@ def main():
         'strain': 8
     }
     tax_file = os.path.basename(args.tax_file)
-    outfile = IOChecker(tax_file + '.mod')
-    outfile.write_check()
+    out_file = FileChecker(tax_file + '.mod')
+    out_file.write_check()
     tax_files = [('{0}.{1}'.format(tax_file, rank), tax_levels[rank])
                  for rank in args.rank]
     header, taxonomy = parse_tax_file(args.tax_file)
 
     # edit taxon name to include full taxonomic classifications
-    with open(outfile.name(), 'w') as out_handle:
+    with open(out_file.name(), 'w') as out_handle:
         out_handle.write(header + '\n')
         for taxon in sorted(taxonomy):
             phylogeny = None
@@ -152,7 +161,7 @@ def main():
             for index in range(len(split_rank)):
                 clade = '.'.join(split_rank[0:index + 1])
                 phylogeny_rank.append(clade)
-            phylogeny = ';'.join([taxonomy[i]['taxon'] \
+            phylogeny = ';'.join([taxonomy[i]['taxon']
                                   for i in phylogeny_rank if i != '0'])
             if phylogeny:
                 taxonomy[taxon]['phylogeny'] = phylogeny
@@ -162,7 +171,7 @@ def main():
 
     # write outfiles for given (or default) levels
     for tax_file in tax_files:
-        out_name = IOChecker(tax_file[0])
+        out_name = FileChecker(tax_file[0])
         out_name.write_check()
         rank = tax_file[1]
         tax_subset = [taxon for taxon in taxonomy
