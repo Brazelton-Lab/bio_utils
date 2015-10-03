@@ -46,7 +46,7 @@ import os
 import sys
 import textwrap
 
-__version__ = '1.1.0.0'
+__version__ = '1.1.1.0'
 __author__ = 'Chris Thornton, Alex Hyer'
 
 
@@ -125,7 +125,6 @@ def main():
                                      formatter_class=argparse.
                                      RawDescriptionHelpFormatter)
     parser.add_argument('tax_file', metavar='taxonomy summary file',
-                        type=FileChecker.read_check(),
                         help='Mothur generated taxonomy summary file')
     parser.add_argument('-l', '--tax_levels', metavar='Rank', dest='rank',
                         default='family,genus',
