@@ -46,11 +46,7 @@ import os
 import sys
 import textwrap
 
-<<<<<<< HEAD
-__version__ = '1.1.1.0'
-=======
 __version__ = '1.1.2.0'
->>>>>>> a985323bcd4c291bff915d6ded00cee5e83a9bb0
 __author__ = 'Chris Thornton, Alex Hyer'
 
 
