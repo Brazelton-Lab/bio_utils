@@ -41,12 +41,16 @@ Output:
 """
 
 import argparse
-from bio_utils.file_tools.file_check import FileChecker
+from bio_utils.file_tools.file_check import IOChecker
 import os
 import sys
 import textwrap
 
+<<<<<<< HEAD
 __version__ = '1.1.1.0'
+=======
+__version__ = '1.1.2.0'
+>>>>>>> a985323bcd4c291bff915d6ded00cee5e83a9bb0
 __author__ = 'Chris Thornton, Alex Hyer'
 
 
@@ -131,7 +135,7 @@ def main():
                         help='Comma separated list of ranks for output files')
     args = parser.parse_args()
 
-    FileChecker(args.tax_file).read_check()
+    IOChecker(args.tax_file).read_check()
     args.rank = split_args(args.rank)
     tax_levels = {
         'domain': 1,
@@ -144,7 +148,7 @@ def main():
         'strain': 8
     }
     tax_file = os.path.basename(args.tax_file)
-    out_file = FileChecker(tax_file + '.mod')
+    out_file = IOChecker(tax_file + '.mod')
     out_file.write_check()
     tax_files = [('{0}.{1}'.format(tax_file, rank), tax_levels[rank])
                  for rank in args.rank]
@@ -170,7 +174,7 @@ def main():
 
     # write outfiles for given (or default) levels
     for tax_file in tax_files:
-        out_name = FileChecker(tax_file[0])
+        out_name = IOChecker(tax_file[0])
         out_name.write_check()
         rank = tax_file[1]
         tax_subset = [taxon for taxon in taxonomy
