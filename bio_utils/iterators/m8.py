@@ -2,7 +2,7 @@
 
 """Screed-esque iterator for BLAST M8 (BLAST+ output format 6) files"""
 
-__version__ = '1.0.1.0'
+__version__ = '1.0.1'
 __author__ = 'Alex Hyer'
 
 

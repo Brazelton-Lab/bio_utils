@@ -27,7 +27,7 @@ Output:
     A MOTHUR formatted '[count_file].shared' file.
 """
 
-__version__ = '1.0.0.0'
+__version__ = '1.0.0'
 __author__ = 'Alex Hyer, William Brazelton'
 
 import argparse

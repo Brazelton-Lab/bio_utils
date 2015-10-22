@@ -31,7 +31,7 @@ Output:
     A MOTHUR formatted group file.
 """
 
-__version__ = '1.0.0.0'
+__version__ = '1.0.'
 __author__ = 'Chris Thornton, Alex Hyer'
 
 import argparse

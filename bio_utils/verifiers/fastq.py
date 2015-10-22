@@ -9,13 +9,13 @@ Usage:
     fastq_verifier <fastqFile>
 """
 
-__version__ = '1.2.0.1'
-__author__ = 'Alex Hyer'
-
 import argparse
 from bio_utils.verifiers.line_verifier import verify_lines
 from screed.fastq import fastq_iter
 import sys
+
+__version__ = '1.2.1'
+__author__ = 'Alex Hyer'
 
 
 def fastq_verifier(handle):

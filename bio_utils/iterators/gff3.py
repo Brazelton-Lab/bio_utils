@@ -2,7 +2,7 @@
 
 """Screed-esque iterator for GFF3 files (not headers)"""
 
-__version__ = '1.2.3.1'
+__version__ = '1.2.4'
 __author__ = 'Alex Hyer'
 
 

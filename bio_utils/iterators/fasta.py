@@ -2,7 +2,7 @@
 
 """Screed-esque iterator for FASTA files"""
 
-__version__ = '1.0.5.1'
+__version__ = '1.0.6'
 __author__ = 'Alex Hyer'
 
 

@@ -64,6 +64,8 @@ iterators simply contains a number of file iterators for reading, parsing, and
 returning lines of a file as dictionaries. screed is used for reading
 FASTQ files. See individual scripts for dictionary structure.
 
+Import as "from bio_utils.iterators import [script]_iter"
+
 Scripts:
 * fasta: reads, parses, and returns lines of a FASTA file
          {'name':, 'description':, 'sequence':}
@@ -93,6 +95,8 @@ correctly and False if the file is incorrectly formatted. If the file is
 incorrectly formatted, a description of the formatting error is printed. All
 scripts in verifiers are also stand-alone programs and executable
  as "[script name]_verifier".
+ 
+ Import as "from bio_utils.verifiers import [script]_verifier"
 
 Scripts:
 * binary: guesses whether or not a file is binary

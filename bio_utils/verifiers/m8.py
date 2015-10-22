@@ -7,13 +7,13 @@ Usage:
     m8_verifier <m8File>
 """
 
-__version__ = '1.2.0.1'
-__author__ = 'Alex Hyer'
-
 import argparse
 from bio_utils.verifiers.line_verifier import verify_lines
-from bio_utils.iterators.m8 import m8_iter
+from bio_utils.iterators import m8_iter
 import sys
+
+__version__ = '1.2.1'
+__author__ = 'Alex Hyer'
 
 
 def m8_verifier(handle):

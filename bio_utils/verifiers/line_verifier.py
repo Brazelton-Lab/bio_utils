@@ -4,12 +4,12 @@ from __future__ import print_function
 
 """General function for analyzing lines against a regex"""
 
-__version__ = '1.0.3.1'
-__author__ = 'Alex Hyer'
-
 import codecs
 import re
 import sys
+
+__version__ = '1.0.4'
+__author__ = 'Alex Hyer'
 
 
 def verify_lines(lines, regex, delimiter):

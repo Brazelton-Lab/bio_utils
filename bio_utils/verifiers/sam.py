@@ -8,13 +8,13 @@ Usage:
     sam_verifier <samFile>
 """
 
-__version__ = '1.1.1.0'
-__author__ = 'Alex Hyer'
-
 import argparse
 from bio_utils.verifiers.line_verifier import verify_lines
-from bio_utils.iterators.sam import sam_iter
+from bio_utils.iterators import sam_iter
 import sys
+
+__version__ = '1.1.2'
+__author__ = 'Alex Hyer'
 
 
 def sam_verifier(handle):

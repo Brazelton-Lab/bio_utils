@@ -9,13 +9,13 @@ Usage:
     fastr_verifier <fastrFile>
 """
 
-__version__ = '1.3.0.1'
-__author__ = 'Alex Hyer'
-
 import argparse
 from bio_utils.verifiers.line_verifier import verify_lines
-from bio_utils.iterators.fastr import fastr_iter
+from bio_utils.iterators import fastr_iter
 import sys
+
+__version__ = '1.3.1'
+__author__ = 'Alex Hyer'
 
 
 def fastr_verifier(handle):

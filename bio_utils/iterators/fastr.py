@@ -2,11 +2,11 @@
 
 """Screed-esque iterator for FASTR files"""
 
-__version__ = '1.0.2.1'
-__author__ = 'Alex Hyer'
-
 from metameta.metameta_utils.fastr_utils import compress_fastr
 from metameta.metameta_utils.fastr_utils import decompress_fastr
+
+__version__ = '1.0.3'
+__author__ = 'Alex Hyer'
 
 
 def fastr_iter(handle, parse_description=True, line=None, compressed=None):

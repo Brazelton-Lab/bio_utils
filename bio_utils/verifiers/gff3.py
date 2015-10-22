@@ -9,13 +9,13 @@ Usage:
     gff3_verifier <gff3File>
 """
 
-__version__ = '1.2.1.1'
-__author__ = 'Alex Hyer'
-
 import argparse
 from bio_utils.verifiers.line_verifier import verify_lines
-from bio_utils.iterators.gff3 import gff3_iter
+from bio_utils.iterators import gff3_iter
 import sys
+
+__version__ = '1.2.2'
+__author__ = 'Alex Hyer'
 
 
 def gff3_verifier(handle):
