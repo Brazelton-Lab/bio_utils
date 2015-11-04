@@ -9,7 +9,7 @@ import copy
 from screed.fasta import fasta_iter
 import sys
 
-__version__ = '1.1.2.0'
+__version__ = '1.1.3.0'
 __author__ = 'William Brazelton, Alex Hyer'
 
 
@@ -59,7 +59,7 @@ def main():
                         help=' optional output file, defaults to STDOUT')
     args = parser.parse_args()
 
-    with open(args.fastaFaile, 'rU') as fasta_handle:
+    with open(args.fastaFile, 'rU') as fasta_handle:
         with open(args.m8File, 'rU') as m8_handle:
             for fastaEntry in subject_sequence_retriever(fasta_handle,
                                                          m8_handle,
