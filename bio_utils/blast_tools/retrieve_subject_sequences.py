@@ -9,7 +9,7 @@ import copy
 from screed.fasta import fasta_iter
 import sys
 
-__version__ = '1.1.4.0'
+__version__ = '1.1.5.0'
 __author__ = 'William Brazelton, Alex Hyer'
 
 
@@ -68,7 +68,7 @@ def main():
                                              fastaEntry['description'],
                                              fastaEntry['sequence'])
                 if args.output is not None:
-                    with open(args.output, 'w') as out_handle:
+                    with open(args.output, 'a') as out_handle:
                         out_handle.write(entry)
                 else:
                     print(entry)
