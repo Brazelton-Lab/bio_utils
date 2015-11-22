@@ -1,4 +1,4 @@
-#!/usr/bin/srv python
+#! /usr/bin/env python
 
 """Returns query sequence from BLAST hits below a specified e-value"""
 

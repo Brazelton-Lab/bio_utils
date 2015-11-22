@@ -3,6 +3,13 @@ bio_utils
 
 Python package containing modules of commonly used bioinformatic scripts
 
+Last Stable Version: 0.7.10
+
+IMPORTANT NOTE
+--------------
+
+bio_utils will be undergoing massive changes, see the Documentation folder for details
+
 purpose
 -------
 

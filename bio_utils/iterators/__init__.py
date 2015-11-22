@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#! /usr/bin/env python
 
 from bio_utils.iterators.fasta import fasta_iter
 from bio_utils.iterators.fastr import fastr_iter

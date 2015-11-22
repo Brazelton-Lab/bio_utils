@@ -1,13 +1,31 @@
-#!/usr/bin/srv python
+#! /usr/bin/env python
 
 """Translates a BLAST XML alignment into a CIGAR line"""
 
-__version__ = '1.0.1.1'
+__version__ = '1.0.2'
 __author__ = 'Alex Hyer'
 
 
 def blast_to_cigar(query_seq, match_seq, subject_seq, cigar_age='old'):
-    """converts BLAST alignment into a old or new CIGAR line"""
+    """converts BLAST alignment into a old or new CIGAR line
+
+    :returns: Cigar line of BLAST alignment
+    :rtype: str
+
+    :param query_seq: The aligned query sequence
+    :type query_seq: str
+
+    :param match_seq: The sequence visually depicting the alignment
+    :type match_seq: str
+
+    :param subject_seq: The aligned subject sequence
+    :type subject_seq: str
+
+    :param cigar_age: 'old' or 'new'. Whether or not to use the old version
+                      of Cigar containing only 'M' for matches and mismatches
+                      or to give more detail on the alignment (old vs. new)
+    :type cigar_age: str
+    """
 
     cigar_line_raw = []
     for query, match, subject in zip(query_seq, match_seq, subject_seq):
