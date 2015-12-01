@@ -11,7 +11,8 @@ the library is both intuitive to use and internally consistent. This document
 explains these philosophies and should be read by anyone looking to contribute
 to the library on whether or not their script belongs in bio_utils, where it
 belongs, and how to structure their script A more concrete guide on how to
-style a script in bio_utils is found here [put document here].
+style a script in bio_utils is found in
+[Script_requirements](Script_requirements.md).
 
 Core Principles
 ---------------
@@ -32,7 +33,7 @@ Additionally, each script should be written in a straightforward manner that
 is easy to read and understand; i.e., each script should be
 [Pythonic](http://blog.startifact.com/posts/older/what-is-pythonic.html).
 
-3. Documentation is Key: A library is used by developers writing a program.
+3. Heavily Documented: A library is used by developers writing a program.
 This obvious statement should lead to an obvious conclusion: a library is of no
 use if a programmer doesn't know/can't find out what any given tool does. Thus,
 each script should be very documented heavily. While, it is better to document
