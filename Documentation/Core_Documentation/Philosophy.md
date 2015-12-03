@@ -13,6 +13,8 @@ to the library on whether or not their script belongs in bio_utils, where it
 belongs, and how to structure their script A more concrete guide on how to
 style a script in bio_utils is found in
 [Script_requirements](Script_requirements.md).
+[Sub_Package_Requirements](Sub_Package_Requirements.md) describes how and when
+to make sub-packages in bio_utils.
 
 Core Principles
 ---------------
