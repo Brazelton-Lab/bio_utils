@@ -21,4 +21,4 @@ in bio_utils should be formatted and what they should include. This document
 can be seen as the pragmatic version of [Philosophy](Philosophy.md).
 
 [Sub_Package_Requirements](Sub_Package_Requirements.md): A practical guide on
-when to make a enw sub-package and what it must include.
+when to make a new sub-package and what it must include.
