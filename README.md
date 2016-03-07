@@ -3,7 +3,7 @@ bio_utils
 
 Python package containing modules of commonly used bioinformatic scripts
 
-Last Stable Version: 0.7.10
+Last Stable Version: 0.7.13
 
 IMPORTANT NOTE
 --------------
@@ -113,26 +113,6 @@ Scripts:
 * gff3: verifies a GFF3 file
 * m8: verifies a M8 file (BLAST+ output format 6)
 * sam: verifies a SAM file
-
-mothur_tools
-------------
-
-mothur_tools contains scripts that perform various modifications to MOTHUR
-(Patrick Schloss) files in order to modify output or functionality. All
-scripts in mothur_tools are stand-alone programs and executable as
-"[script_name]"
-
-Scripts:
-* convert_count_to_shared: effectively bypasses OTU generation while allowing normal
-                           downstream MOTHUR analysis by converting a MOTHUR count_table
-                           file to a MOTHUR shared file
-* group_from_filenames: creates a MOTHUR group file from one or more FASTA files,
-                        this script is much easier to use then allowing MOTHUR to
-                        create the group file
-* modify_tax_summary: modify the taxonomy summary file from MOTHUR
-                      by adding full phylogeny to the taxon field
-                      and optionally create taxonomy summary files
-                      truncated to a specific taxon rank
 
 Contributors
 ============
