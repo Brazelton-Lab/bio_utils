@@ -4,6 +4,44 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- Removed .pypirc. [TheOneHyer]
+
+  .pypirc was being inappropriately tracked, has been removed.
+
+- Giant Changes. [TheOneHyer]
+
+  This commit sadly breaks normal rules of small commits
+  and will be the lsat of it's kind. This commit implements
+  huge changes and thus this commit message is giant.
+
+  * Added GitChangeLog package and created first ChangeLog.rst
+
+  * Updated Docuemntation
+
+  * Updated READEME
+
+  * Changed Copyright to GPLv3
+
+  * Added proper copyright infor to each file
+
+  * Greatly improved speed and flexibility of iterators
+
+  * Added FASTQ iterator
+
+  * Changed all isntances of 'm8' to 'b6' as appropriate
+
+  * Iterators tested for functionality
+
+  * verifiers updated for iterator changes, NOT TESTED
+
+  * blast_tools updated for iterator changes, NOT TESTED
+
+  * function documentation made 'Sphinxy'
+
+  * Created directory for future Sphinx documentation
+
+  * Added more package level imports
+
 - Updated README.md. [TheOneHyer]
 
   README.md updated to match recent changes.

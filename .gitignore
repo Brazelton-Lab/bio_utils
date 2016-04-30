@@ -62,4 +62,8 @@ target/
 # PyCharm
 .idea
 
+# PyPI Credentials
+
+.pypirc
+
 # Created by .ignore support plugin (hsz.mobi)
