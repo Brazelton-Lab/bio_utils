@@ -7,6 +7,24 @@ from __future__ import print_function
 Usage:
 
     gff3_verifier <gff3File>
+
+Copyright:
+
+    gff3.py verify validity of a GFF3 file
+    Copyright (C) 2015  William Brazelton, Alex Hyer
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 import argparse
@@ -14,31 +32,29 @@ from bio_utils.verifiers.line_verifier import verify_lines
 from bio_utils.iterators import gff3_iter
 import sys
 
-__version__ = '1.2.2'
 __author__ = 'Alex Hyer'
+__email__ = 'theonehyer@gmail.com'
+__license__ = 'GPLv3'
+__maintainer__ = 'Alex Hyer'
+__status__ = 'Production'
+__version__ = '1.2.2'
 
 
 def gff3_verifier(handle):
-    """Returns True if GFF3 file is valid and False if file is not valid"""
+    """Returns True if GFF3 file is valid and False if file is not valid
+
+    :param handle: GFF3 file handle
+    :type handle: File Object
+    """
 
     lines = []
-    for gff3Entry in gff3_iter(handle):
-        entry = '{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\n'.format(
-            gff3Entry['seqid'],
-            gff3Entry['source'],
-            gff3Entry['type'],
-            gff3Entry['start'],
-            gff3Entry['end'],
-            gff3Entry['score'],
-            gff3Entry['strand'],
-            gff3Entry['phase'],
-            gff3Entry['attributes'])
-        lines.append(entry)
+    for entry in gff3_iter(handle):
+        lines.append(entry.write())
     regex = r'^[a-zA-Z0-9.:^*$@!+_?-|]+\t.+\t.+\t\d+\t\d+\t' \
             + r'\d*\.?\d*\t[+-.]\t[.0-2]\t.+\n$'
     delimiter = r'\t'
-    gff3Status = verify_lines(lines, regex, delimiter)
-    return gff3Status
+    gff3_status = verify_lines(lines, regex, delimiter)
+    return gff3_status
 
 
 def main():

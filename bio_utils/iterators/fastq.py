@@ -1,10 +1,10 @@
 #! /usr/bin/env python
 
-"""Faster, simpler, Screed-esque iterator for FASTA files
+"""Faster, simpler, Screed-esque iterator for FASTQ files
 
 Copyright:
 
-    fasta.py iterate over and return entries of a FASTA file
+    fastq.py iterate over and return entries of a FASTQ file
     Copyright (C) 2015  William Brazelton, Alex Hyer
 
     This program is free software: you can redistribute it and/or modify
@@ -28,48 +28,51 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '2.0.0'
+__version__ = '1.0.0'
 
 
-class FastaEntry:
-    """A simple class to store data from FASTA entries and write them"""
+class FastqEntry:
+    """A simple class to store data from FASTQ entries and write them"""
 
     def __init__(self):
-        """Initialize variables to store FASTA entry data"""
+        """Initialize variables to store FASTQ entry data"""
 
         self.name = None
         self.description = None
         self.sequence = None
+        self.quality = None
 
     def write(self):
-        """Return FASTA formatted string
+        """Return FASTQ formatted string
 
-        :return: FASTA formatted string
+        :return: FASTQ formatted string
         :rtype: str
         """
 
         if self.description:
-            return '>{0} {1}{3}{2}{3}'.format(self.name,
-                                              self.description,
-                                              self.sequence,
-                                              os.linesep)
+            return '>{0} {1}{4}{2}{4}+{4}{3}{4}'.format(self.name,
+                                                        self.description,
+                                                        self.sequence,
+                                                        self.quality,
+                                                        os.linesep)
         else:
-            return '>{0}{2}{1}{2}'.format(self.name,
-                                          self.sequence,
-                                          os.linesep)
+            return '>{0}{3}{1}{3}+{3}{2}{3}'.format(self.name,
+                                                    self.sequence,
+                                                    self.quality,
+                                                    os.linesep)
 
 
-def fasta_iter(handle, header=None):
-    """Iterate over FASTA file and return FASTA entries
+def fastq_iter(handle, header=None):
+    """Iterate over FASTQ file and return FASTQ entries
 
-    :param handle: FASTA file handle
+    :param handle: FASTQ file handle
     :type handle: File Object
 
     :param header: Header line of entry file handle is open to
     :type header: str
 
-    :return: class containing FASTA data
-    :rtype: FastaEntry
+    :return: class containing FASTQ data
+    :rtype: FastqEntry
     """
 
     # Speed tricks: reduces function calls
@@ -78,7 +81,7 @@ def fasta_iter(handle, header=None):
     strip = str.strip
 
     if header is None:
-        header = strip(handle.next())  # Read first FASTA entry header
+        header = strip(handle.next())  # Read first FASTQ entry header
     else:
         header = strip(header)  # Set header to given header
 
@@ -88,10 +91,10 @@ def fasta_iter(handle, header=None):
 
             line = strip(handle.next())
 
-            data = FastaEntry()
+            data = FastqEntry()
 
-            if not header[0] == '>':
-                raise IOError('Bad FASTA format: no ">" at beginning of line')
+            if not header[0] == '@':
+                raise IOError('Bad FASTQ format: no "@" at beginning of line')
 
             try:
                 data.name, data.description = header[1:].split(' ', 1)
@@ -99,18 +102,30 @@ def fasta_iter(handle, header=None):
                 data.name = header[1:]
                 data.description = ''
 
-            # Obtain sequence
+            # obtain sequence
             sequence_list = []
-            while line and not line[0] == '>':
+            while line and not line[0] == '+' and not line[0] == '#':
                 append(sequence_list, line)
+                line = strip(handle.next())
+            data.sequence = join('', sequence_list)
+
+            line = strip(handle.next())  # Skip line containing only '+'
+
+            # Obtain quality scores
+            quality_list = []
+            seq_len = len(data.sequence)
+            qual_len = 0
+            while line and not line[0] == '@' and qual_len < seq_len:
+                append(quality_list, line)
+                qual_len += len(line)
                 line = strip(handle.next())  # Raises StopIteration at EOF
             header = line  # Store current line so it's not lost next iteration
-            data.sequence = join('', sequence_list)
+            data.quality = join('', quality_list)
 
             yield data
 
     except StopIteration:
         pass
-    finally:  # Yield last FASTA entry
-        data.sequence = ''.join(sequence_list)
+    finally:  # Yield last FASTQ entry
+        data.quality = join('', quality_list)
         yield data

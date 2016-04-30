@@ -1,46 +1,81 @@
 #!/usr/bin/srv python
 
-"""Returns subject sequence from BLAST hits below a specified e-value"""
+"""Returns subject sequence from BLAST hits below a specified e-value
+
+Copyright:
+
+    retrieve_subject_sequences.py recover subject sequences of BLAST alignment
+    Copyright (C) 2015  William Brazelton, Alex Hyer
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+"""
 
 import argparse
-from bio_utils.iterators.m8 import m8_iter
+from bio_utils.iterators import b6_iter
 from collections import defaultdict
-import copy
-from screed.fasta import fasta_iter
+from bio_utils.iterators import fasta_iter
 import sys
 
-__version__ = '1.1.5.0'
 __author__ = 'William Brazelton, Alex Hyer'
+__email__ = 'theonehyer@gmail.com'
+__license__ = 'GPLv3'
+__maintainer__ = 'Alex Hyer'
+__status__ = 'Production'
+__version__ = '1.1.6'
 
 
-def subject_sequence_retriever(fasta_handle, m8_handle, e_value):
+def subject_sequence_retriever(fasta_handle, b6_handle, e_value):
     """Returns FASTA entries for subject sequences from BLAST hits
 
-    Stores M8 entries with e-values below the e_value cutoff. Then iterates
-    through the FASTA file and if an entry matches the subject of an M8
-    entry, it's sequence is extracted and returned as a FASTA entry."""
+    Stores B6/M8 entries with e-values below the e_value cutoff. Then iterates
+    through the FASTA file and if an entry matches the subject of an B6/M8
+    entry, it's sequence is extracted and returned as a FASTA entry
+    plus the e-value.
 
-    filtered_m8 = defaultdict(list)
-    for m8Entry in m8_iter(m8_handle):
-        if float(m8Entry['eValue']) <= e_value:
-            filtered_m8[m8Entry['subjectID']].append(
-                (int(m8Entry['subjectStart']), int(m8Entry['subjectEnd']),
-                 float(m8Entry['eValue'])))
+    :param fastaq_handle: FASTAfile handle
+    :type fastaq_handle: File Object
+
+    :param b6_handle: B6/M8 file handle
+    :type b6_handle: File Object
+
+    :param e_value: Max evalue to be returned
+    :type e_value: float
+
+    :return: FastaEntry class
+    :rtype: FastaEntry
+    """
+
+    filtered_b6 = defaultdict(list)
+    for entry in b6_iter(b6_handle):
+        if float(entry.evalue) <= e_value:
+            filtered_b6[entry.subject].append(
+                (int(entry.subject_start), int(entry.subject_end),
+                 float(entry.evalue)))
     for fastaEntry in fasta_iter(fasta_handle):
-        if fastaEntry['name'] in filtered_m8:
-            for pair in filtered_m8[fastaEntry['name']]:
+        if fastaEntry.name in filtered_b6:
+            for pair in filtered_b6[fastaEntry.name]:
                 start = pair[0] - 1
                 end = pair[1] - 1
                 if start < end:
-                    subject_sequence = fastaEntry['sequence'][start:end]
+                    subject_sequence = fastaEntry.sequence[start:end]
                 elif start > end:
-                    subject_sequence = fastaEntry['sequence'][end:start][::-1]
+                    subject_sequence = fastaEntry.sequence[end:start][::-1]
                 else:
-                    subject_sequence = fastaEntry['sequence'][start]
-                yield_entry = copy.deepcopy(fastaEntry)
-                yield_entry['sequence'] = subject_sequence
-                yield_entry['eValue'] = pair[2]
-                yield yield_entry
+                    subject_sequence = fastaEntry.sequence[start]
+                fastaEntry.sequence = subject_sequence
+                fastaEntry.description += str(pair[2])
+                yield fastaEntry
 
 
 def main():
@@ -49,8 +84,8 @@ def main():
                                      RawDescriptionHelpFormatter)
     parser.add_argument('fastaFile',
                         help='subject FASTA file')
-    parser.add_argument('m8File',
-                        help='M8 file with alignment data')
+    parser.add_argument('b6File',
+                        help='B6/M8 file with alignment data')
     parser.add_argument('e_value',
                         help='upper e-value cutoff')
     parser.add_argument('output',
@@ -60,18 +95,15 @@ def main():
     args = parser.parse_args()
 
     with open(args.fastaFile, 'rU') as fasta_handle:
-        with open(args.m8File, 'rU') as m8_handle:
+        with open(args.b6File, 'rU') as b6_handle:
             for fastaEntry in subject_sequence_retriever(fasta_handle,
-                                                         m8_handle,
-                                                         args.e_value):
-                entry = '{} {}\n{}\n'.format(fastaEntry['name'],
-                                             fastaEntry['description'],
-                                             fastaEntry['sequence'])
+                                                         b6_handle,
+                                                         float(args.e_value)):
                 if args.output is not None:
                     with open(args.output, 'a') as out_handle:
-                        out_handle.write(entry)
+                        out_handle.write(fastaEntry.write())
                 else:
-                    print(entry)
+                    print(fastaEntry.write())
 
 
 if __name__ == '__main__':

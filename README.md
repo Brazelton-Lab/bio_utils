@@ -5,12 +5,14 @@ Python package containing modules of commonly used bioinformatic scripts
 
 Last Stable Version: 0.7.13
 
+Current Version: 0.7.13
+
 IMPORTANT NOTE
 --------------
 
-bio_utils will be undergoing massive changes, see the Documentation folder for details
+bio_utils will be undergoing massive changes soon
 
-purpose
+Purpose
 -------
 
 bio_utils provides a series of scripts accomplishing tedious steps often
@@ -31,10 +33,6 @@ Requirements
 
 Python 2.7+ or 3.4+
 
-Python Libraries:
-
-* screed
-
 Installation
 ============
 
@@ -45,9 +43,9 @@ Scripts
 
 bio_utils contains several sub-packages containing scripts of similar function.
 All scripts are written such that their functionality is importable
-(aka the packages serve as Python libraries) but many scripts can also be run
-independently. Any such script is linked to /usr/local/bin/.
-Each sub-package and it's scripts are described below:
+(i.e. the packages serve as Python libraries) but many scripts can also be run
+independently. Any such script is linked to /usr/local/bin/
+(Unix-like systems). Each sub-package and it's scripts are described below:
 
 blast_tools
 -----------
@@ -58,7 +56,7 @@ and executable as "[script name]".
 
 Scripts:
 * blast_to_cigar: convert BLAST+ XML alignment lines to a CIGAR line
-* filter_m8_evalue: filters a M8 (BLAST+ output format 6) file by e-value
+* filter_b6_evalue: filters a M8 (BLAST+ output format 6) file by e-value
 * retrieve_query_sequences: recover query FASTA sequences for BLAST hits below
                             a given e-value
 * retrieve_subject_sequences: recover subject FASTA sequences for BLAST hits
@@ -74,24 +72,22 @@ FASTQ files. See individual scripts for dictionary structure.
 Import as "from bio_utils.iterators import [script]_iter"
 
 Scripts:
+* b6: reads, parses, and returns lines of a M8 file (BLAST+ output format 6)
+      Attributes: query, subject, perc_identical, align_len,
+      mismatchs, gaps, query_start, query_end, subject_start, subject_end,
+      evalue, bit_score
 * fasta: reads, parses, and returns lines of a FASTA file
-         {'name':, 'description':, 'sequence':}
-         Note: This function is identical to the SCREED FASTA
-               iterator but is theoretically faster.
-* fastr: reads, parses, and returns lines of a FASTR file
-         {'name':, 'description':, 'sequence':}
+         Attributes: name, description, sequence
+* fastq: reads, parses, and returns lines of a FASTQ file
+         Attributes: name, description, sequence, quality
 * gff3: reads, parses, and returns lines of a GFF3 file
-        {'seqid':, 'source':, 'type':, 'start':, 'end':, 'score':,
-        'strand':, 'phase':, 'attributes':} (Note: if 'prokka=True' is given,
+        Attributes: seqid, source, type, start, end, score,
+        strand, phase, attributes (Note: if 'prokka=True' is given,
         dynamic parsing of attributes as per the GFF3 file of PROKAA 1.12-beta
         is performed)
-* m8: reads, parses, and returns lines of a M8 file (BLAST+ output format 6)
-      {'queryID':, 'subjectID':, 'percIdentical':, 'alignLen':,
-      'mismatchCount':, 'gapCount':, 'queryStart':, 'queryEnd':,
-      'subjectStart':, 'subjectEnd':, 'eValue':, 'bitScore':}
 * sam: reads, parses, and returns lines of a SAM file
-       {'qname':, 'flag':, 'rname':, 'pos':, 'mapq':, 'cigar':, 'rnext':,
-       'pnext':, 'tlen':, 'seq':, 'qual':}
+       Attributes: qname, flag, rname, pos, mapq, cigar, rnext,
+       pnext, tlen, seq, qual
 
 verifiers
 ---------
@@ -106,12 +102,11 @@ scripts in verifiers are also stand-alone programs and executable
  Import as "from bio_utils.verifiers import [script]_verifier"
 
 Scripts:
+* b6: verifies a M8 file (BLAST+ output format 6)
 * binary: guesses whether or not a file is binary
 * fasta: verifies a FASTA file
 * fastq: verifies a FASTQ file
-* fastr: verifies a FASTR file
 * gff3: verifies a GFF3 file
-* m8: verifies a M8 file (BLAST+ output format 6)
 * sam: verifies a SAM file
 
 Contributors

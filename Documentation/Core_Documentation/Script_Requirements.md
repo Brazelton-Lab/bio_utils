@@ -20,7 +20,7 @@ list summarizing script requirements, each item is then discussed in detail:
 2. Only One or a Few Related Importable Functions per Script
 3. No "End" Scripts or Functions
 4. No Command-Line Programs (see section for exception)
-5. Docstrings for Each Script AND Function
+5. Docstrings for Each Script, Class, AND Function
 6. Versioning
 7. Unit Tests
 
@@ -107,19 +107,20 @@ and still be able to act as an importable tool.
     * Piping
     * One or zero positional arguments
 
-Docstrings for Each Script AND Function
----------------------------------------
+Docstrings for Each Script, Class, AND Function
+------------------------------------------------
 
 Each individual document in bio_utils should be documented with docstrings and
 inline comments as appropriate. More specifically, each docstring should have
 an synopsis line and document arguments and returns using
-[Sphinx Function Definitions](https://pythonhosted.org/an_example_pypi_project/sphinx.html#function-definitions)
+[Google Function Definitions](https://google.github.io/styleguide/pyguide.html?showone=Comments#Comments)
 . If appropriate, the docstrings should also include a more thorough
 description of the function. Each script, *even those only containing a single
-function*, should also have docstrings. If the script contains one function,
-the docstring can simply be a one-liner about the function. If the script has
-multiple functions, the docstrings should include a synopsis of what the script
-offers and a one-liner about each function.
+function or class*, should also have docstrings. If the script contains one
+function or class, the docstring can simply be a one-liner about the function.
+If the script has multiple functions or classes, the docstrings should include
+a synopsis of what the script offers and a one-liner about each function.
+Full API should also be described in our Sphinx documentation.
 
 Versioning
 ----------

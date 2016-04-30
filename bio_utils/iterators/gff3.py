@@ -1,46 +1,160 @@
 #!/usr/bin/env python
 
-"""Screed-esque iterator for GFF3 files (not headers)"""
+"""Screed-esque iterator for GFF3 files (not headers)
 
-__version__ = '1.2.4'
+Copyright:
+
+    gff3.py iterate over and return entries of a GFF3 file
+    Copyright (C) 2015  William Brazelton, Alex Hyer
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+"""
+
+import os
+
 __author__ = 'Alex Hyer'
+__email__ = 'theonehyer@gmail.com'
+__license__ = 'GPLv3'
+__maintainer__ = 'Alex Hyer'
+__status__ = 'Production'
+__version__ = '1.0.0'
 
 
-def gff3_iter(handle, prokka=False):
+class GFF3Entry:
+    """A simple class to store data from GFF3 entries and write them"""
+
+    def __init__(self):
+        """Initialize variables to store GFF3 entry data"""
+
+        self.seqid= None
+        self.source = None
+        self.type = None
+        self.start = None
+        self.end = None
+        self.score = None
+        self.strand = None
+        self.phase = None
+        self.attributes = None
+        self.temp_attributes = None  # Used in case attributes is dict
+
+    def write(self):
+        """Return GFF3 formatted string
+
+        :return: GFF3 formatted string
+        :rtype: str
+        """
+
+        # Regain original formatting for gff file
+        if type(self.attributes) is dict:
+            self.temp_attributes = ''
+            for key, value in self.attributes.items():
+                self.temp_attributes += '{0}={1};'.format(key, value)
+            self.temp_attributes = self.temp_attributes[:-1]
+        else:
+            self.temp_attributes = self.attributes
+
+        return '{0}\t{1}\t{2}\t{3}\t{4}\t' \
+               '{5}\t{6}\t{7}\t{8}{9}'.format(self.seqid,
+                                              self.source,
+                                              self.type,
+                                              self.start,
+                                              self.end,
+                                              self.score,
+                                              self.strand,
+                                              self.phase,
+                                              self.temp_attributes,
+                                              os.linesep)
+
+
+def gff3_iter(handle, start_line=None, prokka=False):
+    """Iterate over GFF3 file and return GFF3 entries
+
+    PROKKA option parses attributes column of GFF3 files from PROKKA version
+    1.12-beta. As an example, it parses:
+
+    prokka_id=5;gene_id=example_id
+
+    into a dictionary as follows in YAML format:
+
+    prokka_id: 5
+    gene_id: example_id
+
+    and stores it as the 'attributes' attribute of the returned class.
+
+    :param handle: GFF3 file handle
+    :type handle: File Object
+
+    :param start_line: Header line of entry file handle is open to
+    :type start_line: str
+
+    :param prokka: Dynamically parse attributes column of PROKKA 1.12-beta
+    :type: boolean
+
+    :return: class containing GFF3 data
+    :rtype: GFF3Entry
     """
-    Iterator over the given GFF3 file handle, returning records. handle
-    is a handle to a file opened for reading. The PROKKA option
-    further parses the attributes by the GFF3 output of PROKKA 1.12-beta
-    """
 
-    for line in handle:
+    # Speed tricks: reduces function calls
+    split = str.split
+    strip = str.strip
 
-        if line == '##FASTA\n':
-            break
+    if start_line is None:
+        line = strip(handle.next())  # Read first GFF3 entry
+    else:
+        line = strip(start_line)  # Set header to given header
 
-        if line.startswith('##'):
-            continue
+    # A manual 'for' loop isn't needed to read the file properly and quickly,
+    # unlike fasta_iter and fastq_iter, but it is necessary begin iterating
+    # partway through a file when the user gives a starting line.
+    try:  # Manually construct a for loop to improve speed by using 'next'
 
-        line = line.strip()
-        split_line = line.split('\t')
-        data = {
-            'seqid': split_line[0],
-            'source': split_line[1],
-            'type': split_line[2],
-            'start': split_line[3],
-            'end': split_line[4],
-            'score': split_line[5],
-            'strand': split_line[6],
-            'phase': split_line[7],
-            'attributes': split_line[8]
-            }
+        while True:  # Loop until StopIteration Exception raised
 
-        if prokka:
-            attributes = data['attributes'].split(';')
-            for attribute in attributes:
-                split_attribute = attribute.split('=')
-                key = split_attribute[0]
-                value = split_attribute[-1]
-                data[key] = value
+            if line.startswith('##FASTA'):  # Skip FASTA entries
+                raise StopIteration
 
+            if line.startswith('##'):  # Skip header lines
+                line = strip(handle.next())
+                continue
+
+            split_line = split(line, '\t')
+
+            data = GFF3Entry()
+            data.seqid = split_line[0]
+            data.source = split_line[1]
+            data.type = split_line[2]
+            data.start = split_line[3]
+            data.end = split_line[4]
+            data.score = split_line[5]
+            data.strand = split_line[6]
+            data.phase = split_line[7]
+            data.attributes = split_line[8]
+
+            if prokka:
+                attributes = split(data.attributes, ';')
+                data.attributes = {}
+                for attribute in attributes:
+                    split_attribute = attribute.split('=')
+                    key = split_attribute[0]
+                    value = split_attribute[-1]
+                    data.attributes[key] = value
+
+            line = strip(handle.next())  # Raises StopIteration at EOF
+
+            yield data
+
+    except StopIteration:
+        pass
+    finally:  # Yield last GFF3 entry
         yield data

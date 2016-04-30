@@ -1,4 +1,25 @@
-#!/usr/bin/env python
+#! /usr/bin/env python
+
+"""Setup file to build and install bio_utils PyPI package
+
+Copyright:
+
+    setup.py build and install bio_utils PyPI package
+    Copyright (C) 2015  William Brazelton, Alex Hyer
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+"""
 
 from setuptools import setup
 
@@ -8,7 +29,7 @@ setup(name='bio_utils',
       classifiers=[
           'Development Status :: 6 - Mature',
           'Intended Audience :: Science/Research',
-          'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
+          'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
           'Natural Language :: English',
           'Operating System :: OS Independent',
           'Programming Language :: Python :: 2.7',
@@ -30,19 +51,15 @@ setup(name='bio_utils',
                 ],
       include_package_data=True,
       zip_safe=False,
-      install_requires=[
-          'screed'
-      ],
       entry_points={
           'console_scripts': [
               'binary_verifier = bio_utils.verifiers.binary:main',
               'fasta_verifier = bio_utils.verifiers.fasta:main',
               'fastq_verifier = bio_utils.verifiers.fastq:main',
-              'fastr_verifier = bio_utils.verifiers.fastr:main',
               'gff3_verifier = bio_utils.verifiers.gff3:main',
-              'm8_verifier = bio_utils.verifiers.m8:main',
+              'm8_verifier = bio_utils.verifiers.b6:main',
               'sam_verifier = bio_utils.verifiers.sam:main',
-              'filter_m8_evalue = bio_utils.blast_tools.filter_m8_evalue:main',
+              'filter_m8_evalue = bio_utils.blast_tools.filter_b6_evalue:main',
               'retrieve_query_sequences = bio_utils.blast_tools.'
                   'retrieve_query_sequences:main',
               'retrieve_subject_sequences = bio_utils.blast_tools.'

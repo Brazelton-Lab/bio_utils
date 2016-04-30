@@ -1,16 +1,36 @@
 #! /usr/bin/env python
 
-"""Translates a BLAST XML alignment into a CIGAR line"""
+"""Translates a BLAST XML alignment into a CIGAR line
 
-__version__ = '1.0.2'
+Copyright:
+
+    blast_to_cigar.py convert BLAST XML alignments into CIGAR lines
+    Copyright (C) 2015  William Brazelton, Alex Hyer
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+"""
+
 __author__ = 'Alex Hyer'
+__email__ = 'theonehyer@gmail.com'
+__license__ = 'GPLv3'
+__maintainer__ = 'Alex Hyer'
+__status__ = 'Production'
+__version__ = '1.0.3'
 
 
 def blast_to_cigar(query_seq, match_seq, subject_seq, cigar_age='old'):
     """converts BLAST alignment into a old or new CIGAR line
-
-    :returns: Cigar line of BLAST alignment
-    :rtype: str
 
     :param query_seq: The aligned query sequence
     :type query_seq: str
@@ -25,8 +45,12 @@ def blast_to_cigar(query_seq, match_seq, subject_seq, cigar_age='old'):
                       of Cigar containing only 'M' for matches and mismatches
                       or to give more detail on the alignment (old vs. new)
     :type cigar_age: str
+
+    :returns: Cigar line of BLAST alignment
+    :rtype: str
     """
 
+    # Translate XML alignment to CIGAR characters
     cigar_line_raw = []
     for query, match, subject in zip(query_seq, match_seq, subject_seq):
         if query == '-':
@@ -50,6 +74,8 @@ def blast_to_cigar(query_seq, match_seq, subject_seq, cigar_age='old'):
             continue
         else:
             cigar_line_raw.append('M')
+
+    # Replace repeat characters with numbers
     cigar_line = []
     last_position = ''
     repeats = 1
@@ -68,4 +94,5 @@ def blast_to_cigar(query_seq, match_seq, subject_seq, cigar_age='old'):
                 repeats = 1
             cigar_line.append(letter[1])
         last_position = letter[1]
+
     return ''.join(cigar_line)

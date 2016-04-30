@@ -1,16 +1,14 @@
 #!/usr/bin/env python
 
-from __future__ import print_function
-
-"""Verifies a FASTQ file
+"""Verifies a B6/M8 file
 
 Usage:
 
-    fastq_verifier <fastqFile>
+    b6_verifier <b6File>
 
 Copyright:
 
-    fastq.py verify validity of a FASTQ file
+    b6.py verify validity of a B6/M8 file
     Copyright (C) 2015  William Brazelton, Alex Hyer
 
     This program is free software: you can redistribute it and/or modify
@@ -29,7 +27,7 @@ Copyright:
 
 import argparse
 from bio_utils.verifiers.line_verifier import verify_lines
-from bio_utils.iterators import fastq_iter
+from bio_utils.iterators import b6_iter
 import sys
 
 __author__ = 'Alex Hyer'
@@ -40,36 +38,37 @@ __status__ = 'Production'
 __version__ = '1.2.2'
 
 
-def fastq_verifier(handle):
-    """Returns True if FASTQ file is valid and False if file is not valid
+def b6_verifier(handle):
+    """Returns True if B6/M8 file is valid and False if file is not valid
 
-    :param handle: FASTQ file handle
+    :param handle: B6/M8 file handle
     :type handle: File Object
     """
 
     lines = []
-    for entry in fastq_iter(handle):
+    for entry in b6_iter(handle):
         lines.append(entry.write())
-    regex = r'^@.+\n[ACGTURYKMSWBDHVNX]+\n\+.*\n.+\n$'
-    delimiter = r'\n'
-    fastq_status = verify_lines(lines, regex, delimiter)
-    return fastq_status
+    regex = r'^.+\t.+\t\d+\.?\d*\t\d+\t\d+\t\d+\t\d+\t\d+\t\d+\t\d+\t' \
+            + r'\d+\.?\d*(e-)?\d*\t\d+\.?\d*\n$'
+    delimiter = r'\t'
+    m8_status = verify_lines(lines, regex, delimiter)
+    return m8_status
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.
                                      RawDescriptionHelpFormatter)
-    parser.add_argument('fastqFile',
-                        help='FASTQ file to verify')
+    parser.add_argument('b6File',
+                        help='B6/M8 file to verify')
     args = parser.parse_args()
 
-    with open(args.fastqFile, 'rU') as in_handle:
-        valid = fastq_verifier(in_handle)
+    with open(args.b6File, 'rU') as in_handle:
+        valid = b6_verifier(in_handle)
     if valid:
-        print('{} is valid'.format(args.fastqFile))
+        print('{} is valid'.format(args.b6File))
     else:
-        print('{} is not valid'.format(args.fastqFile))
+        print('{} is not valid'.format(args.b6File))
 
 
 if __name__ == '__main__':
