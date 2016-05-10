@@ -28,7 +28,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '2.0.0'
+__version__ = '2.0.1'
 
 
 class B6Entry:
@@ -77,7 +77,7 @@ class B6Entry:
 def b6_iter(handle, start_line=None):
     """Iterate over B6/M8 file and return B6/M8 entries
 
-    :param handle: B6/M8 file handle
+    :param handle: B6/M8 file handle, can technically be any iterator
     :type handle: File Object
 
     :param start_line: Header line of entry file handle is open to
@@ -89,7 +89,7 @@ def b6_iter(handle, start_line=None):
     strip = str.strip
 
     if start_line is None:
-        line = strip(handle.next())  # Read first B6/M8 entry
+        line = strip(next(handle))  # Read first B6/M8 entry
     else:
         line = strip(start_line)  # Set header to given header
 
@@ -100,7 +100,7 @@ def b6_iter(handle, start_line=None):
 
         while True:  # Loop until StopIteration Exception raised
 
-            split_line = line.split('\t')
+            split_line = split(line, '\t')
 
             data = B6Entry()
             data.query = split_line[0]
@@ -116,7 +116,7 @@ def b6_iter(handle, start_line=None):
             data.evalue = split_line[10]
             data.bit_score = split_line[11]
 
-            line = strip(handle.next())  # Raises StopIteration at EOF
+            line = strip(next(handle))  # Raises StopIteration at EOF
 
             yield data
 

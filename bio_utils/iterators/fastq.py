@@ -28,7 +28,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '1.0.0'
+__version__ = '1.0.1'
 
 
 class FastqEntry:
@@ -65,7 +65,7 @@ class FastqEntry:
 def fastq_iter(handle, header=None):
     """Iterate over FASTQ file and return FASTQ entries
 
-    :param handle: FASTQ file handle
+    :param handle: FASTQ file handle, can technically be any iterator
     :type handle: File Object
 
     :param header: Header line of entry file handle is open to
@@ -81,7 +81,7 @@ def fastq_iter(handle, header=None):
     strip = str.strip
 
     if header is None:
-        header = strip(handle.next())  # Read first FASTQ entry header
+        header = strip(next(handle))  # Read first FASTQ entry header
     else:
         header = strip(header)  # Set header to given header
 
@@ -89,7 +89,7 @@ def fastq_iter(handle, header=None):
 
         while True:  # Loop until StopIteration Exception raised
 
-            line = strip(handle.next())
+            line = strip(next(handle))
 
             data = FastqEntry()
 
@@ -106,10 +106,10 @@ def fastq_iter(handle, header=None):
             sequence_list = []
             while line and not line[0] == '+' and not line[0] == '#':
                 append(sequence_list, line)
-                line = strip(handle.next())
+                line = strip(next(handle))
             data.sequence = join('', sequence_list)
 
-            line = strip(handle.next())  # Skip line containing only '+'
+            line = strip(next(handle))  # Skip line containing only '+'
 
             # Obtain quality scores
             quality_list = []
@@ -118,7 +118,7 @@ def fastq_iter(handle, header=None):
             while line and not line[0] == '@' and qual_len < seq_len:
                 append(quality_list, line)
                 qual_len += len(line)
-                line = strip(handle.next())  # Raises StopIteration at EOF
+                line = strip(next(handle))  # Raises StopIteration at EOF
             header = line  # Store current line so it's not lost next iteration
             data.quality = join('', quality_list)
 

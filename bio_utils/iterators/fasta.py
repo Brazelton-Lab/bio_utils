@@ -28,7 +28,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '2.0.0'
+__version__ = '2.0.1'
 
 
 class FastaEntry:
@@ -62,7 +62,7 @@ class FastaEntry:
 def fasta_iter(handle, header=None):
     """Iterate over FASTA file and return FASTA entries
 
-    :param handle: FASTA file handle
+    :param handle: FASTA file handle, can technically be any iterator
     :type handle: File Object
 
     :param header: Header line of entry file handle is open to
@@ -78,7 +78,7 @@ def fasta_iter(handle, header=None):
     strip = str.strip
 
     if header is None:
-        header = strip(handle.next())  # Read first FASTA entry header
+        header = strip(next(handle))  # Read first FASTA entry header
     else:
         header = strip(header)  # Set header to given header
 
@@ -86,7 +86,7 @@ def fasta_iter(handle, header=None):
 
         while True:  # Loop until StopIteration Exception raised
 
-            line = strip(handle.next())
+            line = strip(next(handle))
 
             data = FastaEntry()
 
@@ -103,7 +103,7 @@ def fasta_iter(handle, header=None):
             sequence_list = []
             while line and not line[0] == '>':
                 append(sequence_list, line)
-                line = strip(handle.next())  # Raises StopIteration at EOF
+                line = strip(next(handle))  # Raises StopIteration at EOF
             header = line  # Store current line so it's not lost next iteration
             data.sequence = join('', sequence_list)
 

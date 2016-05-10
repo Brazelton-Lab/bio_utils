@@ -28,7 +28,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '2.0.0'
+__version__ = '2.0.1'
 
 
 class SamEntry:
@@ -75,7 +75,7 @@ class SamEntry:
 def sam_iter(handle, start_line=None):
     """Iterate over SAM file and return B6/M8 entries
 
-    :param handle: SAM file handle
+    :param handle: SAM file handle, can technically be any iterator
     :type handle: File Object
 
     :param start_line: Header line of entry file handle is open to
@@ -87,7 +87,7 @@ def sam_iter(handle, start_line=None):
     strip = str.strip
 
     if start_line is None:
-        line = strip(handle.next())  # Read first B6/M8 entry
+        line = strip(next(handle))  # Read first B6/M8 entry
     else:
         line = strip(start_line)  # Set header to given header
 
@@ -98,10 +98,10 @@ def sam_iter(handle, start_line=None):
 
         while True:  # Loop until StopIteration Exception raised
 
-            split_line = line.split('\t')
+            split_line = split(line, '\t')
 
             if line.startswith('@'):
-                line = strip(handle.next())
+                line = strip(next(handle))
                 continue
 
             data = SamEntry()
@@ -117,7 +117,7 @@ def sam_iter(handle, start_line=None):
             data.seq = split_line[9]
             data.qual = split_line[10]
 
-            line = strip(handle.next())  # Raises StopIteration at EOF
+            line = strip(next(handle))  # Raises StopIteration at EOF
 
             yield data
 

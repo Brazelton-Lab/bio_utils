@@ -28,7 +28,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '1.0.0'
+__version__ = '1.0.1'
 
 
 class GFF3Entry:
@@ -92,7 +92,7 @@ def gff3_iter(handle, start_line=None, prokka=False):
 
     and stores it as the 'attributes' attribute of the returned class.
 
-    :param handle: GFF3 file handle
+    :param handle: GFF3 file handle, can technically be any iterator
     :type handle: File Object
 
     :param start_line: Header line of entry file handle is open to
@@ -110,7 +110,7 @@ def gff3_iter(handle, start_line=None, prokka=False):
     strip = str.strip
 
     if start_line is None:
-        line = strip(handle.next())  # Read first GFF3 entry
+        line = strip(next(handle))  # Read first GFF3 entry
     else:
         line = strip(start_line)  # Set header to given header
 
@@ -125,7 +125,7 @@ def gff3_iter(handle, start_line=None, prokka=False):
                 raise StopIteration
 
             if line.startswith('##'):  # Skip header lines
-                line = strip(handle.next())
+                line = strip(next(handle))
                 continue
 
             split_line = split(line, '\t')
@@ -150,7 +150,7 @@ def gff3_iter(handle, start_line=None, prokka=False):
                     value = split_attribute[-1]
                     data.attributes[key] = value
 
-            line = strip(handle.next())  # Raises StopIteration at EOF
+            line = strip(next(handle))  # Raises StopIteration at EOF
 
             yield data
 

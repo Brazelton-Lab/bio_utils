@@ -4,6 +4,11 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- Updated gitignore and ChangeLog. [TheOneHyer]
+
+  Last commit didn't include changes to gitignore or
+  ChangeLog, rectifying
+
 - Removed .pypirc. [TheOneHyer]
 
   .pypirc was being inappropriately tracked, has been removed.
