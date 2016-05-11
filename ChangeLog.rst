@@ -4,6 +4,11 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- Updated Iterators and Added First Unit Test. [TheOneHyer]
+
+  Created tests directory, fasta_iter unit test, and
+  updated iterators to take any iterator.
+
 - Updated gitignore and ChangeLog. [TheOneHyer]
 
   Last commit didn't include changes to gitignore or

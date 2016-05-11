@@ -90,7 +90,7 @@ exclude_patterns = []
 # If true, '()' will be appended to :func: etc. cross-reference text.
 #add_function_parentheses = True
 
-# If true, the current module name will be prepended to all description
+# If true, the current module id will be prepended to all description
 # unit titles (such as .. function::).
 #add_module_names = True
 
@@ -98,7 +98,7 @@ exclude_patterns = []
 # output. They are ignored by default.
 #show_authors = False
 
-# The name of the Pygments (syntax highlighting) style to use.
+# The id of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
 
 # A list of ignored prefixes for module index sorting.
@@ -125,18 +125,18 @@ html_theme = 'alabaster'
 # Add any paths that contain custom themes here, relative to this directory.
 #html_theme_path = []
 
-# The name for this set of Sphinx documents.
+# The id for this set of Sphinx documents.
 # "<project> v<release> documentation" by default.
 #html_title = 'bio_utils v0.7.14'
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #html_short_title = None
 
-# The name of an image file (relative to this directory) to place at the top
+# The id of an image file (relative to this directory) to place at the top
 # of the sidebar.
 #html_logo = None
 
-# The name of an image file (relative to this directory) to use as a favicon of
+# The id of an image file (relative to this directory) to use as a favicon of
 # the docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
 # pixels large.
 #html_favicon = None
@@ -190,7 +190,7 @@ html_static_path = ['_static']
 # base URL from which the finished HTML is served.
 #html_use_opensearch = ''
 
-# This is the file name suffix for HTML files (e.g. ".xhtml").
+# This is the file id suffix for HTML files (e.g. ".xhtml").
 #html_file_suffix = None
 
 # Language to be used for generating the HTML full-text search index.
@@ -204,11 +204,11 @@ html_static_path = ['_static']
 # 'zh' user can custom change `jieba` dictionary path.
 #html_search_options = {'type': 'default'}
 
-# The name of a javascript file (relative to the configuration directory) that
+# The id of a javascript file (relative to the configuration directory) that
 # implements a search results scorer. If empty, the default will be used.
 #html_search_scorer = 'scorer.js'
 
-# Output file base name for HTML help builder.
+# Output file base id for HTML help builder.
 htmlhelp_basename = 'bio_utilsdoc'
 
 # -- Options for LaTeX output ---------------------------------------------
@@ -228,14 +228,14 @@ latex_elements = {
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
-# (source start file, target name, title,
+# (source start file, target id, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'bio_utils.tex', 'bio\\_utils Documentation',
      'Alex Hyer', 'manual'),
 ]
 
-# The name of an image file (relative to this directory) to place at the top of
+# The id of an image file (relative to this directory) to place at the top of
 # the title page.
 #latex_logo = None
 
@@ -259,7 +259,7 @@ latex_documents = [
 # -- Options for manual page output ---------------------------------------
 
 # One entry per manual page. List of tuples
-# (source start file, name, description, authors, manual section).
+# (source start file, id, description, authors, manual section).
 man_pages = [
     (master_doc, 'bio_utils', 'bio_utils Documentation',
      [author], 1)
@@ -272,7 +272,7 @@ man_pages = [
 # -- Options for Texinfo output -------------------------------------------
 
 # Grouping the document tree into Texinfo files. List of tuples
-# (source start file, target name, title, author,
+# (source start file, target id, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, 'bio_utils', 'bio_utils Documentation',
@@ -301,7 +301,7 @@ epub_author = author
 epub_publisher = author
 epub_copyright = copyright
 
-# The basename for the epub file. It defaults to the project name.
+# The basename for the epub file. It defaults to the project id.
 #epub_basename = project
 
 # The HTML theme for the epub output. Since the default themes are not

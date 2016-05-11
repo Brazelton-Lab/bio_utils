@@ -28,7 +28,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '1.0.1'
+__version__ = '2.1.0'
 
 
 class FastqEntry:
@@ -37,7 +37,7 @@ class FastqEntry:
     def __init__(self):
         """Initialize variables to store FASTQ entry data"""
 
-        self.name = None
+        self.id = None
         self.description = None
         self.sequence = None
         self.quality = None
@@ -50,13 +50,13 @@ class FastqEntry:
         """
 
         if self.description:
-            return '>{0} {1}{4}{2}{4}+{4}{3}{4}'.format(self.name,
+            return '@{0} {1}{4}{2}{4}+{4}{3}{4}'.format(self.id,
                                                         self.description,
                                                         self.sequence,
                                                         self.quality,
                                                         os.linesep)
         else:
-            return '>{0}{3}{1}{3}+{3}{2}{3}'.format(self.name,
+            return '@{0}{3}{1}{3}+{3}{2}{3}'.format(self.id,
                                                     self.sequence,
                                                     self.quality,
                                                     os.linesep)
@@ -97,9 +97,9 @@ def fastq_iter(handle, header=None):
                 raise IOError('Bad FASTQ format: no "@" at beginning of line')
 
             try:
-                data.name, data.description = header[1:].split(' ', 1)
+                data.id, data.description = header[1:].split(' ', 1)
             except ValueError:  # No description
-                data.name = header[1:]
+                data.id = header[1:]
                 data.description = ''
 
             # obtain sequence

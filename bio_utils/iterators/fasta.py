@@ -28,7 +28,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '2.0.1'
+__version__ = '2.1.0'
 
 
 class FastaEntry:
@@ -37,7 +37,7 @@ class FastaEntry:
     def __init__(self):
         """Initialize variables to store FASTA entry data"""
 
-        self.name = None
+        self.id = None
         self.description = None
         self.sequence = None
 
@@ -49,12 +49,12 @@ class FastaEntry:
         """
 
         if self.description:
-            return '>{0} {1}{3}{2}{3}'.format(self.name,
+            return '>{0} {1}{3}{2}{3}'.format(self.id,
                                               self.description,
                                               self.sequence,
                                               os.linesep)
         else:
-            return '>{0}{2}{1}{2}'.format(self.name,
+            return '>{0}{2}{1}{2}'.format(self.id,
                                           self.sequence,
                                           os.linesep)
 
@@ -94,9 +94,9 @@ def fasta_iter(handle, header=None):
                 raise IOError('Bad FASTA format: no ">" at beginning of line')
 
             try:
-                data.name, data.description = header[1:].split(' ', 1)
+                data.id, data.description = header[1:].split(' ', 1)
             except ValueError:  # No description
-                data.name = header[1:]
+                data.id = header[1:]
                 data.description = ''
 
             # Obtain sequence

@@ -29,21 +29,21 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 
 
 def test_fasta_iter():
     """Test bio_utils fasta_iter with multiple unique FASTA entries"""
 
-    # Write properly FASTA data of various formats to test fasta_iter
-    fasta_data = '>entry1 description1{0}ACCCCGGTTGTGGGACCAAATTGA{0}' \
+    # Store various, properly formatted FASTA data for testing fasta_iter
+    fasta_data = '>entry1 description1{0}ACCCCGGTTGTGGGACCAAATT{0}' \
                  '>entry2 description2-1 description2-2{0}ACCGAATTTAA{0}' \
                  '>entry3 description3{0}AGGAGGACTTTCG{0}AAGGGTTCG{0}' \
                  '>entry4{0}AAAGGAGAGTTTCCCTTGAG'.format(os.linesep)
 
     fasta_handle = iter(fasta_data.split(os.linesep))
 
-    # Read and store entries just written
+    # Read and store entries
     entries = []
     for entry in fasta_iter(fasta_handle):
         entries.append(entry)
@@ -51,29 +51,48 @@ def test_fasta_iter():
     assert len(entries) == 4  # Ensure fasta_iter read all entries
 
     # Test most common use case for FASTA files
-    assert entries[0].name == 'entry1'
+    assert entries[0].id == 'entry1'
     assert entries[0].description == 'description1'
-    assert entries[0].sequence == 'ACCCCGGTTGTGGGACCAAATTGA'
+    assert entries[0].sequence == 'ACCCCGGTTGTGGGACCAAATT'
     assert entries[0].write() == '>entry1 description1{0}' \
-                               'ACCCCGGTTGTGGGACCAAATTGA{0}'.format(os.linesep)
+                                 'ACCCCGGTTGTGGGACCAAATT{0}'.format(os.linesep)
 
     # Test other common use case for FASTA files
-    assert entries[1].name == 'entry2'
+    assert entries[1].id == 'entry2'
     assert entries[1].description == 'description2-1 description2-2'
     assert entries[1].sequence == 'ACCGAATTTAA'
     assert entries[1].write() == '>entry2 description2-1 description2-2{0}' \
-                               'ACCGAATTTAA{0}'.format(os.linesep)
+                                 'ACCGAATTTAA{0}'.format(os.linesep)
 
-    # Test FASTA sequences with line-ending separated sequence
-    assert entries[2].name == 'entry3'
+    # Test FASTA entry with line-ending separated sequence
+    assert entries[2].id == 'entry3'
     assert entries[2].description == 'description3'
     assert entries[2].sequence == 'AGGAGGACTTTCGAAGGGTTCG'
     assert entries[2].write() == '>entry3 description3{0}' \
-                               'AGGAGGACTTTCGAAGGGTTCG{0}'.format(os.linesep)
+                                 'AGGAGGACTTTCGAAGGGTTCG{0}'.format(os.linesep)
 
-    # Test when no description
-    assert entries[3].name == 'entry4'
+    # Test FASTA entry with no description
+    assert entries[3].id == 'entry4'
     assert entries[3].description == ''
     assert entries[3].sequence == 'AAAGGAGAGTTTCCCTTGAG'
     assert entries[3].write() == '>entry4{0}' \
-                               'AAAGGAGAGTTTCCCTTGAG{0}'.format(os.linesep)
+                                 'AAAGGAGAGTTTCCCTTGAG{0}'.format(os.linesep)
+
+    # Test fasta_iter's ability to start iterating at arbitrary lines
+    fasta_handle = iter(fasta_data.split(os.linesep))  # Reset list iterator
+
+    # Skip first entry
+    next(fasta_handle)
+    next(fasta_handle)
+
+    header_line = next(fasta_handle)  # Read first line of next entry
+
+    # Obtain next entry with fasta_iter
+    new_entry = next(fasta_iter(fasta_handle, header=header_line))
+
+    # Ensure entry read by fasta_iter is correct
+    assert new_entry.id == 'entry2'
+    assert new_entry.description == 'description2-1 description2-2'
+    assert new_entry.sequence == 'ACCGAATTTAA'
+    assert new_entry.write() == '>entry2 description2-1 description2-2{0}' \
+                                'ACCGAATTTAA{0}'.format(os.linesep)
