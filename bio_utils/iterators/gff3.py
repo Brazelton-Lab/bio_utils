@@ -28,7 +28,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '1.0.1'
+__version__ = '2.0.0'
 
 
 class GFF3Entry:
@@ -68,8 +68,8 @@ class GFF3Entry:
                '{5}\t{6}\t{7}\t{8}{9}'.format(self.seqid,
                                               self.source,
                                               self.type,
-                                              self.start,
-                                              self.end,
+                                              str(self.start),
+                                              str(self.end),
                                               self.score,
                                               self.strand,
                                               self.phase,
@@ -134,8 +134,8 @@ def gff3_iter(handle, start_line=None, prokka=False):
             data.seqid = split_line[0]
             data.source = split_line[1]
             data.type = split_line[2]
-            data.start = split_line[3]
-            data.end = split_line[4]
+            data.start = int(split_line[3])
+            data.end = int(split_line[4])
             data.score = split_line[5]
             data.strand = split_line[6]
             data.phase = split_line[7]

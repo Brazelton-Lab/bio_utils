@@ -4,6 +4,16 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- Fixed b6_iter and added unit test. [TheOneHyer]
+
+  Added test_b6_iter. Changed b6_iter values to ints
+  and floats as appropriate. write() still writes as string.
+
+- Fixed Error in fastq_iter, added test_fastq_iter. [TheOneHyer]
+
+  fastq_iter had a major error, was fixed. test_fastq_iter added.
+  test_fasta_iter has new function to test header line ability.
+
 - Updated Iterators and Added First Unit Test. [TheOneHyer]
 
   Created tests directory, fasta_iter unit test, and
