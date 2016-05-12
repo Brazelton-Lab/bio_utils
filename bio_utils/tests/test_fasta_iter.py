@@ -1,10 +1,10 @@
 #! /usr/bin/env python
 
-"""Test bio_utils fasta_iter
+"""Test bio_utils' fasta_iter
 
 Copyright:
 
-    test_fasta_iter.py test bio_utils fasta_iter
+    test_fasta_iter.py test bio_utils' fasta_iter
     Copyright (C) 2015  William Brazelton, Alex Hyer
 
     This program is free software: you can redistribute it and/or modify
@@ -33,7 +33,7 @@ __version__ = '1.1.0'
 
 
 def test_fasta_iter():
-    """Test bio_utils fasta_iter with multiple unique FASTA entries"""
+    """Test bio_utils' fasta_iter with multiple unique FASTA entries"""
 
     # Store various, properly formatted FASTA data for testing fasta_iter
     fasta_data = '>entry1 description1{0}ACCCCGGTTGTGGGACCAAATT{0}' \

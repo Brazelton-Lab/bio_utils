@@ -1,10 +1,10 @@
 #! /usr/bin/env python
 
-"""Test bio_utils fastq_iter
+"""Test bio_utils' fastq_iter
 
 Copyright:
 
-    test_fastq_iter.py test bio_utils fastq_iter
+    test_fastq_iter.py test bio_utils' fastq_iter
     Copyright (C) 2015  William Brazelton, Alex Hyer
 
     This program is free software: you can redistribute it and/or modify
@@ -33,7 +33,7 @@ __version__ = '0.0.1'
 
 
 def test_fastq_iter():
-    """Test bio_utils fastq_iter with multiple unique FASTQ entries"""
+    """Test bio_utils' fastq_iter with multiple unique FASTQ entries"""
 
     # Store various, properly formatted FASTQ data for testing fastq_iter
     fastq_data = '@entry1 description1{0}GGTTTCATCAG{0}+{0}!!"""()()(*{0}' \

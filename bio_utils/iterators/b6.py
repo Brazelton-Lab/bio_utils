@@ -28,7 +28,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '2.0.1'
+__version__ = '3.0.0'
 
 
 class B6Entry:
@@ -61,16 +61,16 @@ class B6Entry:
                '{5}\t{6}\t{7}\t{8}\t{9}\t' \
                '{10}\t{11}{12}'.format(self.query,
                                        self.subject,
-                                       self.perc_identical,
-                                       self.align_len,
-                                       self.mismatches,
-                                       self.gaps,
-                                       self.query_start,
-                                       self.query_end,
-                                       self.subject_start,
-                                       self.subject_end,
-                                       self.evalue,
-                                       self.bit_score,
+                                       str(self.perc_identical),
+                                       str(self.align_len),
+                                       str(self.mismatches),
+                                       str(self.gaps),
+                                       str(self.query_start),
+                                       str(self.query_end),
+                                       str(self.subject_start),
+                                       str(self.subject_end),
+                                       str(self.evalue),
+                                       str(self.bit_score),
                                        os.linesep)
 
 
@@ -105,16 +105,16 @@ def b6_iter(handle, start_line=None):
             data = B6Entry()
             data.query = split_line[0]
             data.subject = split_line[1]
-            data.perc_identical = split_line[2]
-            data.align_len = split_line[3]
-            data.mismatches = split_line[4]
-            data.gaps = split_line[5]
-            data.query_start = split_line[6]
-            data.query_end = split_line[7]
-            data.subject_start = split_line[8]
-            data.subject_end = split_line[9]
-            data.evalue = split_line[10]
-            data.bit_score = split_line[11]
+            data.perc_identical = float(split_line[2])
+            data.align_len = int(split_line[3])
+            data.mismatches = int(split_line[4])
+            data.gaps = int(split_line[5])
+            data.query_start = int(split_line[6])
+            data.query_end = int(split_line[7])
+            data.subject_start = int(split_line[8])
+            data.subject_end = int(split_line[9])
+            data.evalue = float(split_line[10])
+            data.bit_score = int(split_line[11])
 
             line = strip(next(handle))  # Raises StopIteration at EOF
 
