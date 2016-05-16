@@ -32,6 +32,7 @@ __status__ = 'Alpha'
 __version__ = '0.0.1'
 
 
+# noinspection PyTypeChecker
 def test_fastq_iter():
     """Test bio_utils' fastq_iter with multiple unique FASTQ entries"""
 

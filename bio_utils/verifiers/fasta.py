@@ -40,6 +40,7 @@ __status__ = 'Production'
 __version__ = '1.3.2'
 
 
+# noinspection PyTypeChecker
 def fasta_verifier(handle):
     """Returns True if FASTA file is valid and False if file is not valid
 

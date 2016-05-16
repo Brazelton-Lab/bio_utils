@@ -32,6 +32,7 @@ __status__ = 'Production'
 __version__ = '1.1.0'
 
 
+# noinspection PyTypeChecker
 def test_fasta_iter():
     """Test bio_utils' fasta_iter with multiple unique FASTA entries"""
 

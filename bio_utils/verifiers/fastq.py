@@ -40,6 +40,7 @@ __status__ = 'Production'
 __version__ = '1.2.2'
 
 
+# noinspection PyTypeChecker
 def fastq_verifier(handle):
     """Returns True if FASTQ file is valid and False if file is not valid
 

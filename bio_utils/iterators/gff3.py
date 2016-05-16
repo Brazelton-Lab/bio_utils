@@ -21,6 +21,7 @@ Copyright:
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
+from collections import OrderedDict
 import os
 
 __author__ = 'Alex Hyer'
@@ -28,7 +29,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '2.0.0'
+__version__ = '2.0.1'
 
 
 class GFF3Entry:
@@ -37,7 +38,7 @@ class GFF3Entry:
     def __init__(self):
         """Initialize variables to store GFF3 entry data"""
 
-        self.seqid= None
+        self.seqid = None
         self.source = None
         self.type = None
         self.start = None
@@ -55,8 +56,8 @@ class GFF3Entry:
         :rtype: str
         """
 
-        # Regain original formatting for gff file
-        if type(self.attributes) is dict:
+        # Regain original formatting for GFF file
+        if type(self.attributes) is OrderedDict:
             self.temp_attributes = ''
             for key, value in self.attributes.items():
                 self.temp_attributes += '{0}={1};'.format(key, value)
@@ -85,7 +86,7 @@ def gff3_iter(handle, start_line=None, prokka=False):
 
     prokka_id=5;gene_id=example_id
 
-    into a dictionary as follows in YAML format:
+    into an ordered dictionary as follows in YAML format:
 
     prokka_id: 5
     gene_id: example_id
@@ -143,12 +144,13 @@ def gff3_iter(handle, start_line=None, prokka=False):
 
             if prokka:
                 attributes = split(data.attributes, ';')
-                data.attributes = {}
+                data.attributes = OrderedDict()
                 for attribute in attributes:
                     split_attribute = attribute.split('=')
                     key = split_attribute[0]
                     value = split_attribute[-1]
-                    data.attributes[key] = value
+                    if not key == '':  # Avoid semicolon split at end of line
+                        data.attributes[key] = value
 
             line = strip(next(handle))  # Raises StopIteration at EOF
 
