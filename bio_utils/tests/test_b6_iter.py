@@ -90,7 +90,7 @@ def test_b6_iter():
     # Skip first entry
     next(b6_handle)
 
-    header_line = next(b6_handle)  # Read first line of next entry
+    header_line = next(b6_handle)  # Read next entry
 
     # Obtain next entry with b6_iter
     new_entry = next(b6_iter(b6_handle, start_line=header_line))

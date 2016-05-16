@@ -28,7 +28,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '2.1.0'
+__version__ = '2.1.1'
 
 
 class FastaEntry:
@@ -109,8 +109,6 @@ def fasta_iter(handle, header=None):
 
             yield data
 
-    except StopIteration:
-        pass
-    finally:  # Yield last FASTA entry
+    except StopIteration:  # Yield last FASTA entry
         data.sequence = ''.join(sequence_list)
         yield data

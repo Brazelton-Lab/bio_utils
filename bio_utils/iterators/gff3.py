@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-"""Screed-esque iterator for GFF3 files (not headers)
+"""Screed-esque iterator for GFF3 files
 
 Copyright:
 
@@ -29,7 +29,14 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '2.0.1'
+__version__ = '2.1.0'
+
+
+class FastaFound(Exception):
+    """A simple exception to prevent iterating over FASTA file in GFF3 file"""
+
+    def __init__(self):
+        pass
 
 
 class GFF3Entry:
@@ -78,7 +85,7 @@ class GFF3Entry:
                                               os.linesep)
 
 
-def gff3_iter(handle, start_line=None, prokka=False):
+def gff3_iter(handle, start_line=None, prokka=False, headers=False):
     """Iterate over GFF3 file and return GFF3 entries
 
     PROKKA option parses attributes column of GFF3 files from PROKKA version
@@ -104,6 +111,9 @@ def gff3_iter(handle, start_line=None, prokka=False):
 
     :return: class containing GFF3 data
     :rtype: GFF3Entry
+
+    :param headers: True returns header lines, False skips them
+    :type headers: bool
     """
 
     # Speed tricks: reduces function calls
@@ -123,9 +133,13 @@ def gff3_iter(handle, start_line=None, prokka=False):
         while True:  # Loop until StopIteration Exception raised
 
             if line.startswith('##FASTA'):  # Skip FASTA entries
-                raise StopIteration
+                raise FastaFound
 
-            if line.startswith('##'):  # Skip header lines
+            if line.startswith('##') and not headers:
+                line = strip(next(handle))
+                continue
+            elif line.startswith('##') and headers:
+                yield line
                 line = strip(next(handle))
                 continue
 
@@ -137,9 +151,12 @@ def gff3_iter(handle, start_line=None, prokka=False):
             data.type = split_line[2]
             data.start = int(split_line[3])
             data.end = int(split_line[4])
-            data.score = split_line[5]
+            data.score = split_line[5]  # Kept as str to preserve formatting
             data.strand = split_line[6]
-            data.phase = split_line[7]
+            try: # Get phase as int unless phase not given
+                data.phase = int(split_line[7])
+            except ValueError:
+                data.phase = split_line[7]
             data.attributes = split_line[8]
 
             if prokka:
@@ -156,7 +173,7 @@ def gff3_iter(handle, start_line=None, prokka=False):
 
             yield data
 
-    except StopIteration:
-        pass
-    finally:  # Yield last GFF3 entry
+    except StopIteration:  # Yield last GFF3 entry
         yield data
+    except FastaFound:  # When FASTA found, last entry is repeat
+        pass

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-"""Screed-esque iterator for SAM files (not headers)
+"""Screed-esque iterator for SAM files
 
 Copyright:
 
@@ -28,7 +28,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '2.0.1'
+__version__ = '2.1.1'
 
 
 class SamEntry:
@@ -59,20 +59,20 @@ class SamEntry:
         return '{0}\t{1}\t{2}\t{3}\t{4}\t' \
                '{5}\t{6}\t{7}\t{8}\t{9}\t' \
                '{10}{11}'.format(self.qname,
-                                 self.flag,
+                                 str(self.flag),
                                  self.rname,
-                                 self.pos,
-                                 self.mapq,
+                                 str(self.pos),
+                                 str(self.mapq),
                                  self.cigar,
                                  self.rnext,
-                                 self.pnext,
-                                 self.tlen,
+                                 str(self.pnext),
+                                 str(self.tlen),
                                  self.seq,
                                  self.qual,
                                  os.linesep)
 
 
-def sam_iter(handle, start_line=None):
+def sam_iter(handle, start_line=None, headers=False):
     """Iterate over SAM file and return B6/M8 entries
 
     :param handle: SAM file handle, can technically be any iterator
@@ -80,6 +80,9 @@ def sam_iter(handle, start_line=None):
 
     :param start_line: Header line of entry file handle is open to
     :type start_line: str
+
+    :param headers: True returns header lines, False skips them
+    :type headers: bool
     """
 
     # Speed tricks: reduces function calls
@@ -91,7 +94,7 @@ def sam_iter(handle, start_line=None):
     else:
         line = strip(start_line)  # Set header to given header
 
-    # A manual 'for' loop isn't needed to read the file properly and quickly
+    # A manual 'for' loop isn't needed to read the file properly and quickly,
     # unlike fasta_iter and fastq_iter, but it is necessary begin iterating
     # partway through a file when the user gives a starting line.
     try:  # Manually construct a for loop to improve speed by using 'next'
@@ -100,20 +103,27 @@ def sam_iter(handle, start_line=None):
 
             split_line = split(line, '\t')
 
-            if line.startswith('@'):
+            if line.startswith('@') and not headers:
+                line = strip(next(handle))
+                continue
+            elif line.startswith('@') and headers:
+                yield line
                 line = strip(next(handle))
                 continue
 
             data = SamEntry()
             data.qname = split_line[0]
-            data.flag = split_line[1]
+            try:  # Differentiate between int and hex bit flags
+                data.flag = int(split_line[1])
+            except ValueError:
+                data.flag = split_line[1]
             data.rname = split_line[2]
-            data.pos = split_line[3]
-            data.mapq = split_line[4]
+            data.pos = int(split_line[3])
+            data.mapq = int(split_line[4])
             data.cigar = split_line[5]
             data.rnext = split_line[6]
-            data.pnext = split_line[7]
-            data.tlen = split_line[8]
+            data.pnext = int(split_line[7])
+            data.tlen = int(split_line[8])
             data.seq = split_line[9]
             data.qual = split_line[10]
 
@@ -121,7 +131,5 @@ def sam_iter(handle, start_line=None):
 
             yield data
 
-    except StopIteration:
-        pass
-    finally:  # Yield last SAM entry
+    except StopIteration:  # Yield last SAM entry
         yield data

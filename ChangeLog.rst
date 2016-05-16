@@ -4,6 +4,20 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- Fixed errors if gff3_iter, added test_gff3_iter. [TheOneHyer]
+
+  gff3_iter was returning an empty dictionary value when
+  a semicolon is at the end of the attributes line and attributes
+  were not ordered and thus returned in the same format they were
+  read. Both issues fixed. Added test_gff3_iter.
+  Comments added to certain scripts to prevent PyCharm from
+  throwing false-positive warning about iterators.
+
+- Added test_gff3_iter and updated GFF3_iter. [TheOneHyer]
+
+  Updated gff3_iter to have ints where appropriate.
+  Added incomplete test_gff3_iter
+
 - Fixed b6_iter and added unit test. [TheOneHyer]
 
   Added test_b6_iter. Changed b6_iter values to ints

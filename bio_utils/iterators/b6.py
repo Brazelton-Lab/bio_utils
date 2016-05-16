@@ -28,7 +28,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '3.0.0'
+__version__ = '3.0.1'
 
 
 class B6Entry:
@@ -93,7 +93,7 @@ def b6_iter(handle, start_line=None):
     else:
         line = strip(start_line)  # Set header to given header
 
-    # A manual 'for' loop isn't needed to read the file properly and quickly
+    # A manual 'for' loop isn't needed to read the file properly and quickly,
     # unlike fasta_iter and fastq_iter, but it is necessary begin iterating
     # partway through a file when the user gives a starting line.
     try:  # Manually construct a for loop to improve speed by using 'next'
@@ -120,7 +120,5 @@ def b6_iter(handle, start_line=None):
 
             yield data
 
-    except StopIteration:
-        pass
-    finally:  # Yield last B6/M8 entry
+    except StopIteration:  # Yield last B6/M8 entry
         yield data
