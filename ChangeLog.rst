@@ -4,6 +4,12 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- Added test_sam_iter, improved iterators. [TheOneHyer]
+
+  Added test_sam_iter. Modified iterators to use less code.
+  gff3_iter now properly skips FASTA files in GFF3 files.
+  Updated iterators to return inegers as appropriate.
+
 - Fixed errors if gff3_iter, added test_gff3_iter. [TheOneHyer]
 
   gff3_iter was returning an empty dictionary value when

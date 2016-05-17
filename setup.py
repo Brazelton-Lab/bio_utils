@@ -27,7 +27,7 @@ setup(name='bio_utils',
       version='0.7.13',
       description='importable functions often used by bioinformatic scripts',
       classifiers=[
-          'Development Status :: 6 - Mature',
+          'Development Status :: 3 - Alpha',
           'Intended Audience :: Science/Research',
           'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
           'Natural Language :: English',
