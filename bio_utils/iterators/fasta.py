@@ -94,7 +94,7 @@ def fasta_iter(handle, header=None):
         ...     print(entry.id)  # Print FASTA id
         ...     print(entry.description)  # Print FASTA description
         ...     print(entry.sequence)  # Print FASTA sequence
-        ...     print(entry.write())  # Print original FASTA entry as read
+        ...     print(entry.write())  # Print full FASTA entry
 
         >>> fasta_handle = open('test.fasta')
         >>> next(fasta_handle)  # Skip first entry header
@@ -104,7 +104,7 @@ def fasta_iter(handle, header=None):
         ...     print(entry.id)  # Print FASTA id
         ...     print(entry.description)  # Print FASTA description
         ...     print(entry.sequence)  # Print FASTA sequence
-        ...     print(entry.write())  # Print original FASTA entry as read
+        ...     print(entry.write())  # Print full FASTA entry
     """
 
     # Speed tricks: reduces function calls

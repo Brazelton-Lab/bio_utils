@@ -4,6 +4,16 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- Made fasta_iter Documentation Googley. [TheOneHyer]
+
+  fasta_iter documentation updated to be "Googley."
+  Rolled major version of fasta_iter to 3.0.0 as it is
+  "complete."
+
+- Properly rolled Developement Status back to Alpha. [TheOneHyer]
+
+  Lower developement status in light of cahnges
+
 - Added test_sam_iter, improved iterators. [TheOneHyer]
 
   Added test_sam_iter. Modified iterators to use less code.

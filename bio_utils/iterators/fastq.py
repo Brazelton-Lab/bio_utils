@@ -28,14 +28,23 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '2.1.1'
+__version__ = '3.0.0'
 
 
 class FastqEntry:
-    """A simple class to store data from FASTQ entries and write them"""
+    """A simple class to store data from FASTQ entries and write them
+
+    Attributes:
+            id (str): FASTQ ID (everything between the '@' and the first space
+                of header line)
+            description (str): FASTQ description (everything after the first
+                space of the header line)
+            sequence (str): FASTQ sequence
+            quality (str): FASTQ quality csores
+    """
 
     def __init__(self):
-        """Initialize variables to store FASTQ entry data"""
+        """Initialize attributes to store FASTQ entry data"""
 
         self.id = None
         self.description = None
@@ -45,8 +54,8 @@ class FastqEntry:
     def write(self):
         """Return FASTQ formatted string
 
-        :return: FASTQ formatted string
-        :rtype: str
+        Returns:
+            str: FASTQ formatted string containing entire FASTQ entry
         """
 
         if self.description:
@@ -65,14 +74,45 @@ class FastqEntry:
 def fastq_iter(handle, header=None):
     """Iterate over FASTQ file and return FASTQ entries
 
-    :param handle: FASTQ file handle, can technically be any iterator
-    :type handle: File Object
+    Args:
+        handle (file): FASTQ file handle, can be any iterator so long as it
+            it returns subsequent "lines" of a FASTQ entry
 
-    :param header: Header line of entry file handle is open to
-    :type header: str
+        header (str): Header line of next FASTQ entry, if 'handle' has been
+            partially read and you want to start iterating at the next entry,
+            read the next FASTQ header and pass it to this variable when
+            calling fastq_iter. See 'Examples.'
 
-    :return: class containing FASTQ data
-    :rtype: FastqEntry
+    Yields:
+        FastqEntry: class containing all FASTQ data
+
+    Raises:
+        IOError: If FASTQ entry doesn't start with '@'
+
+    Examples:
+        The following two examples demonstrate how to use fastq_iter.
+        Note: These doctests will not pass, examples are only in doctest
+        format as per convention. bio_utils uses pytests for testing.
+
+        >>> for entry in fastq_iter(open('test.fastq')):
+        ...     print(entry.id)  # Print FASTQ id
+        ...     print(entry.description)  # Print FASTQ description
+        ...     print(entry.sequence)  # Print FASTQ sequence
+        ...     print(entry.quality)  # Print FASTQ quality scores
+        ...     print(entry.write())  # Print full FASTQ entry
+
+        >>> fastq_handle = open('test.fastq')
+        >>> next(fastq_handle)  # Skip first entry header
+        >>> next(fastq_handle)  # Skip first entry sequence
+        >>> next(fastq_handle)  # Skip line with '+'
+        >>> next(fastq_handle)  # Skip first entry quality scores
+        >>> first_line = next(fastq_handle)  # Read second entry header
+        >>> for entry in fastq_iter(fastq_handle, header=first_line):
+        ...     print(entry.id)  # Print FASTQ id
+        ...     print(entry.description)  # Print FASTQ description
+        ...     print(entry.sequence)  # Print FASTQ sequence
+        ...     print(entry.quality)  # Print FASTQ quality scores
+        ...     print(entry.write())  # Print full FASTQ entry
     """
 
     # Speed tricks: reduces function calls
@@ -115,7 +155,7 @@ def fastq_iter(handle, header=None):
             quality_list = []
             seq_len = len(data.sequence)
             qual_len = 0
-            while line and not line[0] == '@' and qual_len < seq_len:
+            while line and qual_len < seq_len:
                 append(quality_list, line)
                 qual_len += len(line)
                 line = strip(next(handle))  # Raises StopIteration at EOF

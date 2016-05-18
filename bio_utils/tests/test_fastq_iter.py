@@ -28,8 +28,8 @@ __author__ = 'Alex Hyer'
 __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
-__status__ = 'Alpha'
-__version__ = '0.0.1'
+__status__ = 'Production'
+__version__ = '1.0.0'
 
 
 # noinspection PyTypeChecker
@@ -37,7 +37,7 @@ def test_fastq_iter():
     """Test bio_utils' fastq_iter with multiple unique FASTQ entries"""
 
     # Store various, properly formatted FASTQ data for testing fastq_iter
-    fastq_data = '@entry1 description1{0}GGTTTCATCAG{0}+{0}!!"""()()(*{0}' \
+    fastq_data = '@entry1 description1{0}GGTTTCATCAG{0}+{0}@!"""()()(*{0}' \
                  '@entry2 description2-1 description2-2{0}TTGGCAT{0}+{0}' \
                  '<=>(123{0}' \
                  '@entry3 description3{0}TTGGTAC{0}GGA{0}+{0}$$&&68A{0}EDG{0}'\
@@ -58,9 +58,9 @@ def test_fastq_iter():
     assert entries[0].id == 'entry1'
     assert entries[0].description == 'description1'
     assert entries[0].sequence == 'GGTTTCATCAG'
-    assert entries[0].quality == '!!"""()()(*'
+    assert entries[0].quality == '@!"""()()(*'
     assert entries[0].write() == '@entry1 description1{0}GGTTTCATCAG{0}+{0}' \
-                                 '!!"""()()(*{0}'.format(os.linesep)
+                                 '@!"""()()(*{0}'.format(os.linesep)
 
     # Test other common use case for FASTQ files
     assert entries[1].id == 'entry2'
@@ -70,7 +70,7 @@ def test_fastq_iter():
     assert entries[1].write() == '@entry2 description2-1 description2-2{0}' \
                                  'TTGGCAT{0}+{0}<=>(123{0}'.format(os.linesep)
 
-    # Test FASTQ entries with line-separated sequences adn quality
+    # Test FASTQ entries with line-separated sequences and quality
     assert entries[2].id == 'entry3'
     assert entries[2].description == 'description3'
     assert entries[2].sequence == 'TTGGTACGGA'
