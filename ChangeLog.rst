@@ -4,6 +4,12 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- Made fastq_iter Documentation Googley. [TheOneHyer]
+
+  fastq_iter documentation is now "Googley."
+  Updated fastq_iter to better test fsatq_entries.
+  fastq_iter "completed."
+
 - Made fasta_iter Documentation Googley. [TheOneHyer]
 
   fasta_iter documentation updated to be "Googley."

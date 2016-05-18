@@ -5,7 +5,7 @@ Python package containing modules of commonly used bioinformatic scripts
 
 Last Stable Version: 0.7.13
 
-Current Version: 0.7.13
+Current Version: 0.7.14a1
 
 IMPORTANT NOTE
 --------------
