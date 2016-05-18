@@ -37,9 +37,12 @@ class FastqEntry:
     Attributes:
             id (str): FASTQ ID (everything between the '@' and the first space
                 of header line)
+
             description (str): FASTQ description (everything after the first
                 space of the header line)
+
             sequence (str): FASTQ sequence
+
             quality (str): FASTQ quality csores
     """
 

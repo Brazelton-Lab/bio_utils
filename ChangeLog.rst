@@ -4,6 +4,12 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- Rolled Project Version to 0.7.14a1. [TheOneHyer]
+
+  Given the number of changes recently, it is fitting to
+  roll the project forward in the alpha for another large
+  version increase.
+
 - Made fastq_iter Documentation Googley. [TheOneHyer]
 
   fastq_iter documentation is now "Googley."

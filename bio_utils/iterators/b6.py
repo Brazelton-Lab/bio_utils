@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-"""Screed-esque iterator for BLAST M8 (BLAST+ output format 6) files
+"""Iterator for BLAST M8 (BLAST+ output format 6) files
 
 Copyright:
 
@@ -28,11 +28,38 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '3.0.1'
+__version__ = '4.0.0'
 
 
 class B6Entry:
-    """A simple class to store data from B6/M8 entries and write them"""
+    """A simple class to store data from B6/M8 entries and write them
+
+    Attributes:
+        query (str): query ID (sequence aligned with)
+
+        subject (str): subject ID (sequence aligned to)
+
+        perc_identical (float): percent of query and subject sequences that are
+            identical
+
+        align_len (int): length of alignment
+
+        mismatches (int): number of mismatches in alignment
+
+        gaps (int): number of gaps in alignment
+
+        query_start (int): alignment start position in query sequence
+
+        query_end (int): alignment end position in query sequence
+
+        subject_start (int): alignment start position in subject sequence
+
+        subject_end (int): alignment end position in subject sequence
+
+        evalue (float): E-value of alignment
+
+        bit_score (int): Bit score of alignment
+    """
 
     def __init__(self):
         """Initialize variables to store B6/M8 entry data"""
@@ -53,8 +80,8 @@ class B6Entry:
     def write(self):
         """Return B6/M8 formatted string
 
-        :return: B6/M8 formatted string
-        :rtype: str
+        Returns:
+            strL B6/M8 formatted string containing entire B6/M8 entry
         """
 
         return '{0}\t{1}\t{2}\t{3}\t{4}\t' \
@@ -77,11 +104,51 @@ class B6Entry:
 def b6_iter(handle, start_line=None):
     """Iterate over B6/M8 file and return B6/M8 entries
 
-    :param handle: B6/M8 file handle, can technically be any iterator
-    :type handle: File Object
+    Args:
+        handle (file): B6/M8 file handle, can be any iterator so long as it
+            it returns subsequent "lines" of a B6/M8 entry
 
-    :param start_line: Header line of entry file handle is open to
-    :type start_line: str
+        start_line (str): Next B6/M8 entry, if 'handle' has been partially read
+            and you want to start iterating at the next entry, read the next
+            B6/M8 header and pass it to this variable when  calling fastq_iter.
+            See 'Examples.'
+
+    Yields:
+        B6Entry: class containing all B6/M8 data
+
+    Examples:
+        The following two examples demonstrate how to use b6_iter.
+        Note: These doctests will not pass, examples are only in doctest
+        format as per convention. bio_utils uses pytests for testing.
+
+        >>> for entry in b6_iter(open('test.b6out')):
+        ...     print(entry.query)  # Print Query ID
+        ...     print(entry.subject)  # Print Subject ID
+        ...     print(entry.perc_identical)  # Print % identity between seqs
+        ...     print(entry.mismatches)  # Print number of mismathces in align
+        ...     print(entry.gaps)  # Print number of gaps in alignment
+        ...     print(entry.query_start)  # Print start of alignment on query
+        ...     print(entry.query_end)  # Print end of alignment on query
+        ...     print(entry.subject_start)  # Print start of align on subject
+        ...     print(entry.subject_end)  # Print end of alignment on subject
+        ...     print(entry.evalue)  # Print E-value of alignment
+        ...     print(entry.bit_score)  # Print Bit score of alignment
+
+        >>> b6_handle = open('test.b6out')
+        >>> next(b6_handle)  # Skip first line/entry
+        >>> next_line = next(b6_handle)  # Store next entry
+        >>> for entry in b6_iter(b6_handle, start_line=next_line):
+        ...     print(entry.query)  # Print Query ID
+        ...     print(entry.subject)  # Print Subject ID
+        ...     print(entry.perc_identical)  # Print % identity between seqs
+        ...     print(entry.mismatches)  # Print number of mismathces in align
+        ...     print(entry.gaps)  # Print number of gaps in alignment
+        ...     print(entry.query_start)  # Print start of alignment on query
+        ...     print(entry.query_end)  # Print end of alignment on query
+        ...     print(entry.subject_start)  # Print start of align on subject
+        ...     print(entry.subject_end)  # Print end of alignment on subject
+        ...     print(entry.evalue)  # Print E-value of alignment
+        ...     print(entry.bit_score)  # Print Bit score of alignment
     """
 
     # Speed tricks: reduces function calls

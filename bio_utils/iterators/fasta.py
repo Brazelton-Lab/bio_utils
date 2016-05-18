@@ -37,8 +37,10 @@ class FastaEntry:
     Attributes:
             id (str): FASTA ID (everything between the '>' and the first space
                 of header line)
+
             description (str): FASTA description (everything after the first
                 space of the header line)
+
             sequence (str): FASTA sequence
     """
 
