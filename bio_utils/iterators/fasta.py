@@ -28,14 +28,22 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '2.1.1'
+__version__ = '3.0.0'
 
 
 class FastaEntry:
-    """A simple class to store data from FASTA entries and write them"""
+    """A simple class to store data from FASTA entries and write them
+
+    Attributes:
+            id (str): FASTA ID (everything between the '>' and the first space
+                of header line)
+            description (str): FASTA description (everything after the first
+                space of the header line)
+            sequence (str): FASTA sequence
+    """
 
     def __init__(self):
-        """Initialize variables to store FASTA entry data"""
+        """Initialize attributes to store FASTA entry data"""
 
         self.id = None
         self.description = None
@@ -44,8 +52,8 @@ class FastaEntry:
     def write(self):
         """Return FASTA formatted string
 
-        :return: FASTA formatted string
-        :rtype: str
+        Returns:
+            str: FASTA formatted string containing entire FASTA entry
         """
 
         if self.description:
@@ -62,14 +70,41 @@ class FastaEntry:
 def fasta_iter(handle, header=None):
     """Iterate over FASTA file and return FASTA entries
 
-    :param handle: FASTA file handle, can technically be any iterator
-    :type handle: File Object
+    Args:
+        handle (file): FASTA file handle, can be any iterator so long as it
+            it returns subsequent "lines" of a FASTA entry
 
-    :param header: Header line of entry file handle is open to
-    :type header: str
+        header (str): Header line of next FASTA entry, if 'handle' has been
+            partially read and you want to start iterating at the next entry,
+            read the next FASTA header and pass it to this variable when
+            calling fasta_iter. See 'Examples.'
 
-    :return: class containing FASTA data
-    :rtype: FastaEntry
+    Yields:
+        FastaEntry: class containing all FASTA data
+
+    Raises:
+        IOError: If FASTA entry doesn't start with '>'
+
+    Examples:
+        The following two examples demonstrate how to use fasta_iter.
+        Note: These doctests will not pass, examples are only in doctest
+        format as per convention. bio_utils uses pytests for testing.
+
+        >>> for entry in fasta_iter(open('test.fasta')):
+        ...     print(entry.id)  # Print FASTA id
+        ...     print(entry.description)  # Print FASTA description
+        ...     print(entry.sequence)  # Print FASTA sequence
+        ...     print(entry.write())  # Print original FASTA entry as read
+
+        >>> fasta_handle = open('test.fasta')
+        >>> next(fasta_handle)  # Skip first entry header
+        >>> next(fasta_handle)  # Skip first entry sequence
+        >>> first_line = next(fasta_handle)  # Read second entry header
+        >>> for entry in fasta_iter(fasta_handle, header=first_line):
+        ...     print(entry.id)  # Print FASTA id
+        ...     print(entry.description)  # Print FASTA description
+        ...     print(entry.sequence)  # Print FASTA sequence
+        ...     print(entry.write())  # Print original FASTA entry as read
     """
 
     # Speed tricks: reduces function calls
