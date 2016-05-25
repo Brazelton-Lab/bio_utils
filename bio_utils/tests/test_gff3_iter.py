@@ -29,7 +29,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '1.1.0'
+__version__ = '1.1.1'
 
 
 # noinspection PyTypeChecker
@@ -49,7 +49,7 @@ def test_gff3_iter():
 
     # Read and store entries
     entries = []
-    for entry in gff3_iter(gff3_handle):
+    for entry in gff3_iter(gff3_handle, parse_attr=False):
         entries.append(entry)
 
     assert len(entries) == 2  # Ensure gff3_iter read all entries
@@ -88,7 +88,7 @@ def test_gff3_iter():
 
     # Read and store entries
     entries = []
-    for entry in gff3_iter(gff3_handle, prokka=True):
+    for entry in gff3_iter(gff3_handle):
         entries.append(entry)
 
     assert len(entries) == 2  # Ensure gff3_iter read all entries
@@ -133,7 +133,7 @@ def test_gff3_iter():
 
     # Read and store entries
     entries = []
-    for entry in gff3_iter(gff3_handle, headers=True):
+    for entry in gff3_iter(gff3_handle, parse_attr=False, headers=True):
         entries.append(entry)
 
     assert len(entries) == 3  # Ensure gff3_iter read header and all entries
@@ -180,8 +180,7 @@ def test_gff3_iter():
 
     # Obtain next entry with b6_iter
     new_entry = next(gff3_iter(gff3_handle,
-                               start_line=header_line,
-                               prokka=True))
+                               start_line=header_line))
 
     # Ensure entry read by gff3_iter is correct
     assert new_entry.seqid == 'contig2'
@@ -210,7 +209,9 @@ def test_gff3_iter():
     header_line = next(gff3_handle)  # Read next entry
 
     # Obtain next entry with gff3_iter
-    new_entry = next(gff3_iter(gff3_handle, start_line=header_line))
+    new_entry = next(gff3_iter(gff3_handle,
+                               parse_attr=False,
+                               start_line=header_line))
 
     # Ensure entry read by gff3_iter is correct
     assert new_entry.seqid == 'contig2'

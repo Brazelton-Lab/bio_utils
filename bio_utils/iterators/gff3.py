@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-"""Screed-esque iterator for GFF3 files
+"""Iterator for GFF3 files
 
 Copyright:
 
@@ -29,18 +29,52 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '2.1.0'
+__version__ = '3.0.0'
 
 
 class FastaFound(Exception):
     """A simple exception to prevent iterating over FASTA file in GFF3 file"""
 
     def __init__(self):
+        """This exception acts as a flag for iteration and nothing more"""
         pass
 
 
 class GFF3Entry:
-    """A simple class to store data from GFF3 entries and write them"""
+    """A simple class to store data from GFF3 entries and write them
+
+    Attributes:
+        seqid (str): ID of sequence annotated
+
+        source (str): what performed annotation
+
+        type (str): type of feature (CDS, rRNA, etc.)
+
+        start (int): start of feature
+
+        end (int): end of feature
+
+        score (str): score/confidence of feature, often a P-value. This field
+            is a float by convention but stored as a str to preserve formatting
+            (e.g. 1E5, 1e+5, 100000.0)
+
+        strand (str): [+, -, .] strand feature is located on
+
+        phase (int): int if phase given in file, else str. Required for
+            features of type "CDS," indicates bases until next codon in feature
+
+        attributes (dict): OrderedDict if prase_attr is True, else str. Various
+            attributes formatted as "<tag>=<value>" with multiple attributes
+            separated by semicolons. If parse_attr true, creates dict where
+            tags are keys and values are values as follows (in YAML format):
+
+            Original String: tag1=value1;tag2=value2
+
+            Dict:
+
+            tag1: value1
+            tag2: value2
+    """
 
     def __init__(self):
         """Initialize variables to store GFF3 entry data"""
@@ -59,8 +93,8 @@ class GFF3Entry:
     def write(self):
         """Return GFF3 formatted string
 
-        :return: GFF3 formatted string
-        :rtype: str
+        Returns:
+            str: GFF3 formatted string containing entire GFF3 entry
         """
 
         # Regain original formatting for GFF file
@@ -85,35 +119,72 @@ class GFF3Entry:
                                               os.linesep)
 
 
-def gff3_iter(handle, start_line=None, prokka=False, headers=False):
+def gff3_iter(handle, start_line=None, parse_attr=True, headers=False):
     """Iterate over GFF3 file and return GFF3 entries
 
-    PROKKA option parses attributes column of GFF3 files from PROKKA version
-    1.12-beta. As an example, it parses:
+    Args:
+        handle (file): GFF3 file handle, can be any iterator so long as it
+            it returns subsequent "lines" of a GFF3 entry
 
-    prokka_id=5;gene_id=example_id
+        start_line (str): Next GFF3 entry, if 'handle' has been partially read
+            and you want to start iterating at the next entry, read the next
+            GFF3 entry and pass it to this variable when  calling gff3_iter.
+            See 'Examples.'
 
-    into an ordered dictionary as follows in YAML format:
+        parse_attr (bool): Parse attributes column into a dictionary such that
+            the string "tag1=value1;tag2=value2" becomes (in YAML format):
 
-    prokka_id: 5
-    gene_id: example_id
+            tag1: value1
+            tag2: value2
 
-    and stores it as the 'attributes' attribute of the returned class.
+        headers (bool): Yields headers if True, else skips lines starting with
+            "##"
 
-    :param handle: GFF3 file handle, can technically be any iterator
-    :type handle: File Object
+    Yields:
+        GFF3Entry: class containing all GFF3 data, yields str for headers if
+            headers options is True then yields GFF3Entry for entries
 
-    :param start_line: Header line of entry file handle is open to
-    :type start_line: str
+    Examples:
+        The following three examples demonstrate how to use gff3_iter.
+        Note: These doctests will not pass, examples are only in doctest
+        format as per convention. bio_utils uses pytests for testing.
 
-    :param prokka: Dynamically parse attributes column of PROKKA 1.12-beta
-    :type: boolean
+        >>> for entry in gff3_iter(open('test.gff3')):
+        ...     print(entry.seqid)  # Print Sequence ID
+        ...     print(entry.source)  # Print software that performed annotation
+        ...     print(entry.type)  # Print type of annotation
+        ...     print(entry.start)  # Print start position of annotation
+        ...     print(entry.end)  # Print end position of annotation
+        ...     print(entry.score)  # Print confidence score of annotation
+        ...     print(entry.strand)  # Print strand annotation is on
+        ...     print(entry.phase)  # Print bases until next codon
+        ...     print(entry.attributes)  # Print attributes of annotation
 
-    :return: class containing GFF3 data
-    :rtype: GFF3Entry
+        >>> gff3_handle = open('test.gff3')
+        >>> next(gff3_handle)  # Skip first line/entry
+        >>> next_line = next(gff3_handle)  # Store next entry
+        >>> for entry in gff3_iter(gff3_handle, start_line=next_line):
+        ...     print(entry.seqid)  # Print Sequence ID
+        ...     print(entry.source)  # Print software that performed annotation
+        ...     print(entry.type)  # Print type of annotation
+        ...     print(entry.start)  # Print start position of annotation
+        ...     print(entry.end)  # Print end position of annotation
+        ...     print(entry.score)  # Print confidence score of annotation
+        ...     print(entry.strand)  # Print strand annotation is on
+        ...     print(entry.phase)  # Print bases until next codon
+        ...     print(entry.attributes)  # Print attributes of annotation
 
-    :param headers: True returns header lines, False skips them
-    :type headers: bool
+        >>> for entry in gff3_iter(open('test.gff3'), parse_attr=True):
+        ...     print(entry.seqid)  # Print Sequence ID
+        ...     print(entry.source)  # Print software that performed annotation
+        ...     print(entry.type)  # Print type of annotation
+        ...     print(entry.start)  # Print start position of annotation
+        ...     print(entry.end)  # Print end position of annotation
+        ...     print(entry.score)  # Print confidence score of annotation
+        ...     print(entry.strand)  # Print strand annotation is on
+        ...     print(entry.phase)  # Print bases until next codon
+        ...     print(entry.attributes['attr1'])  # Print attribute 'attr1'
+        ...     print(entry.attributes['attr2'])  # Print attribute 'attr2'
     """
 
     # Speed tricks: reduces function calls
@@ -159,7 +230,7 @@ def gff3_iter(handle, start_line=None, prokka=False, headers=False):
                 data.phase = split_line[7]
             data.attributes = split_line[8]
 
-            if prokka:
+            if parse_attr:
                 attributes = split(data.attributes, ';')
                 data.attributes = OrderedDict()
                 for attribute in attributes:
@@ -175,5 +246,5 @@ def gff3_iter(handle, start_line=None, prokka=False, headers=False):
 
     except StopIteration:  # Yield last GFF3 entry
         yield data
-    except FastaFound:  # When FASTA found, last entry is repeat
+    except FastaFound:  # When FASTA found, last entry is repeat so pass
         pass

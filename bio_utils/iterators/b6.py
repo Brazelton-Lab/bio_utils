@@ -110,7 +110,7 @@ def b6_iter(handle, start_line=None):
 
         start_line (str): Next B6/M8 entry, if 'handle' has been partially read
             and you want to start iterating at the next entry, read the next
-            B6/M8 header and pass it to this variable when  calling fastq_iter.
+            B6/M8 entry and pass it to this variable when  calling b6_iter.
             See 'Examples.'
 
     Yields:
