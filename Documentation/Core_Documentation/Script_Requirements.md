@@ -73,7 +73,7 @@ library is analogous to a toolbox. To that end, each script should perform
 and return data but never perform an ultimatum. The developer needs to have
 maximal control over their script; they should not have to worry about tools
 manipulating the flow of their program. As an example, all functions in the
-iterators sub-package used to exit the program if a file could not be
+verifiers sub-package used to exit the program if a file could not be
 validated because it assumed that if a file was incorrectly formatted, the
 program calling it would crash downstream. This assumption is not always valid
 and such a drastic change in program flow should never be assumed. Now all the
@@ -86,7 +86,7 @@ bio_utils.
 
 In summary, scripts in bio_utils should never print to screen, exit the
 program, or elsewise do anything a developer cannot control and must return
-something.
+something. Scripts can raise errors.
 
 No Command-Line Programs
 ------------------------

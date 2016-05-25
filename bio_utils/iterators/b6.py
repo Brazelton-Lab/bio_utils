@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#! /usr/bin/env python
 
 """Iterator for BLAST M8 (BLAST+ output format 6) files
 

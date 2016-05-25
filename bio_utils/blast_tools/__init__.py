@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#! /usr/bin/env python
 
 """Import blast_tools functions at package level
 
@@ -22,6 +22,6 @@ Copyright:
 """
 
 from bio_utils.blast_tools.blast_to_cigar import blast_to_cigar
-from bio_utils.blast_tools.filter_m8_evalue import m8_evalue_filter
+from bio_utils.blast_tools.filter_b6_evalue import b6_evalue_filter
 
-__version__ = '1.0.1'
+__version__ = '1.0.2'

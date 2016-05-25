@@ -4,6 +4,10 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- Updated README.md. [TheOneHyer]
+
+  README.md updated to reflect project state
+
 - Made sam_iter documentation Googley. [TheOneHyer]
 
   sam_iter documentation is now "Googley."

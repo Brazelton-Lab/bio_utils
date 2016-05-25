@@ -26,44 +26,58 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '1.0.3'
+__version__ = '1.1.0'
 
 
-def blast_to_cigar(query_seq, match_seq, subject_seq, cigar_age='old'):
+def blast_to_cigar(query_seq, match_seq, subject_seq, cigar_age='new'):
     """converts BLAST alignment into a old or new CIGAR line
 
-    :param query_seq: The aligned query sequence
-    :type query_seq: str
+    Args:
+        query_seq (str): Aligned portion of query sequence
 
-    :param match_seq: The sequence visually depicting the alignment
-    :type match_seq: str
+        match_seq (str): Alignment sequence
 
-    :param subject_seq: The aligned subject sequence
-    :type subject_seq: str
+        subject_seq (str): Aligned portion of subject/reference sequence
 
-    :param cigar_age: 'old' or 'new'. Whether or not to use the old version
-                      of Cigar containing only 'M' for matches and mismatches
-                      or to give more detail on the alignment (old vs. new)
-    :type cigar_age: str
+        cigar_age (str): ['old', 'new'] CIGAR format to use, new is highly
+            detailed while old is fairly minimalistic
 
-    :returns: Cigar line of BLAST alignment
-    :rtype: str
+    Returns:
+        str: CIGAR string
+
+    Raises:
+        ValueError: If query_seq, match_seq, and match_seq not same length
+
+    Examples:
+        >>> query = 'AGGC--CGATATA'
+        >>> subject = 'AGGTCCGG--ATA'
+        >>> alignment = '|||+++||++|||'
+        >>> blast_to_cigar(query, alignment, subject)
+        3=X2D2=2I3=
+        >>> blast_to_cigar(query, alignment, subject, cigar_age='old')
+        4M2D2M2I3M
     """
+
+    if not len(query_seq) == len(match_seq) \
+            or not len(query_seq) == len(subject_seq) \
+            or not len(subject_seq) == len(match_seq):
+        raise ValueError('query_seq, match_seq, and subject_seq not same '
+                         'lengths.')
 
     # Translate XML alignment to CIGAR characters
     cigar_line_raw = []
     for query, match, subject in zip(query_seq, match_seq, subject_seq):
-        if query == '-':
+        if query == '-':  # Deletion
             cigar_line_raw.append('D')
             continue
-        elif subject == '-':
+        elif subject == '-':  # Insertion
             cigar_line_raw.append('I')
             continue
-        elif match == '+' or match == '|' or match.isalpha():
-            if match != '+' and cigar_age == 'new':
+        elif match == '+' or match == '|' or match.isalpha():  # Match
+            if match != '+' and cigar_age == 'new':  # Positive match
                 cigar_line_raw.append('=')
                 continue
-            elif match == '+' and cigar_age == 'new':
+            elif match == '+' and cigar_age == 'new':  # Mismatch
                 cigar_line_raw.append('X')
                 continue
             else:
@@ -88,7 +102,7 @@ def blast_to_cigar(query_seq, match_seq, subject_seq, cigar_age='old'):
                 cigar_line.append(str(repeats))
                 repeats = 1
             cigar_line.append(last_position)
-        if letter[0] == cigar_len:
+        if letter[0] == cigar_len - 1:
             if repeats != 1:
                 cigar_line.append(str(repeats))
                 repeats = 1
