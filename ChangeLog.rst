@@ -4,6 +4,13 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- Made sam_iter documentation Googley. [TheOneHyer]
+
+  sam_iter documentation is now "Googley."
+  Minor additions to documentations of other iterators.
+  Upped version number of iterators, tests, and project.
+  All iterators are now "complete."
+
 - Made gff3_iter documentation Googley. [TheOneHyer]
 
   gff3_iter documentation is "Googley."
