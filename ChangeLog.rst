@@ -4,6 +4,15 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- Made gff3_iter documentation Googley. [TheOneHyer]
+
+  gff3_iter documentation is "Googley."
+  Improved test_gff3_iter with more robust examples.
+
+- Made b6_iter Documentation Googley. [TheOneHyer]
+
+  b6_iter is now "Googley" and b6_iter is "complete."
+
 - Rolled Project Version to 0.7.14a1. [TheOneHyer]
 
   Given the number of changes recently, it is fitting to

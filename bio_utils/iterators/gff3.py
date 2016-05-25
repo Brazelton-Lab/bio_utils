@@ -128,7 +128,7 @@ def gff3_iter(handle, start_line=None, parse_attr=True, headers=False):
 
         start_line (str): Next GFF3 entry, if 'handle' has been partially read
             and you want to start iterating at the next entry, read the next
-            GFF3 entry and pass it to this variable when  calling gff3_iter.
+            GFF3 entry and pass it to this variable when calling gff3_iter.
             See 'Examples.'
 
         parse_attr (bool): Parse attributes column into a dictionary such that
@@ -159,6 +159,7 @@ def gff3_iter(handle, start_line=None, parse_attr=True, headers=False):
         ...     print(entry.strand)  # Print strand annotation is on
         ...     print(entry.phase)  # Print bases until next codon
         ...     print(entry.attributes)  # Print attributes of annotation
+        ...     print(entry.write())  # Print entry GFF3 entry
 
         >>> gff3_handle = open('test.gff3')
         >>> next(gff3_handle)  # Skip first line/entry
@@ -173,6 +174,7 @@ def gff3_iter(handle, start_line=None, parse_attr=True, headers=False):
         ...     print(entry.strand)  # Print strand annotation is on
         ...     print(entry.phase)  # Print bases until next codon
         ...     print(entry.attributes)  # Print attributes of annotation
+        ...     print(entry.write())  # Print entry GFF3 entry
 
         >>> for entry in gff3_iter(open('test.gff3'), parse_attr=True):
         ...     print(entry.seqid)  # Print Sequence ID
@@ -185,6 +187,7 @@ def gff3_iter(handle, start_line=None, parse_attr=True, headers=False):
         ...     print(entry.phase)  # Print bases until next codon
         ...     print(entry.attributes['attr1'])  # Print attribute 'attr1'
         ...     print(entry.attributes['attr2'])  # Print attribute 'attr2'
+        ...     print(entry.write())  # Print entry GFF3 entry
     """
 
     # Speed tricks: reduces function calls

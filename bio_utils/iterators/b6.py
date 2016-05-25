@@ -133,6 +133,7 @@ def b6_iter(handle, start_line=None):
         ...     print(entry.subject_end)  # Print end of alignment on subject
         ...     print(entry.evalue)  # Print E-value of alignment
         ...     print(entry.bit_score)  # Print Bit score of alignment
+        ...     print(entry.write())  # Print entry B6 entry
 
         >>> b6_handle = open('test.b6out')
         >>> next(b6_handle)  # Skip first line/entry
@@ -149,6 +150,7 @@ def b6_iter(handle, start_line=None):
         ...     print(entry.subject_end)  # Print end of alignment on subject
         ...     print(entry.evalue)  # Print E-value of alignment
         ...     print(entry.bit_score)  # Print Bit score of alignment
+        ...     print(entry.write())  # Print entry B6 entry
     """
 
     # Speed tricks: reduces function calls

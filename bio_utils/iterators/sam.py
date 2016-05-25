@@ -28,11 +28,40 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '2.1.1'
+__version__ = '3.0.0'
 
 
 class SamEntry:
-    """A simple class to store data from SAM entries and write them"""
+    """A simple class to store data from SAM entries and write them
+
+    Attributes:
+            qname (str): Name of query sequence
+
+            flag (int): Int if integer in file, str if hex given in file,
+                        str if flag not given. Gives various info about read
+                        alignment, see
+                        https://samtools.github.io/hts-specs/SAMv1.pdf
+                        for more info.
+
+            rname (str): Name of reference sequence or sequence aligned to
+
+            pos (int): first base of alignment relative to reference,
+                       0 = no alignment
+
+            mapq (int): mapping quality of alignment
+
+            cigar (str): CIGAR string detailing alignment
+
+            rnext (str): name of paired read
+
+            pnext (int): position of paired read, 0 = no alignment
+
+            tlen (int): length of alignments of all paired reads
+
+            seq (str): sequence of query sequence, * if no sequence
+
+            qual (str): quality scores of query sequence, * if no scores
+    """
 
     def __init__(self):
         """Initialize variables to store SAM entry data"""
@@ -52,8 +81,8 @@ class SamEntry:
     def write(self):
         """Return SAM formatted string
 
-        :return: SAM formatted string
-        :rtype: str
+        Returns:
+            str: SAM formatted string containing entire SAM entry
         """
 
         return '{0}\t{1}\t{2}\t{3}\t{4}\t' \
@@ -75,14 +104,57 @@ class SamEntry:
 def sam_iter(handle, start_line=None, headers=False):
     """Iterate over SAM file and return B6/M8 entries
 
-    :param handle: SAM file handle, can technically be any iterator
-    :type handle: File Object
+    Args:
+        handle (file): SAM file handle, can be any iterator so long as it
+            it returns subsequent "lines" of a SAM entry
 
-    :param start_line: Header line of entry file handle is open to
-    :type start_line: str
+        start_line (str): Next SAM entry, if 'handle' has been partially read
+            and you want to start iterating at the next entry, read the next
+            SAM entry and pass it to this variable when calling sam_iter.
+            See 'Examples.'
 
-    :param headers: True returns header lines, False skips them
-    :type headers: bool
+        headers (bool): Yields headers if True, else skips lines starting with
+            "@"
+
+    Yields:
+        SamEntry: class containing all SAM data, yields str for headers if
+            headers options is True then yields GamEntry for entries
+
+    Examples:
+        The following two examples demonstrate how to use sam_iter.
+        Note: These doctests will not pass, examples are only in doctest
+        format as per convention. bio_utils uses pytests for testing.
+
+        >>> for entry in sam_iter(open('test.sam')):
+        ...     print(entry.qname)  # Print query sequence name
+        ...     print(entry.flag)  # Print flag number of alignment
+        ...     print(entry.rname)  # Print reference sequence name
+        ...     print(entry.pos)  # Print starting position of alignment
+        ...     print(entry.mapq)  # Print mapping confidence of alignment
+        ...     print(entry.cigar)  # Print CIGAR string of alignment
+        ...     print(entry.rnext)  # Print paired read name
+        ...     print(entry.pnext)  # Print position of paired read
+        ...     print(entry.tlen)  # Print alignment length of all paired reads
+        ...     print(entry.seq)  # Print query sequence
+        ...     print(entry.qual)  # Print query quality scores
+        ...     print(entry.write())  # Print whole SAM entry
+
+        >>> sam_handle = open('test.gff3')
+        >>> next(sam_handle)  # Skip first line/entry
+        >>> next_line = next(sam_handle)  # Store next entry
+        >>> for entry in sam_iter(open('test.sam')):
+        ...     print(entry.qname)  # Print query sequence name
+        ...     print(entry.flag)  # Print flag number of alignment
+        ...     print(entry.rname)  # Print reference sequence name
+        ...     print(entry.pos)  # Print starting position of alignment
+        ...     print(entry.mapq)  # Print mapping confidence of alignment
+        ...     print(entry.cigar)  # Print CIGAR string of alignment
+        ...     print(entry.rnext)  # Print paired read name
+        ...     print(entry.pnext)  # Print position of paired read
+        ...     print(entry.tlen)  # Print alignment length of all paired reads
+        ...     print(entry.seq)  # Print query sequence
+        ...     print(entry.qual)  # Print query quality scores
+        ...     print(entry.write())  # Print whole SAM entry
     """
 
     # Speed tricks: reduces function calls
