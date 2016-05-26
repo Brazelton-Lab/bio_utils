@@ -4,6 +4,12 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- Made blast_to_cigar.py Documentation Googley. [TheOneHyer]
+
+  blast_to_cigar.py documentation is now "Googley."
+  Added a raised exception to blast_to_cigar.py if
+  sequences aren't same length.
+
 - Updated README.md. [TheOneHyer]
 
   README.md updated to reflect project state

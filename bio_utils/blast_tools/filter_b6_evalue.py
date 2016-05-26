@@ -6,8 +6,8 @@ from __future__ import print_function
 
 Usage:
 
-    b6_evalue_filter.py --b6_file [b6_file] --e_value [e_value]
-                        --output [output]
+    b6_evalue_filter.py --b6 <b6 file> --e_value <max e_value>
+                        --output <output file>
 
 Copyright:
 
@@ -37,38 +37,48 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '1.1.3'
+__version__ = '1.2.0'
 
 
-def b6_evalue_filter(handle, e_value):
-    """Returns lines from handle with e-value less than or equal to e_value
+def b6_evalue_filter(handle, e_value, *args, **kwargs):
+    """Yields lines from handle with e-value less than or equal to e_value
 
-    :returns: yields B6/M8 entries below e-value cutoff
-    :rtype: dict
+    Args:
+        handle (file): B6/M8 file handle, can be any iterator so long as it
+            it returns subsequent "lines" of a B6/M8 entry
 
-    :param handle: file handle of M8 file
-    :type handle: file object
+        e_value (float): max E-Value to return
 
-    :param e_value: upper e-value threshold
-    :type e_value: float
+        *args: Variable length argument list
+
+        **kwargs: Arbitrary keyword arguments
+
+    Yields:
+        B6Entry: class containing all B6/M8 data
+
+    Example:
+        >>> b6_handle = open('test.b6')
+        >>> for entry in b6_evalue_filter(b6_handle, 1e5)
+        ...     print(entry.evalue)  # Print E-Value of filtered entry
     """
 
-    for entry in b6_iter(handle):
-        if float(entry.evalue) <= e_value:
+    for entry in b6_iter(handle, *args, **kwargs):
+        if entry.evalue <= e_value:
             yield entry
 
 
 def main():
-    with open(args.b6_file, 'rU') as b6_handle:
-        for entry in b6_evalue_filter(b6_handle, args.e_value):
-            args.output.write(entry.write())
+    """Open B6/M8 file, filter entries by E-Value, nad write said entries"""
+
+    for entry in b6_evalue_filter(args.b6, args.e_value):
+        args.output.write(entry.write())
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.
                                      RawDescriptionHelpFormatter)
-    parser.add_argument('-m', '--b6_file',
+    parser.add_argument('-b', '--b6',
                         nargs='?',
                         type=argparse.FileType('rU'),
                         default=sys.stdin,
@@ -76,7 +86,7 @@ if __name__ == '__main__':
                              '[Default: STDIN]')
     parser.add_argument('-e', '--e_value',
                         type=float,
-                        help='upper e-value cutoff')
+                        help='upper E-Value cutoff')
     parser.add_argument('-o', '--output',
                         nargs='?',
                         type=argparse.FileType('w'),
