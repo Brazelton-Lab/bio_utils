@@ -4,6 +4,11 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- Added test_blast_to_cigar. [TheOneHyer]
+
+  Added test_blast_to_cigar.py. Both this test and
+  blast_to_cigar "complete."
+
 - Added Example to subject_sequence_retriever. [TheOneHyer]
 
   Forgot example last commit, rectifying.

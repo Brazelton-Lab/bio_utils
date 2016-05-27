@@ -49,9 +49,9 @@ def b6_evalue_filter(handle, e_value, *args, **kwargs):
 
         e_value (float): max E-Value to return
 
-        *args: Variable length argument list
+        *args: Variable length argument list for b6_iter
 
-        **kwargs: Arbitrary keyword arguments
+        **kwargs: Arbitrary keyword arguments for b6_iter
 
     Yields:
         B6Entry: class containing all B6/M8 data

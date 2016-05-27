@@ -41,7 +41,8 @@ __status__ = 'Production'
 __version__ = '1.2.1'
 
 
-def subject_sequence_retriever(fasta_handle, b6_handle, e_value):
+def subject_sequence_retriever(fasta_handle, b6_handle, e_value,
+                               *args, **kwargs):
     """Returns FASTA entries for subject sequences from BLAST hits
 
     Stores B6/M8 entries with E-Values below the e_value cutoff. Then iterates
@@ -58,6 +59,10 @@ def subject_sequence_retriever(fasta_handle, b6_handle, e_value):
 
         e_value (float): Max E-Value of entry to return
 
+        *args: Variable length argument list for b6_iter
+
+        **kwargs: Arbitrary keyword arguments for b6_iter
+
     Yields:
         FastaEntry: class containing all FASTA data
 
@@ -73,7 +78,7 @@ def subject_sequence_retriever(fasta_handle, b6_handle, e_value):
     """
 
     filtered_b6 = defaultdict(list)
-    for entry in b6_iter(b6_handle):
+    for entry in b6_iter(b6_handle, *args, **kwargs):
         if entry.evalue <= e_value:
             filtered_b6[entry.subject].append(
                 (entry.subject_start, entry.subject_end, entry.evalue))

@@ -39,11 +39,11 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '1.2.0'
+__version__ = '1.2.1'
 
 
 def query_sequence_retriever(fastaq_handle, b6_handle, e_value,
-                             fastaq='fasta'):
+                             fastaq='fasta', *args, **kwargs):
     """Returns FASTA entries for subject sequences from BLAST hits
 
     Stores B6/M8 entries with E-Values below the e_value cutoff. Then iterates
@@ -63,6 +63,10 @@ def query_sequence_retriever(fastaq_handle, b6_handle, e_value,
         fastaq (str): ['fasta', 'fastq'] whether file handle is a FASTA or
             FASTQ file
 
+        *args: Variable length argument list for b6_iter
+
+        **kwargs: Arbitrary keyword arguments for b6_iter
+
     Yields:
         FastaEntry: class containing all FASTA data
             FastqEntry if fastaq='fastq'
@@ -79,7 +83,7 @@ def query_sequence_retriever(fastaq_handle, b6_handle, e_value,
     """
 
     filtered_b6 = defaultdict(list)
-    for entry in b6_iter(b6_handle):
+    for entry in b6_iter(b6_handle, *args, **kwargs):
         if float(entry.evalue) <= e_value:
             filtered_b6[entry.query].append(
                 (entry.query_start, entry.query_end, entry.evalue))
