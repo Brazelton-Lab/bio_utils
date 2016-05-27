@@ -4,6 +4,13 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- Made retrieve_query_sequences.py Docs Googley. [TheOneHyer]
+
+  Made retrieve_query_sequences.py documentation
+  "Googley." Minor internal code improvements. Untested.
+
+- Made retrieve_query_sequence.py Docs Googley. [TheOneHyer]
+
 - Made filter_b6_evalue.py Documentation Googley. [TheOneHyer]
 
   filter_b6_evalue.py documentation is now "Googley."

@@ -56,7 +56,7 @@ def query_sequence_retriever(fastaq_handle, b6_handle, e_value,
             be any iterable that returns FASTA/Q "lines"
 
         b6_handle (file): B6/M8 file handle, can technically
-            be any iterable that returns FASTA/Q "lines"
+            be any iterable that returns B6/M8"lines"
 
         e_value (float): Max E-Value of entry to return
 
@@ -65,6 +65,7 @@ def query_sequence_retriever(fastaq_handle, b6_handle, e_value,
 
     Yields:
         FastaEntry: class containing all FASTA data
+            FastqEntry if fastaq='fastq'
 
     Example:
         Note: These doctests will not pass, examples are only in doctest
@@ -104,19 +105,19 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.
                                      RawDescriptionHelpFormatter)
-    parser.add_argument('--fastaq',
+    parser.add_argument('-f', '--fastaq',
                         type=argparse.FileType('rU'),
                         help='query FASTAQ file')
-    parser.add_argument('--b6',
+    parser.add_argument('-b', '--b6',
                         type=argparse.FileType('rU'),
                         help='B6/M8 file with alignment data')
-    parser.add_argument('--e_value',
+    parser.add_argument('-e', '--e_value',
                         type=float,
                         help='upper E-Value cutoff')
     parser.add_argument('--fastq',
                         action='store_true',
                         help='specifies that input is FASTQ')
-    parser.add_argument('--output',
+    parser.add_argument('-o', '--output',
                         type=argparse.FileType('w'),
                         default=sys.stdout,
                         nargs='?',

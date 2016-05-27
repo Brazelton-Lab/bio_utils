@@ -2,6 +2,12 @@
 
 """Returns subject sequence from BLAST hits below a specified e-value
 
+Usage:
+
+    retrieve_subject_sequences.py --fastqq <FASTA file>
+                                  --b6 <B6 or M8 file> --e_value <max E-Value>
+                                  --output <output file>
+
 Copyright:
 
     retrieve_subject_sequences.py recover subject sequences of BLAST alignment
@@ -32,41 +38,46 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '1.1.6'
+__version__ = '1.2.0'
 
 
 def subject_sequence_retriever(fasta_handle, b6_handle, e_value):
     """Returns FASTA entries for subject sequences from BLAST hits
 
-    Stores B6/M8 entries with e-values below the e_value cutoff. Then iterates
+    Stores B6/M8 entries with E-Values below the e_value cutoff. Then iterates
     through the FASTA file and if an entry matches the subject of an B6/M8
     entry, it's sequence is extracted and returned as a FASTA entry
-    plus the e-value.
+    plus the E-Value.
 
-    :param fastaq_handle: FASTAfile handle
-    :type fastaq_handle: File Object
+    Args:
+        fasta_handle (file): FASTA file handle, can technically
+            be any iterable that returns FASTA "lines"
 
-    :param b6_handle: B6/M8 file handle
-    :type b6_handle: File Object
+        b6_handle (file): B6/M8 file handle, can technically
+            be any iterable that returns B6/M8 "lines"
 
-    :param e_value: Max evalue to be returned
-    :type e_value: float
+        e_value (float): Max E-Value of entry to return
 
-    :return: FastaEntry class
-    :rtype: FastaEntry
+    Yields:
+        FastaEntry: class containing all FASTA data
+
+    Example:
+        Note: These doctests will not pass, examples are only in doctest
+        format as per convention. bio_utils uses pytests for testing.
+
+        #TODO: ADD EXAMPLES!
     """
 
     filtered_b6 = defaultdict(list)
     for entry in b6_iter(b6_handle):
-        if float(entry.evalue) <= e_value:
+        if entry.evalue <= e_value:
             filtered_b6[entry.subject].append(
-                (int(entry.subject_start), int(entry.subject_end),
-                 float(entry.evalue)))
+                (entry.subject_start, entry.subject_end, entry.evalue))
     for fastaEntry in fasta_iter(fasta_handle):
         if fastaEntry.name in filtered_b6:
-            for pair in filtered_b6[fastaEntry.name]:
-                start = pair[0] - 1
-                end = pair[1] - 1
+            for alignment in filtered_b6[fastaEntry.name]:
+                start = alignment[0] - 1
+                end = alignment[1] - 1
                 if start < end:
                     subject_sequence = fastaEntry.sequence[start:end]
                 elif start > end:
@@ -74,7 +85,8 @@ def subject_sequence_retriever(fasta_handle, b6_handle, e_value):
                 else:
                     subject_sequence = fastaEntry.sequence[start]
                 fastaEntry.sequence = subject_sequence
-                fastaEntry.description += str(pair[2])
+                fastaEntry.description += ' E-Value: '
+                fastaEntry.description += str(alignment[2])
                 yield fastaEntry
 
 
@@ -82,28 +94,26 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.
                                      RawDescriptionHelpFormatter)
-    parser.add_argument('fastaFile',
+    parser.add_argument('-f', '--fasta',
+                        type=argparse.FileType('rU'),
                         help='subject FASTA file')
-    parser.add_argument('b6File',
+    parser.add_argument('-b', '--b6',
+                        type=argparse.FileType('rU'),
                         help='B6/M8 file with alignment data')
-    parser.add_argument('e_value',
+    parser.add_argument('-e', '--e_value',
+                        type=float,
                         help='upper e-value cutoff')
-    parser.add_argument('output',
-                        default=None,
+    parser.add_argument('-o', '--output',
+                        type=argparse.FileType('w'),
+                        default=sys.stdout,
                         nargs='?',
                         help=' optional output file, defaults to STDOUT')
     args = parser.parse_args()
 
-    with open(args.fastaFile, 'rU') as fasta_handle:
-        with open(args.b6File, 'rU') as b6_handle:
-            for fastaEntry in subject_sequence_retriever(fasta_handle,
-                                                         b6_handle,
-                                                         float(args.e_value)):
-                if args.output is not None:
-                    with open(args.output, 'a') as out_handle:
-                        out_handle.write(fastaEntry.write())
-                else:
-                    print(fastaEntry.write())
+    for fastaEntry in subject_sequence_retriever(args.fasta,
+                                                 args.b6,
+                                                 args.e_value):
+        args.out.write(fastaEntry.write())
 
 
 if __name__ == '__main__':
