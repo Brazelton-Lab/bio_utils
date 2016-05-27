@@ -26,7 +26,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '1.1.0'
+__version__ = '1.1.1'
 
 
 def blast_to_cigar(query_seq, match_seq, subject_seq, cigar_age='new'):
@@ -49,13 +49,14 @@ def blast_to_cigar(query_seq, match_seq, subject_seq, cigar_age='new'):
         ValueError: If query_seq, match_seq, and match_seq not same length
 
     Examples:
-        >>> query = 'AGGC--CGATATA'
-        >>> subject = 'AGGTCCGG--ATA'
-        >>> alignment = '|||+++||++|||'
+        >>> query = 'AAGGG--CCTTGTA'
+        >>> subject = 'AAGCCTTCCAGGTA'
+        >>> alignment_old = '|||||  |||||||'
+        >>> alignment_new = 'AAG++  CC++GTA'
         >>> blast_to_cigar(query, alignment, subject)
-        3=X2D2=2I3=
+        3=2X2D2=2X3=
         >>> blast_to_cigar(query, alignment, subject, cigar_age='old')
-        4M2D2M2I3M
+        5M2D7M
     """
 
     if not len(query_seq) == len(match_seq) \

@@ -4,6 +4,10 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- Added Example to subject_sequence_retriever. [TheOneHyer]
+
+  Forgot example last commit, rectifying.
+
 - Made retrieve_subject_sequences.py Docs "Googley" [TheOneHyer]
 
   Made retrieve_subject_sequences.py documentation
