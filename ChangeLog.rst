@@ -4,6 +4,11 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- Made filter_b6_evalue.py Documentation Googley. [TheOneHyer]
+
+  filter_b6_evalue.py documentation is now "Googley."
+  Fixed various errors in filter_b6_evalue.py script.
+
 - Made blast_to_cigar.py Documentation Googley. [TheOneHyer]
 
   blast_to_cigar.py documentation is now "Googley."

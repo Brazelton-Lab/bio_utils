@@ -1,7 +1,12 @@
 #! /usr/bin/env python
 
-"""Returns query sequence from BLAST hits below a specified e-value
+"""Returns query sequence from BLAST hits below a specified E-Value
 
+Usage:
+
+    retrieve_query_sequences.py --fastqq <FASTA or FASTQ file>
+                                --b6 <B6 or M8 file> --e_value <max E-Value>
+                                --output <output file> [--fastq]
 
 Copyright:
 
@@ -34,88 +39,86 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '1.1.5'
+__version__ = '1.2.0'
 
 
 def query_sequence_retriever(fastaq_handle, b6_handle, e_value,
                              fastaq='fasta'):
     """Returns FASTA entries for subject sequences from BLAST hits
 
-    Stores B6/M8 entries with e-values below the e_value cutoff. Then iterates
+    Stores B6/M8 entries with E-Values below the e_value cutoff. Then iterates
     through the FASTA file and if an entry matches the query of an B6/M8
     entry, it's sequence is extracted and returned as a FASTA entry
-    plus the e-value.
+    plus the E-Value.
 
-    :param fastaq_handle: FASTA or FASTQ file handle
-    :type fastaq_handle: File Object
+    Args:
+        fastaq_handle (file): FASTA or FASTQ file handle, can technically
+            be any iterable that returns FASTA/Q "lines"
 
-    :param b6_handle: B6/M8 file handle
-    :type b6_handle: File Object
+        b6_handle (file): B6/M8 file handle, can technically
+            be any iterable that returns FASTA/Q "lines"
 
-    :param e_value: Max evalue to be returned
-    :type e_value: float
+        e_value (float): Max E-Value of entry to return
 
-    :param fastaq: 'fasta' or 'fastq'
-    :type: str
+        fastaq (str): ['fasta', 'fastq'] whether file handle is a FASTA or
+            FASTQ file
 
-    :return: FastaEntry class or FastqEntry class
-    :rtype: FastaEntry or FastqEntry
+    Yields:
+        FastaEntry: class containing all FASTA data
     """
 
     filtered_b6 = defaultdict(list)
     for entry in b6_iter(b6_handle):
         if float(entry.evalue) <= e_value:
             filtered_b6[entry.query].append(
-                (int(entry.query_start), int(entry.query_end),
-                 float(entry.evalue)))
+                (entry.query_start, entry.query_end, entry.evalue))
     fastaq_iter = fasta_iter if fastaq == 'fasta' else fastq_iter
-    for fastaEntry in fastaq_iter(fastaq_handle):
-        if fastaEntry.name in filtered_b6:
-            for pair in filtered_b6[fastaEntry.name]:
-                start = pair[0] - 1
-                end = pair[1] - 1
+    for fastaqEntry in fastaq_iter(fastaq_handle):
+        if fastaqEntry.name in filtered_b6:
+            for alignment in filtered_b6[fastaqEntry.name]:
+                start = alignment[0] - 1
+                end = alignment[1] - 1
                 if start < end:
-                    query_sequence = fastaEntry.sequence[start:end]
+                    query_sequence = fastaqEntry.sequence[start:end]
                 elif start > end:
-                    query_sequence = fastaEntry.sequence[end:start][::-1]
+                    query_sequence = fastaqEntry.sequence[end:start][::-1]
                 else:
-                    query_sequence = fastaEntry.sequence[start]
-                fastaEntry.sequence = query_sequence
-                fastaEntry.description += str(pair[2])
-                yield fastaEntry
+                    query_sequence = fastaqEntry.sequence[start]
+                fastaqEntry.sequence = query_sequence
+                fastaqEntry.description += ' E-Value: '
+                fastaqEntry.description += str(alignment[2])
+                yield fastaqEntry
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.
                                      RawDescriptionHelpFormatter)
-    parser.add_argument('fastaqFile',
+    parser.add_argument('--fastaq',
+                        type=argparse.FileType('rU'),
                         help='query FASTAQ file')
-    parser.add_argument('b6File',
+    parser.add_argument('--b6',
+                        type=argparse.FileType('rU'),
                         help='B6/M8 file with alignment data')
-    parser.add_argument('e_value',
-                        help='upper e-value cutoff')
+    parser.add_argument('--e_value',
+                        type=float,
+                        help='upper E-Value cutoff')
     parser.add_argument('--fastq',
                         action='store_true',
                         help='specifies that input is FASTQ')
-    parser.add_argument('output',
-                        default=None,
+    parser.add_argument('--output',
+                        type=argparse.FileType('w'),
+                        default=sys.stdout,
                         nargs='?',
-                        help=' optional output file, defaults to STDOUT')
+                        help=' optional output file [Default: STDOUT]')
     args = parser.parse_args()
 
     fastaq = 'fastq' if args.fastq else 'fasta'
-    with open(args.fastaqFile, 'rU') as fasta_handle:
-        with open(args.b6File, 'rU') as b6_handle:
-            for fastaEntry in query_sequence_retriever(fasta_handle,
-                                                       b6_handle,
-                                                       float(args.e_value),
-                                                       fastaq=fastaq):
-                if args.output is None:
-                    with open(args.output, 'w') as out_handle:
-                        out_handle.write(fastaEntry.write())
-                else:
-                    print(fastaEntry.write())
+    for fastaEntry in query_sequence_retriever(args.fastaq,
+                                               args.b6,
+                                               args.e_value,
+                                               fastaq=fastaq):
+        args.output.write(fastaEntry.write())
 
 
 if __name__ == '__main__':
