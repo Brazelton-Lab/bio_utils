@@ -29,8 +29,8 @@ Copyright:
 
 import argparse
 from bio_utils.iterators import b6_iter
-from collections import defaultdict
 from bio_utils.iterators import fasta_iter
+from collections import defaultdict
 import sys
 
 __author__ = 'William Brazelton, Alex Hyer'
@@ -38,7 +38,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '1.2.0'
+__version__ = '1.2.1'
 
 
 def subject_sequence_retriever(fasta_handle, b6_handle, e_value):
@@ -65,7 +65,11 @@ def subject_sequence_retriever(fasta_handle, b6_handle, e_value):
         Note: These doctests will not pass, examples are only in doctest
         format as per convention. bio_utils uses pytests for testing.
 
-        #TODO: ADD EXAMPLES!
+        >>> fasta_handle = open('test.fasta')
+        >>> b6_handle = open('test.b6')
+        >>> for entry in subject_sequence_retriever(fasta_handle,
+        ...                                       b6_handle, 1e5)
+        ...     print(entry.sequence)  # Print aligned subject sequence
     """
 
     filtered_b6 = defaultdict(list)

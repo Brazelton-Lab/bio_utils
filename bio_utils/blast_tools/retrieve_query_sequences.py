@@ -29,9 +29,9 @@ Copyright:
 
 import argparse
 from bio_utils.iterators import b6_iter
-from collections import defaultdict
 from bio_utils.iterators import fasta_iter
 from bio_utils.iterators import fastq_iter
+from collections import defaultdict
 import sys
 
 __author__ = 'William Brazelton, Alex Hyer'

@@ -4,6 +4,11 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- Made retrieve_subject_sequences.py Docs "Googley" [TheOneHyer]
+
+  Made retrieve_subject_sequences.py documentation
+  "Googley." Minro internal code improvements. Untested.
+
 - Made retrieve_query_sequences.py Docs Googley. [TheOneHyer]
 
   Made retrieve_query_sequences.py documentation
