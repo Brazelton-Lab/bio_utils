@@ -28,7 +28,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '4.0.0'
+__version__ = '4.1.0'
 
 
 class B6Entry:
@@ -75,6 +75,7 @@ class B6Entry:
         self.subject_start = None
         self.subject_end = None
         self.evalue = None
+        self._evalue_str = None  # Store original formatting of E-value
         self.bit_score = None
 
     def write(self):
@@ -96,7 +97,7 @@ class B6Entry:
                                        str(self.query_end),
                                        str(self.subject_start),
                                        str(self.subject_end),
-                                       str(self.evalue),
+                                       self._evalue_str,
                                        str(self.bit_score),
                                        os.linesep)
 
@@ -183,6 +184,7 @@ def b6_iter(handle, start_line=None):
             data.subject_start = int(split_line[8])
             data.subject_end = int(split_line[9])
             data.evalue = float(split_line[10])
+            data._evalue_str = split_line[10]
             data.bit_score = int(split_line[11])
 
             line = strip(next(handle))  # Raises StopIteration at EOF

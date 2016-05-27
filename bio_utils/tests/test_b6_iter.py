@@ -29,7 +29,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '1.0.0'
+__version__ = '1.0.1'
 
 
 def test_b6_iter():
@@ -62,6 +62,7 @@ def test_b6_iter():
     assert entries[0].subject_start == 755762
     assert entries[0].subject_end == 753997
     assert entries[0].evalue == 0.0
+    assert entries[0]._evalue_str == '0.0'
     assert entries[0].bit_score == 1890
     assert entries[0].write() == 'query1\tsubject1\t86.03\t1782\t226\t18' \
                                  '\t6038\t7812\t755762\t753997\t0.0\t' \
@@ -79,6 +80,7 @@ def test_b6_iter():
     assert entries[1].subject_start == 1154754
     assert entries[1].subject_end == 1153582
     assert entries[1].evalue == 0.0
+    assert entries[1]._evalue_str == '0.0'
     assert entries[1].bit_score == 1219
     assert entries[1].write() == 'query2\tsubject2\t85.46\t1176\t165\t5\t' \
                                  '1213\t2385\t1154754\t1153582\t0.0\t' \
@@ -107,6 +109,7 @@ def test_b6_iter():
     assert new_entry.subject_start == 1154754
     assert new_entry.subject_end == 1153582
     assert new_entry.evalue == 0.0
+    assert new_entry._evalue_str == '0.0'
     assert new_entry.bit_score == 1219
     assert new_entry.write() == 'query2\tsubject2\t85.46\t1176\t165\t5\t' \
                                 '1213\t2385\t1154754\t1153582\t0.0\t' \

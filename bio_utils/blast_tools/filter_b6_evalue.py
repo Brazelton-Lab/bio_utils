@@ -2,7 +2,7 @@
 
 from __future__ import print_function
 
-"""Writes lines from the B6/M8 file under the given e-value to output
+"""Writes lines from the B6/M8 file under the given E-value to output
 
 Usage:
 
@@ -37,17 +37,17 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '1.2.0'
+__version__ = '1.2.1'
 
 
 def b6_evalue_filter(handle, e_value, *args, **kwargs):
-    """Yields lines from handle with e-value less than or equal to e_value
+    """Yields lines from handle with E-value less than or equal to e_value
 
     Args:
         handle (file): B6/M8 file handle, can be any iterator so long as it
             it returns subsequent "lines" of a B6/M8 entry
 
-        e_value (float): max E-Value to return
+        e_value (float): max E-value to return
 
         *args: Variable length argument list for b6_iter
 
@@ -62,7 +62,7 @@ def b6_evalue_filter(handle, e_value, *args, **kwargs):
 
         >>> b6_handle = open('test.b6')
         >>> for entry in b6_evalue_filter(b6_handle, 1e5)
-        ...     print(entry.evalue)  # Print E-Value of filtered entry
+        ...     print(entry.evalue)  # Print E-value of filtered entry
     """
 
     for entry in b6_iter(handle, *args, **kwargs):
@@ -71,7 +71,7 @@ def b6_evalue_filter(handle, e_value, *args, **kwargs):
 
 
 def main():
-    """Open B6/M8 file, filter entries by E-Value, nad write said entries"""
+    """Open B6/M8 file, filter entries by E-Value, and write said entries"""
 
     for entry in b6_evalue_filter(args.b6, args.e_value):
         args.output.write(entry.write())

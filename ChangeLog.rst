@@ -4,6 +4,11 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- Removed Redundant Code From blast_tools. [TheOneHyer]
+
+  retrieve_[query,subject]_sequences.py now call
+  filter_b6_evalue instead of copying code.
+
 - Added *args and **kwargs to blast_tools scripts. [TheOneHyer]
 
   *args and **kwargs allows b6_iter options to change

@@ -29,7 +29,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '1.1.1'
+__version__ = '1.2.1'
 
 
 # noinspection PyTypeChecker
@@ -61,6 +61,7 @@ def test_gff3_iter():
     assert entries[0].start == 6294
     assert entries[0].end == 6908
     assert entries[0].score == '.'
+    assert entries[0]._score_str == '.'
     assert entries[0].strand == '-'
     assert entries[0].phase == 0
     assert entries[0].attributes == 'ID=id1;Name=name1'
@@ -74,7 +75,8 @@ def test_gff3_iter():
     assert entries[1].type == 'CDS'
     assert entries[1].start == 7159
     assert entries[1].end == 8580
-    assert entries[1].score == '1e5'
+    assert entries[1].score == 1e5
+    assert entries[1]._score_str == '1e5'
     assert entries[1].strand == '+'
     assert entries[1].phase == '.'
     assert entries[1].attributes == 'ID=id2;Name=name2'
@@ -100,6 +102,7 @@ def test_gff3_iter():
     assert entries[0].start == 6294
     assert entries[0].end == 6908
     assert entries[0].score == '.'
+    assert entries[0]._score_str == '.'
     assert entries[0].strand == '-'
     assert entries[0].phase == 0
     # Next line ensures that the dictionary only contains keys from entry
@@ -116,7 +119,8 @@ def test_gff3_iter():
     assert entries[1].type == 'CDS'
     assert entries[1].start == 7159
     assert entries[1].end == 8580
-    assert entries[1].score == '1e5'
+    assert entries[1].score == 1e5
+    assert entries[1]._score_str == '1e5'
     assert entries[1].strand == '+'
     assert entries[1].phase == '.'
     # Next line ensures that the dictionary only contains keys from entry
@@ -148,6 +152,7 @@ def test_gff3_iter():
     assert entries[1].start == 6294
     assert entries[1].end == 6908
     assert entries[1].score == '.'
+    assert entries[1]._score_str == '.'
     assert entries[1].strand == '-'
     assert entries[1].phase == 0
     assert entries[1].attributes == 'ID=id1;Name=name1'
@@ -161,7 +166,8 @@ def test_gff3_iter():
     assert entries[2].type == 'CDS'
     assert entries[2].start == 7159
     assert entries[2].end == 8580
-    assert entries[2].score == '1e5'
+    assert entries[2].score == 1e5
+    assert entries[2]._score_str == '1e5'
     assert entries[2].strand == '+'
     assert entries[2].phase == '.'
     assert entries[2].attributes == 'ID=id2;Name=name2'
@@ -188,7 +194,8 @@ def test_gff3_iter():
     assert new_entry.type == 'CDS'
     assert new_entry.start == 7159
     assert new_entry.end == 8580
-    assert new_entry.score == '1e5'
+    assert new_entry.score == 1e5
+    assert new_entry._score_str == '1e5'
     assert new_entry.strand == '+'
     assert new_entry.phase == '.'
     # Next line ensures that the dictionary only contains keys from entry
@@ -219,7 +226,8 @@ def test_gff3_iter():
     assert new_entry.type == 'CDS'
     assert new_entry.start == 7159
     assert new_entry.end == 8580
-    assert new_entry.score == '1e5'
+    assert new_entry.score == 1e5
+    assert new_entry._score_str == '1e5'
     assert new_entry.strand == '+'
     assert new_entry.phase == '.'
     assert new_entry.attributes == 'ID=id2;Name=name2'

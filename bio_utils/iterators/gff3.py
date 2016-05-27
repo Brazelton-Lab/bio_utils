@@ -29,7 +29,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '3.0.0'
+__version__ = '3.1.0'
 
 
 class FastaFound(Exception):
@@ -54,9 +54,8 @@ class GFF3Entry:
 
         end (int): end of feature
 
-        score (str): score/confidence of feature, often a P-value. This field
-            is a float by convention but stored as a str to preserve formatting
-            (e.g. 1E5, 1e+5, 100000.0)
+        score (float): score/confidence of feature, often a P-value, returns
+            str "." if no score given
 
         strand (str): [+, -, .] strand feature is located on
 
@@ -85,6 +84,7 @@ class GFF3Entry:
         self.start = None
         self.end = None
         self.score = None
+        self._score_str = None  # Original formatting
         self.strand = None
         self.phase = None
         self.attributes = None
@@ -112,7 +112,7 @@ class GFF3Entry:
                                               self.type,
                                               str(self.start),
                                               str(self.end),
-                                              self.score,
+                                              self._score_str,
                                               self.strand,
                                               self.phase,
                                               self.temp_attributes,
@@ -225,7 +225,11 @@ def gff3_iter(handle, start_line=None, parse_attr=True, headers=False):
             data.type = split_line[2]
             data.start = int(split_line[3])
             data.end = int(split_line[4])
-            data.score = split_line[5]  # Kept as str to preserve formatting
+            try:  # Make float unless dot
+                data.score = float(split_line[5])
+            except ValueError:
+                data.score = split_line[5]
+            data._score_str = split_line[5]
             data.strand = split_line[6]
             try: # Get phase as int unless phase not given
                 data.phase = int(split_line[7])
