@@ -65,6 +65,16 @@ def query_sequence_retriever(fastaq_handle, b6_handle, e_value,
 
     Yields:
         FastaEntry: class containing all FASTA data
+
+    Example:
+        Note: These doctests will not pass, examples are only in doctest
+        format as per convention. bio_utils uses pytests for testing.
+
+        >>> fasta_handle = open('test.fasta')
+        >>> b6_handle = open('test.b6')
+        >>> for entry in query_sequence_retriever(fasta_handle,
+        ...                                       b6_handle, 1e5)
+        ...     print(entry.sequence)  # Print aligned query sequence
     """
 
     filtered_b6 = defaultdict(list)

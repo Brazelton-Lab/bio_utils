@@ -57,6 +57,9 @@ def b6_evalue_filter(handle, e_value, *args, **kwargs):
         B6Entry: class containing all B6/M8 data
 
     Example:
+        Note: These doctests will not pass, examples are only in doctest
+        format as per convention. bio_utils uses pytests for testing.
+
         >>> b6_handle = open('test.b6')
         >>> for entry in b6_evalue_filter(b6_handle, 1e5)
         ...     print(entry.evalue)  # Print E-Value of filtered entry
