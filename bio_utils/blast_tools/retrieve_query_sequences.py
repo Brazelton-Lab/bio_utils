@@ -28,7 +28,7 @@ Copyright:
 """
 
 import argparse
-from bio_utils.iterators import b6_iter
+from bio_utils.blast_tools import filter_b6_evalue
 from bio_utils.iterators import fasta_iter
 from bio_utils.iterators import fastq_iter
 from collections import defaultdict
@@ -39,7 +39,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '1.2.1'
+__version__ = '1.2.2'
 
 
 def query_sequence_retriever(fastaq_handle, b6_handle, e_value,
@@ -83,10 +83,9 @@ def query_sequence_retriever(fastaq_handle, b6_handle, e_value,
     """
 
     filtered_b6 = defaultdict(list)
-    for entry in b6_iter(b6_handle, *args, **kwargs):
-        if float(entry.evalue) <= e_value:
-            filtered_b6[entry.query].append(
-                (entry.query_start, entry.query_end, entry.evalue))
+    for entry in filter_b6_evalue(b6_handle, e_value *args, **kwargs):
+        filtered_b6[entry.query].append(
+            (entry.query_start, entry.query_end, entry.evalue))
     fastaq_iter = fasta_iter if fastaq == 'fasta' else fastq_iter
     for fastaqEntry in fastaq_iter(fastaq_handle):
         if fastaqEntry.name in filtered_b6:

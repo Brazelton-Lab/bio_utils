@@ -4,6 +4,11 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- Added *args and **kwargs to blast_tools scripts. [TheOneHyer]
+
+  *args and **kwargs allows b6_iter options to change
+  without needing to change code on blast_tools scripts.
+
 - Added test_blast_to_cigar. [TheOneHyer]
 
   Added test_blast_to_cigar.py. Both this test and
