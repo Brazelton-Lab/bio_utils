@@ -28,7 +28,7 @@ Copyright:
 """
 
 import argparse
-from bio_utils.blast_tools import filter_b6_evalue
+from bio_utils.blast_tools import b6_evalue_filter
 from bio_utils.iterators import fasta_iter
 from collections import defaultdict
 import sys
@@ -38,7 +38,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '1.2.2'
+__version__ = '1.2.3'
 
 
 def subject_sequence_retriever(fasta_handle, b6_handle, e_value,
@@ -78,12 +78,12 @@ def subject_sequence_retriever(fasta_handle, b6_handle, e_value,
     """
 
     filtered_b6 = defaultdict(list)
-    for entry in filter_b6_evalue(b6_handle, e_value * args, **kwargs):
+    for entry in b6_evalue_filter(b6_handle, e_value, * args, **kwargs):
         filtered_b6[entry.subject].append(
             (entry.subject_start, entry.subject_end, entry.evalue))
     for fastaEntry in fasta_iter(fasta_handle):
-        if fastaEntry.name in filtered_b6:
-            for alignment in filtered_b6[fastaEntry.name]:
+        if fastaEntry.id in filtered_b6:
+            for alignment in filtered_b6[fastaEntry.id]:
                 start = alignment[0] - 1
                 end = alignment[1] - 1
                 if start < end:
@@ -93,7 +93,7 @@ def subject_sequence_retriever(fasta_handle, b6_handle, e_value,
                 else:
                     subject_sequence = fastaEntry.sequence[start]
                 fastaEntry.sequence = subject_sequence
-                fastaEntry.description += ' E-Value: '
+                fastaEntry.description += ' E-value: '
                 fastaEntry.description += str(alignment[2])
                 yield fastaEntry
 

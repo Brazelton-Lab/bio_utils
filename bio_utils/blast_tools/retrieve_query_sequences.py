@@ -28,7 +28,7 @@ Copyright:
 """
 
 import argparse
-from bio_utils.blast_tools import filter_b6_evalue
+from bio_utils.blast_tools import b6_evalue_filter
 from bio_utils.iterators import fasta_iter
 from bio_utils.iterators import fastq_iter
 from collections import defaultdict
@@ -39,7 +39,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '1.2.2'
+__version__ = '1.2.3'
 
 
 def query_sequence_retriever(fastaq_handle, b6_handle, e_value,
@@ -83,15 +83,17 @@ def query_sequence_retriever(fastaq_handle, b6_handle, e_value,
     """
 
     filtered_b6 = defaultdict(list)
-    for entry in filter_b6_evalue(b6_handle, e_value *args, **kwargs):
+    for entry in b6_evalue_filter(b6_handle, e_value, *args, **kwargs):
         filtered_b6[entry.query].append(
-            (entry.query_start, entry.query_end, entry.evalue))
+            (entry.query_start, entry.query_end, entry._evalue_str))
     fastaq_iter = fasta_iter if fastaq == 'fasta' else fastq_iter
     for fastaqEntry in fastaq_iter(fastaq_handle):
-        if fastaqEntry.name in filtered_b6:
-            for alignment in filtered_b6[fastaqEntry.name]:
+        if fastaqEntry.id in filtered_b6:
+            for alignment in filtered_b6[fastaqEntry.id]:
                 start = alignment[0] - 1
                 end = alignment[1] - 1
+
+                # Get query sequence
                 if start < end:
                     query_sequence = fastaqEntry.sequence[start:end]
                 elif start > end:
@@ -99,8 +101,24 @@ def query_sequence_retriever(fastaq_handle, b6_handle, e_value,
                 else:
                     query_sequence = fastaqEntry.sequence[start]
                 fastaqEntry.sequence = query_sequence
-                fastaqEntry.description += ' E-Value: '
-                fastaqEntry.description += str(alignment[2])
+
+                # Get query quality
+                if fastaq == 'fastq':
+                    if start < end:
+                        query_quality = fastaqEntry.quality[start:end]
+                    elif start > end:
+                        query_quality = fastaqEntry.quality[end:start][::-1]
+                    else:
+                        query_quality = fastaqEntry.quality[start]
+                    fastaqEntry.quality = query_quality
+
+                # Add E-value to FASTA/Q header
+                if fastaqEntry.description == '':
+                    fastaqEntry.description = 'E-value: '
+                else:
+                    fastaqEntry.description += ' E-value: '
+                fastaqEntry.description += alignment[2]
+
                 yield fastaqEntry
 
 

@@ -4,6 +4,13 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- Added test_b6_evalue_filter.py. [TheOneHyer]
+
+  Added test_b6_evalue_filter.py, made float fields of
+  iters return float and have hidden variable store original
+  formatting for the write() function. iter tests changed
+  to test these new conditions.
+
 - Removed Redundant Code From blast_tools. [TheOneHyer]
 
   retrieve_[query,subject]_sequences.py now call

@@ -23,5 +23,9 @@ Copyright:
 
 from bio_utils.blast_tools.blast_to_cigar import blast_to_cigar
 from bio_utils.blast_tools.filter_b6_evalue import b6_evalue_filter
+from bio_utils.blast_tools.retrieve_subject_sequences \
+    import subject_sequence_retriever
+from bio_utils.blast_tools.retrieve_query_sequences \
+    import query_sequence_retriever
 
 __version__ = '1.0.2'
