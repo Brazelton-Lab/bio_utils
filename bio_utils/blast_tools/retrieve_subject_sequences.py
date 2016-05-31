@@ -38,7 +38,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '1.2.3'
+__version__ = '1.3.0'
 
 
 def subject_sequence_retriever(fasta_handle, b6_handle, e_value,
@@ -78,14 +78,16 @@ def subject_sequence_retriever(fasta_handle, b6_handle, e_value,
     """
 
     filtered_b6 = defaultdict(list)
-    for entry in b6_evalue_filter(b6_handle, e_value, * args, **kwargs):
+    for entry in b6_evalue_filter(b6_handle, e_value, *args, **kwargs):
         filtered_b6[entry.subject].append(
-            (entry.subject_start, entry.subject_end, entry.evalue))
+            (entry.subject_start, entry.subject_end, entry._evalue_str))
     for fastaEntry in fasta_iter(fasta_handle):
         if fastaEntry.id in filtered_b6:
             for alignment in filtered_b6[fastaEntry.id]:
                 start = alignment[0] - 1
                 end = alignment[1] - 1
+
+                # Get subject sequence
                 if start < end:
                     subject_sequence = fastaEntry.sequence[start:end]
                 elif start > end:
@@ -93,8 +95,14 @@ def subject_sequence_retriever(fasta_handle, b6_handle, e_value,
                 else:
                     subject_sequence = fastaEntry.sequence[start]
                 fastaEntry.sequence = subject_sequence
-                fastaEntry.description += ' E-value: '
-                fastaEntry.description += str(alignment[2])
+
+                # Add E-value to FASTA/Q header
+                if fastaEntry.description == '':
+                    fastaEntry.description = 'E-value: '
+                else:
+                    fastaEntry.description += ' E-value: '
+                fastaEntry.description += alignment[2]
+
                 yield fastaEntry
 
 

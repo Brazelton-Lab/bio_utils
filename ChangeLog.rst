@@ -4,6 +4,11 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- Added test_query_sequence_retriever.py. [TheOneHyer]
+
+  Added test_query_sequence_retriever.py and fixed bugs in
+  query_sequence_retriever.py
+
 - Added test_b6_evalue_filter.py. [TheOneHyer]
 
   Added test_b6_evalue_filter.py, made float fields of
