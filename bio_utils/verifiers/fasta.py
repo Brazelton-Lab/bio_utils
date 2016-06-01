@@ -1,12 +1,10 @@
 #!/usr/bin/env python
 
-from __future__ import print_function
-
 """Verifies a FASTA file
 
 Usage:
 
-    fasta_verifier <fastaFile>
+    fasta_verifier <fasta file>
 
 Copyright:
 
@@ -28,8 +26,10 @@ Copyright:
 """
 
 import argparse
-from bio_utils.verifiers.line_verifier import verify_lines
+from bio_utils.verifiers import entry_verifier
 from bio_utils.iterators import fasta_iter
+from bio_utils.verifiers import FormatError
+import os
 import sys
 
 __author__ = 'Alex Hyer'
@@ -41,36 +41,55 @@ __version__ = '1.3.2'
 
 
 # noinspection PyTypeChecker
-def fasta_verifier(handle):
-    """Returns True if FASTA file is valid and False if file is not valid
+def fasta_verifier(entries, ambiguous=False):
+    """Returns True if FASTA entry is valid, else False
 
-    :param handle: FASTA file handle
-    :type handle: File Object
+    Args:
+        entries (list): A list of FastaEntry objects
+
+        ambiguous (bool): Permit ambiguous bases, i.e. permit non-ACGTU bases
+
+    Raises:
+        FormatError: Error when FASTA format incorrect with descriptive message
     """
 
-    lines = []
-    for entry in fasta_iter(handle):
-        lines.append(entry.write())
-    regex = r'^>.+\n[ACGTURYKMSWBDHVNX]+\n$'
-    delimiter = r'\n'
-    fasta_status = verify_lines(lines, regex, delimiter)
-    return fasta_status
+    if ambiguous:
+        regex = r'^>.+{0}[ACGTURYKMSWBDHVNX]+{0}$'.format(os.linesep)
+    else:
+        regex = r'^>.+{0}[ACGTU]+{0}$'.format(os.linesep)
+    delimiter = r'{0}'.format(os.linesep)
+    for entry in entries:
+        try:
+            entry_verifier([entry.write()], regex, delimiter)
+        except FormatError as err:
+            if err.part == 0:
+                msg = 'Unknown Header Error with {0}'.format(entry.id)
+                raise FormatError(message=msg)
+            elif err.part == 1 and ambiguous:
+                msg = '{0} contains a base not in ' \
+                      '[ACGTURYKMSWBDHVNX]'.format(entry.id)
+                raise FormatError(message=msg)
+            elif err.part == 1 and not ambiguous:
+                msg = '{0} contains a base not in ' \
+                      '[ACGTU]'.format(entry.id)
+                raise FormatError(message=msg)
+            else:
+                msg = 'Unknown Error: Likely a Bug'
+                raise FormatError(message=msg)
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.
                                      RawDescriptionHelpFormatter)
-    parser.add_argument('fastaFile',
-                        help='FASTA file to verify')
+    parser.add_argument('fasta',
+                        help='FASTA file to verify, Default: STDIN',
+                        type=argparse.FileType('rU'),
+                        default=sys.stdin)
     args = parser.parse_args()
 
-    with open(args.fastaFile, 'rU') as in_handle:
-        valid = fasta_verifier(in_handle)
-    if valid:
-        print('{} is valid'.format(args.fastaFile))
-    else:
-        print('{} is not valid'.format(args.fastaFile))
+    for entry in fasta_iter(args.fasta):
+        fasta_verifier(entry)
 
 
 if __name__ == '__main__':

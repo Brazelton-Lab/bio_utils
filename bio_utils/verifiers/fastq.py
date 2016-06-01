@@ -28,7 +28,7 @@ Copyright:
 """
 
 import argparse
-from bio_utils.verifiers.line_verifier import verify_lines
+from bio_utils.verifiers.verify_entries import entry_verifier
 from bio_utils.iterators import fastq_iter
 import sys
 
@@ -53,7 +53,7 @@ def fastq_verifier(handle):
         lines.append(entry.write())
     regex = r'^@.+\n[ACGTURYKMSWBDHVNX]+\n\+.*\n.+\n$'
     delimiter = r'\n'
-    fastq_status = verify_lines(lines, regex, delimiter)
+    fastq_status = entry_verifier(lines, regex, delimiter)
     return fastq_status
 
 

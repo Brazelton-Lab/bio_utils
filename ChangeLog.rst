@@ -4,6 +4,12 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- Added test_subject_sequence_retriever. [TheOneHyer]
+
+  Added test_subject_sequence_retriever.py. Rolled
+  project version forward as all blast_tools are
+  now "complete."
+
 - Added test_query_sequence_retriever.py. [TheOneHyer]
 
   Added test_query_sequence_retriever.py and fixed bugs in

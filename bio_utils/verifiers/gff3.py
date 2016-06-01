@@ -28,7 +28,7 @@ Copyright:
 """
 
 import argparse
-from bio_utils.verifiers.line_verifier import verify_lines
+from bio_utils.verifiers.verify_entries import entry_verifier
 from bio_utils.iterators import gff3_iter
 import sys
 
@@ -54,7 +54,7 @@ def gff3_verifier(handle):
     regex = r'^[a-zA-Z0-9.:^*$@!+_?-|]+\t.+\t.+\t\d+\t\d+\t' \
             + r'\d*\.?\d*\t[+-.]\t[.0-2]\t.+\n$'
     delimiter = r'\t'
-    gff3_status = verify_lines(lines, regex, delimiter)
+    gff3_status = entry_verifier(lines, regex, delimiter)
     return gff3_status
 
 

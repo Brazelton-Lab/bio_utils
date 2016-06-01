@@ -26,7 +26,7 @@ Copyright:
 """
 
 import argparse
-from bio_utils.verifiers.line_verifier import verify_lines
+from bio_utils.verifiers.verify_entries import entry_verifier
 from bio_utils.iterators import b6_iter
 import sys
 
@@ -51,7 +51,7 @@ def b6_verifier(handle):
     regex = r'^.+\t.+\t\d+\.?\d*\t\d+\t\d+\t\d+\t\d+\t\d+\t\d+\t\d+\t' \
             + r'\d+\.?\d*(e-)?\d*\t\d+\.?\d*\n$'
     delimiter = r'\t'
-    m8_status = verify_lines(lines, regex, delimiter)
+    m8_status = entry_verifier(lines, regex, delimiter)
     return m8_status
 
 

@@ -28,7 +28,7 @@ Copyright:
 """
 
 import argparse
-from bio_utils.verifiers.line_verifier import verify_lines
+from bio_utils.verifiers.verify_entries import entry_verifier
 from bio_utils.iterators import sam_iter
 import sys
 
@@ -78,7 +78,7 @@ def sam_verifier(handle):
             + r'\*|[A-Za-z=.]+\t' \
             + r'[!-~]+\n$'
     delimiter = r'\t'
-    sam_status = verify_lines(lines, regex, delimiter)
+    sam_status = entry_verifier(lines, regex, delimiter)
     return sam_status
 
 

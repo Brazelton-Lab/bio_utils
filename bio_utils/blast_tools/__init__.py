@@ -28,4 +28,4 @@ from bio_utils.blast_tools.retrieve_subject_sequences \
 from bio_utils.blast_tools.retrieve_query_sequences \
     import query_sequence_retriever
 
-__version__ = '1.0.2'
+__version__ = '1.1.0'
