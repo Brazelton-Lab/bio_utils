@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
+
 """Verifies a FASTA file
 
 Usage:
 
-    fasta_verifier <fasta file>
+    fasta_verifier <FASTA file>
 
 Copyright:
 
@@ -26,8 +28,8 @@ Copyright:
 """
 
 import argparse
-from bio_utils.verifiers import entry_verifier
 from bio_utils.iterators import fasta_iter
+from bio_utils.verifiers import entry_verifier
 from bio_utils.verifiers import FormatError
 import os
 import sys
@@ -36,8 +38,8 @@ __author__ = 'Alex Hyer'
 __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
-__status__ = 'Production'
-__version__ = '1.3.2'
+__status__ = 'Beta'
+__version__ = '2.0.0'
 
 
 # noinspection PyTypeChecker
@@ -90,6 +92,7 @@ def main():
 
     for entry in fasta_iter(args.fasta):
         fasta_verifier(entry)
+    print('{0} is valid'.format(args.fasta.name))
 
 
 if __name__ == '__main__':

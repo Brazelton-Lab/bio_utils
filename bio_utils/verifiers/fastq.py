@@ -6,7 +6,7 @@ from __future__ import print_function
 
 Usage:
 
-    fastq_verifier <fastqFile>
+    fastq_verifier <FASTQ File>
 
 Copyright:
 
@@ -28,20 +28,21 @@ Copyright:
 """
 
 import argparse
-from bio_utils.verifiers.verify_entries import entry_verifier
 from bio_utils.iterators import fastq_iter
+from bio_utils.verifiers.verify_entries import entry_verifier
+from bio_utils.verifiers import FormatError
 import sys
 
 __author__ = 'Alex Hyer'
 __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
-__status__ = 'Production'
+__status__ = 'Alpha'
 __version__ = '1.2.2'
 
 
 # noinspection PyTypeChecker
-def fastq_verifier(handle):
+def fastq_verifier(handle, ambiguous=False):
     """Returns True if FASTQ file is valid and False if file is not valid
 
     :param handle: FASTQ file handle

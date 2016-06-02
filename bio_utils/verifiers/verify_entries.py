@@ -47,6 +47,23 @@ class FormatError(Exception):
             are subsets of a larger template and subject
 
         message (str): Error message
+
+    Examples:
+        Note: These doctests may not pass, examples are only in doctest
+        format as per convention. bio_utils uses pytests for testing.
+
+        >>> import re
+        >>> regex = r'^>.+\\n[ACGTU]+\\n$'
+        >>> subject = r'>entry1\\nAGGGACTZZHZHJA\\n'
+        >>> if not re.match(regex, subject):
+        ...     raise FormatError(template=regex,
+        ...                       subject=subject,
+        ...                       message='Error with format')
+        Traceback (most recent call last):
+            File "<stdin>", line 1, in <module>
+            File "bio_utils/verifiers/verify_entires.py", line 59, in FormatError
+                raise FormatError(message=msg)
+        bio_utils.verifiers.verify_entries.FormatError: Error with format!
     """
 
     def __init__(self, template=None, subject=None, part=None, message=None):

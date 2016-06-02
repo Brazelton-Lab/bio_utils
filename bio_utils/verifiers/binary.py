@@ -35,7 +35,7 @@ __author__ = 'Alex Hyer'
 __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
-__status__ = 'Production'
+__status__ = 'Alpha'
 __version__ = '1.2.2'
 __credits__ = 'Andrew Dalke'
 
