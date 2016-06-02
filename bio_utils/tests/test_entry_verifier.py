@@ -37,15 +37,25 @@ def test_entry_verifier():
     """Test bio_utils' entry_verifier with multiple regex and subjects"""
 
     # Store multiple entries for testing
+
+    # Good data
     regex_solo = r'^>.+{0}[ACGTU]+{0}$'.format(os.linesep)
     subject_solo = '>entry1{0}AGGAATTCGGCTAGCTTGAC{0}'.format(os.linesep)
     delimiter_solo = r'{0}'.format(os.linesep)
 
+    # Bad set 1
     regex_set = r'^@.+\t[ACGTURYKMSWBDHVNX]+\t\+.*\t.+\t$'
     subject_set = [r'@entry1\tAAGGATTCG\t+\t142584412\t'
                    r'@entry\tAGGTZCCCCG\t+\t1224355221\t',
                    r'@entry3\tGCCTAGC\t+\t6443284\t']
     delimiter_set = r'\t'
+
+    # Bad set 2
+    regex_set2 = r'^@.+\\r\\n[ACGTURYKMSWBDHVNX]+\\r\\n\+.*\\r\\n.+\\r\\n$'
+    subject_set2 = [r'@entry1\r\nAAGGATTCG\r\n+\r\n142584412\r\n'
+                    r'@entry\r\nAGGTGCCCCG\r\n+\r\n1224355221\r\n',
+                    r'4entry3\r\nGCCTAGC\r\n+\r\n6443284\r\n']
+    delimiter_set2 = r'\\r\\n'
 
     # Next line will throw a FormatError if entry_verifier is broken
     # and doesn't deem subject_solo to match regex_solo
@@ -58,12 +68,6 @@ def test_entry_verifier():
         assert error.template == r'^[ACGTURYKMSWBDHVNX]+$'
         assert error.subject == 'AGGTZCCCCG'
         assert error.part == 1
-
-    regex_set2 = r'^@.+\\r\\n[ACGTURYKMSWBDHVNX]+\\r\\n\+.*\\r\\n.+\\r\\n$'
-    subject_set2 = [r'@entry1\r\nAAGGATTCG\r\n+\r\n142584412\r\n'
-                   r'@entry\r\nAGGTGCCCCG\r\n+\r\n1224355221\r\n',
-                   r'4entry3\r\nGCCTAGC\r\n+\r\n6443284\r\n']
-    delimiter_set2 = r'\\r\\n'
 
     # Test set 2
     try:

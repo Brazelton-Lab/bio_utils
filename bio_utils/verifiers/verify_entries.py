@@ -70,6 +70,7 @@ class FormatError(Exception):
         self.template = template
         self.subject = subject
         self.part = part
+        self.message = message
 
         # Only print error if message given so that errors can be used to
         # convey data on error for intelligent handling downstream
