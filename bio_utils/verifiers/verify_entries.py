@@ -67,7 +67,7 @@ class FormatError(Exception):
     """
 
     def __init__(self, template=None, subject=None, part=None, message=None):
-        self.regex = template
+        self.template = template
         self.subject = subject
         self.part = part
 

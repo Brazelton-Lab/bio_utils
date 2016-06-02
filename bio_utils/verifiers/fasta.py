@@ -63,15 +63,15 @@ def fasta_verifier(entries, ambiguous=False):
     for entry in entries:
         try:
             entry_verifier([entry.write()], regex, delimiter)
-        except FormatError as err:
-            if err.part == 0:
+        except FormatError as error:
+            if error.part == 0:
                 msg = 'Unknown Header Error with {0}'.format(entry.id)
                 raise FormatError(message=msg)
-            elif err.part == 1 and ambiguous:
+            elif error.part == 1 and ambiguous:
                 msg = '{0} contains a base not in ' \
                       '[ACGTURYKMSWBDHVNX]'.format(entry.id)
                 raise FormatError(message=msg)
-            elif err.part == 1 and not ambiguous:
+            elif error.part == 1 and not ambiguous:
                 msg = '{0} contains a base not in ' \
                       '[ACGTU]'.format(entry.id)
                 raise FormatError(message=msg)
@@ -92,7 +92,7 @@ def main():
 
     for entry in fasta_iter(args.fasta):
         fasta_verifier(entry)
-    print('{0} is valid'.format(args.fasta.name))
+    print('{0} is valid'.format(args.fasta.name))  # Only prints if no error
 
 
 if __name__ == '__main__':
