@@ -129,7 +129,7 @@ def test_binary_guesser():
     text_handle.seek(256)
 
     try:
-        binary_guesser(text_handle)
+        binary_guesser(text_handle, bytes=128)
     except FormatError as error:
         assert error.message == '{0} is probably not a binary ' \
                                 'file'.format(text_handle.name)

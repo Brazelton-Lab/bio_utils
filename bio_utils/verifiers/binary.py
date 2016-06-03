@@ -35,14 +35,14 @@ __author__ = 'Alex Hyer'
 __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
-__status__ = 'Alpha'
+__status__ = 'Production'
 __version__ = '2.0.0'
 __credits__ = 'Andrew Dalke'
 
 
 # Credit: http://code.activestate.com/
 # recipes/173220-test-if-a-file-or-string-is-text-or-binary/
-def binary_guesser(handle):
+def binary_guesser(handle, bytes=512):
     """Raise error if file not likely binary
 
     Guesses if a file is binary, raises error if file is not likely binary,
@@ -50,6 +50,9 @@ def binary_guesser(handle):
 
     Args:
         handle (file): File handle of file thought to be binary
+
+        bytes (int): Bytes of file to read to guess binary, more bytes
+            is often better but takes longer
 
     Raises:
         FormatError: Error raised if file is not likely binary
@@ -65,7 +68,7 @@ def binary_guesser(handle):
     text_characters = ''.join(map(chr, range(32, 127))) + '\n\r\t\b'
     trans_table = dict.fromkeys(map(ord, text_characters), None)
     handle_location = handle.tell()
-    first_block = handle.read(512)
+    first_block = handle.read(bytes)
     filtered_block = first_block.translate(trans_table)
     handle.seek(handle_location)  # Return to original handle location
     if float(len(filtered_block)) / float(len(first_block)) > 0.30:
