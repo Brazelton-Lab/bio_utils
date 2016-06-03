@@ -6,7 +6,7 @@ from __future__ import print_function
 
 Usage:
 
-    fastq_verifier <FASTQ File>
+    fastq_verifier <FASTQ File> [--quiet]
 
 Copyright:
 
@@ -31,6 +31,7 @@ import argparse
 from bio_utils.iterators import fastq_iter
 from bio_utils.verifiers.verify_entries import entry_verifier
 from bio_utils.verifiers import FormatError
+import os
 import sys
 
 __author__ = 'Alex Hyer'
@@ -42,36 +43,83 @@ __version__ = '1.2.2'
 
 
 # noinspection PyTypeChecker
-def fastq_verifier(handle, ambiguous=False):
-    """Returns True if FASTQ file is valid and False if file is not valid
+def fastq_verifier(entries, ambiguous=False):
+    """Raises error if invalid FASTQ format detected
 
-    :param handle: FASTQ file handle
-    :type handle: File Object
+    Args:
+        entries (list): A list of FastqEntry objects
+
+        ambiguous (bool): Permit ambiguous bases, i.e. permit non-ACGTU bases
+
+    Raises:
+        FormatError: Error when FASTQ format incorrect with descriptive message
     """
 
-    lines = []
-    for entry in fastq_iter(handle):
-        lines.append(entry.write())
-    regex = r'^@.+\n[ACGTURYKMSWBDHVNX]+\n\+.*\n.+\n$'
-    delimiter = r'\n'
-    fastq_status = entry_verifier(lines, regex, delimiter)
-    return fastq_status
+    if ambiguous:
+        regex = r'^@.+{0}[ACGTURYKMSWBDHVNX]+{0}' \
+                r'\+.*{0}[!"#$%&\'()*+,-./0123456' \
+                r'789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ' \
+                r'[\]^_`abcdefghijklmnopqrstuvwxyz' \
+                r'{|}~]+{0}$'.format(os.linesep)
+    else:
+        regex = r'^@.+{0}[ACGTU]+{0}' \
+                r'\+.*{0}[!"#$%&\'()*+,-./0123456' \
+                r'789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ' \
+                r'[\]^_`abcdefghijklmnopqrstuvwxyz' \
+                r'{|}~]+{0}$'.format(os.linesep)
+    delimiter = r'{0}'.format(os.linesep)
+
+    for entry in entries:
+        if not len(entry.sequence) == len(entry.quality):
+            msg = 'The number of bases in {0} does not match the number ' \
+                  'of quality scores'.format(entry.id)
+            raise FormatError(message=msg)
+        try:
+            entry_verifier(entry, regex, delimiter)
+        except FormatError as error:
+            if error.part == 0:
+                msg = 'Unknown Header Error with {0}'.format(entry.id)
+                raise FormatError(message=msg)
+            elif error.part == 1 and ambiguous:
+                msg = '{0} contains a base not in ' \
+                      '[ACGTURYKMSWBDHVNX]'.format(entry.id)
+                raise FormatError(message=msg)
+            elif error.part == 1 and not ambiguous:
+                msg = '{0} contains a base not in ' \
+                      '[ACGTU]'.format(entry.id)
+                raise FormatError(message=msg)
+            elif error.part == 2:
+                msg = 'Unknown error with line 3 of {0}'.format(entry.id)
+                raise FormatError(message=msg)
+            elif error.part == 3:
+                msg = r'{0} contains a quality score not in ' \
+                      r'[!"#$%&\'()*+,-./0123456' \
+                      r'789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ' \
+                      r'[\]^_`abcdefghijklmnopqrstuvwxy' \
+                      r'z{|}~]'
+                raise FormatError(message=msg)
+            else:
+                msg = 'Unknown Error: Likely a Bug'
+                raise FormatError(message=msg)
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.
                                      RawDescriptionHelpFormatter)
-    parser.add_argument('fastqFile',
-                        help='FASTQ file to verify')
+    parser.add_argument('fastq',
+                        help='FASTQ file to verify [Default: STDIN]',
+                        type=argparse.FileType('rU'),
+                        default=sys.stdin)
+    parser.add_argument('-q', '--quiet',
+                        help='Suppresses message when file is good',
+                        action='store_false')
     args = parser.parse_args()
 
-    with open(args.fastqFile, 'rU') as in_handle:
-        valid = fastq_verifier(in_handle)
-    if valid:
-        print('{} is valid'.format(args.fastqFile))
-    else:
-        print('{} is not valid'.format(args.fastqFile))
+    for entry in fastq_iter(args.fasta):
+        fastq_verifier(entry)
+    if not args.quiet:
+        print('{0} is valid'.format(args.fastq.name))  # Prints if no error
 
 
 if __name__ == '__main__':

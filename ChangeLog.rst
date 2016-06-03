@@ -4,6 +4,18 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- Can select bytes for binary_verifier. [TheOneHyer]
+
+  binary_guesser now takes a bytes argument
+  which determines the number of bytes to use
+  to guess if a file is binary or not.
+
+- Added test_binary_guesser. [TheOneHyer]
+
+  Added test_binary_guesser and confirmed working.
+  Fixed errors with binary_verifier as discovered by
+  test_binary_guesser.
+
 - Streamlined b6_verifier. [TheOneHyer]
 
   Significantly reduced the lines of code in
