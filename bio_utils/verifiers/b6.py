@@ -64,8 +64,6 @@ def b6_verifier(entries, line=None):
         >>> b6_verifier(b6_entries)
     """
 
-    if type(entries) is str:  # Convert single str entries to lists
-        entries = [entries]
     regex = r'^.+\t.+\t\d+\.?\d*\t\d+\t\d+\t\d+\t\d+\t\d+\t\d+\t\d+\t' \
             + r'\d+\.?\d*(e-)?\d*\t\d+\.?\d*{0}$'.format(os.linesep)
     delimiter = r'\t'
@@ -194,8 +192,10 @@ def main():
                         action='store_false')
     args = parser.parse_args()
 
+    line = 0
     for entry in b6_iter(args.b6):
-        b6_verifier(entry)
+        b6_verifier(entry, line=line)
+        line += 1
     if not args.quiet:
         print('{0} is valid').format(args.b6.name)
 

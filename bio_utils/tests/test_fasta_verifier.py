@@ -42,21 +42,21 @@ def test_fasta_verifier():
               r'>entry{0}AGGTCCCCCG{0}' \
               r'>entry3{0}GCCTAGC{0}'.format(os.linesep)
 
-    fasta_entries = fasta_iter(iter(entries.split(os.linesep)))
+    fasta_entries = [i for i in fasta_iter(iter(entries.split(os.linesep)))]
 
     # Bad sequence set
     entries2 = r'>entry1{0}AAGGANTCG{0}' \
                r'>entry{0}AGGTCCCCCG{0}' \
                r'>entry3{0}GCCTAGC{0}'.format(os.linesep)
 
-    fasta_entries2 = fasta_iter(iter(entries2.split(os.linesep)))
+    fasta_entries2 = [i for i in fasta_iter(iter(entries2.split(os.linesep)))]
 
     # Bad ambiguous-bases sequence set
     entries3 = r'>entry1{0}AAGGAZTCG{0}' \
                r'>entry{0}AGGTCCCCCG{0}' \
                r'>entry3{0}GCCTAGC{0}'.format(os.linesep)
 
-    fasta_entries3 = fasta_iter(iter(entries3.split(os.linesep)))
+    fasta_entries3 = [i for i in fasta_iter(iter(entries3.split(os.linesep)))]
 
     # Next two line will throw a FormatError if entry_verifier is broken
     # and doesn't deem entries proper

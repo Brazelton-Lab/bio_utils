@@ -64,8 +64,6 @@ def fasta_verifier(entries, ambiguous=False):
         >>> fasta_verifier(fasta_entries)
     """
 
-    if type(entries) is str:  # Convert single str entries to list
-        entries = [entries]
     if ambiguous:
         regex = r'^>.+{0}[ACGTURYKMSWBDHVNX]+{0}$'.format(os.linesep)
     else:
