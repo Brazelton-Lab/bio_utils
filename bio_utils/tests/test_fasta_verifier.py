@@ -21,59 +21,48 @@ Copyright:
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from bio_utils.iterators import fasta_iter
+from bio_utils.iterators import FastaEntry
 from bio_utils.verifiers import fasta_verifier
 from bio_utils.verifiers import FormatError
-import os
 
 __author__ = 'Alex Hyer'
 __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '1.0.0'
+__version__ = '2.0.0'
 
 
 def test_fasta_verifier():
     """Test bio_utils' fasta_verifier with multiple entries"""
 
-    # Properly formatted set
-    entries = r'>entry1{0}AAGGATTCG{0}' \
-              r'>entry{0}AGGTCCCCCG{0}' \
-              r'>entry3{0}GCCTAGC{0}'.format(os.linesep)
+    # Store properly formatted FASTA data
+    entry = FastaEntry()
+    entry.id = 'entry1'
+    entry.description = ''
+    entry.sequence = 'AGCGCTTAGCTA'
 
-    fasta_entries = [i for i in fasta_iter(iter(entries.split(os.linesep)))]
+    # Next two line won't throw a FormatError unless entry_verifier is broken
+    fasta_verifier([entry])
+    fasta_verifier([entry], ambiguous=True)
 
-    # Bad sequence set
-    entries2 = r'>entry1{0}AAGGANTCG{0}' \
-               r'>entry{0}AGGTCCCCCG{0}' \
-               r'>entry3{0}GCCTAGC{0}'.format(os.linesep)
+    # Bad header not tested because it is caught by the iterators
+    # and added in by FastaEntry.write()
 
-    fasta_entries2 = [i for i in fasta_iter(iter(entries2.split(os.linesep)))]
-
-    # Bad ambiguous-bases sequence set
-    entries3 = r'>entry1{0}AAGGAZTCG{0}' \
-               r'>entry{0}AGGTCCCCCG{0}' \
-               r'>entry3{0}GCCTAGC{0}'.format(os.linesep)
-
-    fasta_entries3 = [i for i in fasta_iter(iter(entries3.split(os.linesep)))]
-
-    # Next two line will throw a FormatError if entry_verifier is broken
-    # and doesn't deem entries proper
-    fasta_verifier(fasta_entries)
-    fasta_verifier(fasta_entries, ambiguous=True)
-
-    # Test bad sequence set
+    # Test bad sequence
+    entry.sequence = 'AACGCATCGNNGT'
     try:
-        fasta_verifier(fasta_entries2)
+        fasta_verifier([entry])
     except FormatError as error:
         assert error.message == 'entry1 contains a base not in [ACGTU]'
 
-    # Test bad ambiguous-bases sequence set
+    # Test ambiguous data, no error should be thrown unless vroken
+    fasta_verifier([entry], ambiguous=True)
+
+    # Test bad ambiguous-bases sequence
+    entry.sequence = 'AAGAGCTCATATGZZZGZTTAGATCPGG'
     try:
-        fasta_verifier(fasta_entries3, ambiguous=True)
+        fasta_verifier([entry], ambiguous=True)
     except FormatError as error:
         assert error.message == 'entry1 contains a base not in ' \
                                 '[ACGTURYKMSWBDHVNX]'
-
-    # Bad header not tested because it is caught by the iterators
