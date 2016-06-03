@@ -42,7 +42,7 @@ def test_fasta_verifier():
     entry.description = ''
     entry.sequence = 'AGCGCTTAGCTA'
 
-    # Next two line won't throw a FormatError unless entry_verifier is broken
+    # Next two line won't throw a FormatError unless fasta_verifier is broken
     fasta_verifier([entry])
     fasta_verifier([entry], ambiguous=True)
 

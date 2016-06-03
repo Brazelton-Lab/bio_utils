@@ -38,8 +38,8 @@ __author__ = 'Alex Hyer'
 __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
-__status__ = 'Alpha'
-__version__ = '1.2.2'
+__status__ = 'Production'
+__version__ = '1.0.0'
 
 
 # noinspection PyTypeChecker
@@ -60,22 +60,22 @@ def fastq_verifier(entries, ambiguous=False):
                 r'\+.*{0}[!"#$%&\'()*+,-./0123456' \
                 r'789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ' \
                 r'[\]^_`abcdefghijklmnopqrstuvwxyz' \
-                r'{|}~]+{0}$'.format(os.linesep)
+                r'{{|}}~]+{0}$'.format(os.linesep)
     else:
         regex = r'^@.+{0}[ACGTU]+{0}' \
                 r'\+.*{0}[!"#$%&\'()*+,-./0123456' \
                 r'789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ' \
                 r'[\]^_`abcdefghijklmnopqrstuvwxyz' \
-                r'{|}~]+{0}$'.format(os.linesep)
+                r'{{|}}~]+{0}$'.format(os.linesep)
     delimiter = r'{0}'.format(os.linesep)
 
     for entry in entries:
-        if not len(entry.sequence) == len(entry.quality):
+        if len(entry.sequence) != len(entry.quality):
             msg = 'The number of bases in {0} does not match the number ' \
                   'of quality scores'.format(entry.id)
             raise FormatError(message=msg)
         try:
-            entry_verifier(entry, regex, delimiter)
+            entry_verifier([entry.write()], regex, delimiter)
         except FormatError as error:
             if error.part == 0:
                 msg = 'Unknown Header Error with {0}'.format(entry.id)
@@ -96,7 +96,7 @@ def fastq_verifier(entries, ambiguous=False):
                       r'[!"#$%&\'()*+,-./0123456' \
                       r'789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ' \
                       r'[\]^_`abcdefghijklmnopqrstuvwxy' \
-                      r'z{|}~]'
+                      r'z{{|}}~]'.format(entry.id)
                 raise FormatError(message=msg)
             else:
                 msg = 'Unknown Error: Likely a Bug'

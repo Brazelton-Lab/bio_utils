@@ -4,6 +4,11 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- Improved fastq_verifier. [TheOneHyer]
+
+  fsatq_verifier brought up to standards with other
+  verifiers: not tested.
+
 - Can select bytes for binary_verifier. [TheOneHyer]
 
   binary_guesser now takes a bytes argument
