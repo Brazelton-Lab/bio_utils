@@ -56,7 +56,7 @@ def test_fasta_verifier():
     except FormatError as error:
         assert error.message == 'entry1 contains a base not in [ACGTU]'
 
-    # Test ambiguous data, no error should be thrown unless vroken
+    # Test ambiguous data, no error should be thrown unless broken
     fasta_verifier([entry], ambiguous=True)
 
     # Test bad ambiguous-bases sequence

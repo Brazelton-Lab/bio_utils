@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#! /usr/bin/env python
 
 from __future__ import print_function
 
@@ -38,8 +38,8 @@ __author__ = 'Alex Hyer'
 __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
-__status__ = 'Alpha'
-__version__ = '2.0.0'
+__status__ = 'Production'
+__version__ = '2.1.0'
 
 
 def b6_verifier(entries, line=None):
@@ -72,108 +72,64 @@ def b6_verifier(entries, line=None):
         try:
             entry_verifier([entry.write()], regex, delimiter)
         except FormatError as error:
+            # Format info on what entry error came from
             if line:
-                if error.part == 0:
-                    msg = 'Line {0} has no query ID'.format(str(line))
-                    raise FormatError(message=msg)
-                elif error.part == 1:
-                    msg = 'Line {0} has no subject ID'.format(str(line))
-                    raise FormatError(message=msg)
-                elif error.part == 2:
-                    msg = 'Line {0} has non-numerical ' \
-                          'characters in percent identity'.format(str(line))
-                    raise FormatError(message=msg)
-                elif error.part == 3:
-                    msg = 'Line {0} has non-numerical ' \
-                          'characters in alignment length'.format(str(line))
-                    raise FormatError(message=msg)
-                elif error.part == 4:
-                    msg = 'Line {0} has non-numerical ' \
-                          'characters in mismatches'.format(str(line))
-                    raise FormatError(message=msg)
-                elif error.part == 5:
-                    msg = 'Line {0} has non-numerical ' \
-                          'characters in gaps'.format(str(line))
-                    raise FormatError(message=msg)
-                elif error.part == 6:
-                    msg = 'Line {0} has non-numerical ' \
-                          'characters in query start'.format(str(line))
-                    raise FormatError(message=msg)
-                elif error.part == 7:
-                    msg = 'Line {0} has non-numerical ' \
-                          'characters in query end'.format(str(line))
-                    raise FormatError(message=msg)
-                elif error.part == 8:
-                    msg = 'Line {0} has non-numerical ' \
-                          'characters in subject start'.format(str(line))
-                    raise FormatError(message=msg)
-                elif error.part == 9:
-                    msg = 'Line {0} has non-numerical ' \
-                          'characters in subject end'.format(str(line))
-                    raise FormatError(message=msg)
-                elif error.part == 10:
-                    msg = 'Line {0} has non-numerical ' \
-                          'characters in E-value'.format(str(line))
-                    raise FormatError(message=msg)
-                elif error.part == 11:
-                    msg = 'Line {0} has non-numerical ' \
-                          'characters in bit score'.format(str(line))
-                    raise FormatError(message=msg)
-                else:
-                    msg = 'Unknown Error: Likely a Bug'
-                    raise FormatError(message=msg)
+                intro = 'Line {0}'.format(str(line))
+            elif error.part == 0:
+                intro = 'Entry with subject ID {0}'.format(entry.subject)
             else:
-                if error.part == 0:
-                    msg = 'An entry with subject ID {0} ' \
-                          'has no query ID'.format(entry.subject)
-                    raise FormatError(message=msg)
-                elif error.part == 1:
-                    msg = 'An entry with query ID {0} ' \
-                          'has no subject ID'.format(entry.query)
-                    raise FormatError(message=msg)
-                elif error.part == 2:
-                    msg = 'An entry with query ID {0} has non-numerical ' \
-                          'characters in percent identity'.format(entry.query)
-                    raise FormatError(message=msg)
-                elif error.part == 3:
-                    msg = 'An entry with query ID {0} has non-numerical ' \
-                          'characters in alignment length'.format(entry.query)
-                    raise FormatError(message=msg)
-                elif error.part == 4:
-                    msg = 'An entry with query ID {0} has non-numerical ' \
-                          'characters in mismatches'.format(entry.query)
-                    raise FormatError(message=msg)
-                elif error.part == 5:
-                    msg = 'An entry with query ID {0} has non-numerical ' \
-                          'characters in gaps'.format(entry.query)
-                    raise FormatError(message=msg)
-                elif error.part == 6:
-                    msg = 'An entry with query ID {0} has non-numerical ' \
-                          'characters in query start'.format(entry.query)
-                    raise FormatError(message=msg)
-                elif error.part == 7:
-                    msg = 'An entry with query ID {0} has non-numerical ' \
-                          'characters in query end'.format(entry.query)
-                    raise FormatError(message=msg)
-                elif error.part == 8:
-                    msg = 'An entry with query ID {0} has non-numerical ' \
-                          'characters in subject start'.format(entry.query)
-                    raise FormatError(message=msg)
-                elif error.part == 9:
-                    msg = 'An entry with query ID {0} has non-numerical ' \
-                          'characters in subject end'.format(entry.query)
-                    raise FormatError(message=msg)
-                elif error.part == 10:
-                    msg = 'An entry with query ID {0} has non-numerical ' \
-                          'characters in E-value'.format(entry.query)
-                    raise FormatError(message=msg)
-                elif error.part == 11:
-                    msg = 'An entry with query ID {0} has non-numerical ' \
-                          'characters in bit score'.format(entry.query)
-                    raise FormatError(message=msg)
-                else:
-                    msg = 'Unknown Error: Likely a Bug'
-                    raise FormatError(message=msg)
+                intro = 'Entry with query ID {0}'.format(entry.query)
+
+            # Generate error
+            if error.part == 0:
+                msg = '{0} has no query ID'.format(intro)
+                raise FormatError(message=msg)
+            elif error.part == 1:
+                msg = '{0} has no subject ID'.format(intro)
+                raise FormatError(message=msg)
+            elif error.part == 2:
+                msg = '{0} has non-numerical ' \
+                      'characters in percent identity'.format(intro)
+                raise FormatError(message=msg)
+            elif error.part == 3:
+                msg = '{0} has non-numerical ' \
+                      'characters in alignment length'.format(intro)
+                raise FormatError(message=msg)
+            elif error.part == 4:
+                msg = '{0} has non-numerical ' \
+                      'characters in mismatches'.format(intro)
+                raise FormatError(message=msg)
+            elif error.part == 5:
+                msg = '{0} has non-numerical ' \
+                      'characters in gaps'.format(intro)
+                raise FormatError(message=msg)
+            elif error.part == 6:
+                msg = '{0} has non-numerical ' \
+                      'characters in query start'.format(intro)
+                raise FormatError(message=msg)
+            elif error.part == 7:
+                msg = '{0} has non-numerical ' \
+                      'characters in query end'.format(intro)
+                raise FormatError(message=msg)
+            elif error.part == 8:
+                msg = '{0} has non-numerical ' \
+                      'characters in subject start'.format(intro)
+                raise FormatError(message=msg)
+            elif error.part == 9:
+                msg = '{0} has non-numerical ' \
+                      'characters in subject end'.format(intro)
+                raise FormatError(message=msg)
+            elif error.part == 10:
+                msg = '{0} has non-numerical ' \
+                      'characters in E-value'.format(intro)
+                raise FormatError(message=msg)
+            elif error.part == 11:
+                msg = '{0} has non-numerical ' \
+                      'characters in bit score'.format(intro)
+                raise FormatError(message=msg)
+            else:
+                msg = 'Unknown Error: Likely a Bug'
+                raise FormatError(message=msg)
 
         if line:
             line += 1
@@ -192,10 +148,8 @@ def main():
                         action='store_false')
     args = parser.parse_args()
 
-    line = 0
-    for entry in b6_iter(args.b6):
-        b6_verifier(entry, line=line)
-        line += 1
+    for entry in enumerate(b6_iter(args.b6)):
+        b6_verifier(entry[1], line=entry[0]+1)
     if not args.quiet:
         print('{0} is valid').format(args.b6.name)
 

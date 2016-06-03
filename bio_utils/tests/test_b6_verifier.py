@@ -30,7 +30,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 
 
 def test_b6_verifier():
@@ -61,7 +61,7 @@ def test_b6_verifier():
     try:
         b6_verifier([entry])
     except FormatError as error:
-        assert error.message == 'An entry with subject ID subject1 has ' \
+        assert error.message == 'Entry with subject ID subject1 has ' \
                                 'no query ID'
 
     # Test no subject
@@ -70,7 +70,7 @@ def test_b6_verifier():
     try:
         b6_verifier([entry])
     except FormatError as error:
-        assert error.message == 'An entry with query ID query1 has no ' \
+        assert error.message == 'Entry with query ID query1 has no ' \
                                 'subject ID'
 
     # Test non-numeric perc_identical
@@ -88,7 +88,7 @@ def test_b6_verifier():
     try:
         b6_verifier([entry])
     except FormatError as error:
-        assert error.message == 'An entry with query ID query1 has ' \
+        assert error.message == 'Entry with query ID query1 has ' \
                                 'non-numerical characters in alignment length'
 
     # Test non-numeric mismatches
@@ -97,7 +97,7 @@ def test_b6_verifier():
     try:
         b6_verifier([entry])
     except FormatError as error:
-        assert error.message == 'An entry with query ID query1 has ' \
+        assert error.message == 'Entry with query ID query1 has ' \
                                 'non-numerical characters in mismatches'
 
     # Test non-numeric gaps
@@ -115,7 +115,7 @@ def test_b6_verifier():
     try:
         b6_verifier([entry])
     except FormatError as error:
-        assert error.message == 'An entry with query ID query1 has ' \
+        assert error.message == 'Entry with query ID query1 has ' \
                                 'non-numerical characters in query start'
 
     # Test non-numeric query_end
@@ -124,7 +124,7 @@ def test_b6_verifier():
     try:
         b6_verifier([entry])
     except FormatError as error:
-        assert error.message == 'An entry with query ID query1 has ' \
+        assert error.message == 'Entry with query ID query1 has ' \
                                 'non-numerical characters in query end'
 
     # Test non-numeric subject_start
@@ -151,7 +151,7 @@ def test_b6_verifier():
     try:
         b6_verifier([entry])
     except FormatError as error:
-        assert error.message == 'An entry with query ID query1 has ' \
+        assert error.message == 'Entry with query ID query1 has ' \
                                 'non-numerical characters in E-value'
 
     # Test non-numeric bit_score
@@ -160,5 +160,5 @@ def test_b6_verifier():
     try:
         b6_verifier([entry])
     except FormatError as error:
-        assert error.message == 'An entry with query ID query1 has ' \
+        assert error.message == 'Entry with query ID query1 has ' \
                                 'non-numerical characters in bit score'

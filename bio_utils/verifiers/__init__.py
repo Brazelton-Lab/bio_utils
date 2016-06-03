@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#! /usr/bin/env python
 
 """Import verifiers functions at package level
 
@@ -21,18 +21,20 @@ Copyright:
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
+# First two imports are non-alphabetical because they are required by the
+# latter imports.
+from bio_utils.verifiers.verify_entries import entry_verifier
+from bio_utils.verifiers.verify_entries import FormatError
 from bio_utils.verifiers.b6 import b6_verifier
 from bio_utils.verifiers.binary import binary_guesser
 from bio_utils.verifiers.fasta import fasta_verifier
 from bio_utils.verifiers.fastq import fastq_verifier
 from bio_utils.verifiers.gff3 import gff3_verifier
 from bio_utils.verifiers.sam import sam_verifier
-from bio_utils.verifiers.verify_entries import entry_verifier
-from bio_utils.verifiers.verify_entries import FormatError
 
 __author__ = 'Alex Hyer'
 __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '1.1.1'
+__version__ = '1.1.2'
