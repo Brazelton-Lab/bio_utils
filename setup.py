@@ -53,7 +53,7 @@ setup(name='bio_utils',
       zip_safe=False,
       entry_points={
           'console_scripts': [
-              'binary_verifier = bio_utils.verifiers.binary:main',
+              'binary_guesser = bio_utils.verifiers.binary:main',
               'fasta_verifier = bio_utils.verifiers.fasta:main',
               'fastq_verifier = bio_utils.verifiers.fastq:main',
               'gff3_verifier = bio_utils.verifiers.gff3:main',

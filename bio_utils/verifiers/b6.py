@@ -188,7 +188,7 @@ def main():
                         type=argparse.FileType('rU'),
                         default=sys.stdin)
     parser.add_argument('-q', '--quiet',
-                        help='Suppresses positive message when  file is good',
+                        help='Suppresses message when file is good',
                         action='store_false')
     args = parser.parse_args()
 

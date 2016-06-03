@@ -44,7 +44,7 @@ __version__ = '2.1.0'
 
 # noinspection PyTypeChecker
 def fasta_verifier(entries, ambiguous=False):
-    """Raises error in invalid FASTA format detected
+    """Raises error if invalid FASTA format detected
 
     Args:
         entries (list): A list of FastaEntry objects
@@ -99,7 +99,7 @@ def main():
                         type=argparse.FileType('rU'),
                         default=sys.stdin)
     parser.add_argument('-q', '--quiet',
-                        help='Suppresses positive message when  file is good',
+                        help='Suppresses message when file is good',
                         action='store_false')
     args = parser.parse_args()
 

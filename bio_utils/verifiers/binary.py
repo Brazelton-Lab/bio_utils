@@ -6,7 +6,7 @@ from __future__ import print_function
 
 Usage:
 
-    binary_verifier <binaryFile>
+    binary_guesser <binary file>
 
 Copyright:
 
@@ -28,6 +28,7 @@ Copyright:
 """
 
 import argparse
+from bio_utils.verifiers import FormatError
 import string
 import sys
 
@@ -36,43 +37,61 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Alpha'
-__version__ = '1.2.2'
+__version__ = '2.0.0'
 __credits__ = 'Andrew Dalke'
 
 
 # Credit: http://code.activestate.com/
 # recipes/173220-test-if-a-file-or-string-is-text-or-binary/
-def binary_verifier(handle):
-    """Returns True if file is probably binary and False if not
+def binary_guesser(handle):
+    """Raise error if file not likely binary
 
-    :param handle: Binary file handle
-    :type handle: File Object
+    Guesses if a file is binary, raises error if file is not likely binary,
+    then returns to location in file when handle passed to binary_guesser.
+
+    Args:
+        handle (file): File handle of file thought to be binary
+
+    Raises:
+        FormatError: Error raised if file is not likely binary
+
+    Example:
+        The following example demonstrate how to use binary_guesser.
+        Note: These doctests will not pass, examples are only in doctest
+        format as per convention. bio_utils uses pytests for testing.
+
+        >>> binary_guesser(open('test.binary'))
     """
 
     text_characters = ''.join(map(chr, range(32, 127)) + list('\n\r\t\b'))
     null_trans_table = string.maketrans('', '')
+    handle_location = handle.tell()
     first_block = handle.read(512)
     filtered_block = first_block.translate(null_trans_table, text_characters)
+    handle.seek(handle_location)  # Return to original handle location
     if float(len(filtered_block)) / float(len(first_block)) > 0.30:
-        return True
+        pass  # File is likely binary
     else:
-        return False
+        msg = '{0} is probably not a binary file'.format(handle.name)
+        raise FormatError(message=msg)
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.
                                      RawDescriptionHelpFormatter)
-    parser.add_argument('binaryFile',
-                        help='file to verify if binary')
+    parser.add_argument('binary',
+                        help='file to verify if binary [Default: STDIN]',
+                        type=argparse.FileType('rU'),
+                        default=sys.stdin)
+    parser.add_argument('-q', '--quiet',
+                        help='Suppresses output when file is good',
+                        action='store_false')
     args = parser.parse_args()
 
-    with open(args.binaryFile, 'rU') as in_handle:
-        valid = binary_verifier(in_handle)
-    if valid:
-        print('{} is probably a binary file'.format(args.binaryFile))
-    else:
-        print('{} is probably a binary file'.format(args.binaryFile))
+    binary_guesser(args.binary)
+    if not args.quiet:
+        print('{} is probably a binary file'.format(args.binary.name))
 
 
 if __name__ == '__main__':

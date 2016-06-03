@@ -21,14 +21,14 @@ Copyright:
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from bio_utils.verifiers.binary import binary_verifier
-from bio_utils.verifiers.verify_entries import entry_verifier
-from bio_utils.verifiers.verify_entries import FormatError
+from bio_utils.verifiers.b6 import b6_verifier
+from bio_utils.verifiers.binary import binary_guesser
 from bio_utils.verifiers.fasta import fasta_verifier
 from bio_utils.verifiers.fastq import fastq_verifier
 from bio_utils.verifiers.gff3 import gff3_verifier
-from bio_utils.verifiers.b6 import b6_verifier
 from bio_utils.verifiers.sam import sam_verifier
+from bio_utils.verifiers.verify_entries import entry_verifier
+from bio_utils.verifiers.verify_entries import FormatError
 
 __author__ = 'Alex Hyer'
 __email__ = 'theonehyer@gmail.com'
