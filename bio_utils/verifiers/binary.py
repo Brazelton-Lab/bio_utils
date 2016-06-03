@@ -29,7 +29,6 @@ Copyright:
 
 import argparse
 from bio_utils.verifiers import FormatError
-import string
 import sys
 
 __author__ = 'Alex Hyer'
@@ -63,11 +62,11 @@ def binary_guesser(handle):
         >>> binary_guesser(open('test.binary'))
     """
 
-    text_characters = ''.join(map(chr, range(32, 127)) + list('\n\r\t\b'))
-    null_trans_table = string.maketrans('', '')
+    text_characters = ''.join(map(chr, range(32, 127))) + '\n\r\t\b'
+    trans_table = dict.fromkeys(map(ord, text_characters), None)
     handle_location = handle.tell()
     first_block = handle.read(512)
-    filtered_block = first_block.translate(null_trans_table, text_characters)
+    filtered_block = first_block.translate(trans_table)
     handle.seek(handle_location)  # Return to original handle location
     if float(len(filtered_block)) / float(len(first_block)) > 0.30:
         pass  # File is likely binary

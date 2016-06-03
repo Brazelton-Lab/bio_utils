@@ -4,6 +4,54 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- Streamlined b6_verifier. [TheOneHyer]
+
+  Significantly reduced the lines of code in
+  b6_verifiers and updated test_b6_verifier to
+  match. Updated __init__ of verifiers package
+  to fix error with order of imports.
+
+- Updated binary_guesser. [TheOneHyer]
+
+  Updated binary_guesser to use FormatError, untested.
+
+- Improved test_fasta_verifier. [TheOneHyer]
+
+  test_fasta_verifier improved to better
+  test just fasta_verifier
+
+- Added test_b6_verifier. [TheOneHyer]
+
+  Added test_b6_verifier.py. Found better way
+  to unit test errors using classes directly.
+
+- Updated b6_verifier. [TheOneHyer]
+
+  b6_verifier is now up to par with new standards but
+  is not tested. Updated fasta_verifier to work
+  better with piping.
+
+- Added test_fasta_verifier. [TheOneHyer]
+
+  Added test_fasta_verifier and confirmed it worked.
+
+- Added test_entry_verifier. [TheOneHyer]
+
+  Added test_entry_verifier and confirmed it works.
+
+- Rolled Verifier Status to Alpha. [TheOneHyer]
+
+  Verifier status changed to alpha to reflect
+  their current developement state.
+
+- Modified Verifiers Layout. [TheOneHyer]
+
+  Verifiers now use custom errors instead of
+  simply returning true or false in order to
+  give more fine tune data on what why a format
+  failed. verify_entries and fasta tested
+  successfully.
+
 - Added test_subject_sequence_retriever. [TheOneHyer]
 
   Added test_subject_sequence_retriever.py. Rolled
