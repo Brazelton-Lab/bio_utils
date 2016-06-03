@@ -6,7 +6,7 @@ from __future__ import print_function
 
 Usage:
 
-    fasta_verifier <FASTA file>
+    fasta_verifier <FASTA file> [--quiet]
 
 Copyright:
 
@@ -38,13 +38,13 @@ __author__ = 'Alex Hyer'
 __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
-__status__ = 'Beta'
-__version__ = '2.0.0'
+__status__ = 'Production'
+__version__ = '2.1.0'
 
 
 # noinspection PyTypeChecker
 def fasta_verifier(entries, ambiguous=False):
-    """Returns True if FASTA entry is valid, else False
+    """Raises error in invalid FASTA format detected
 
     Args:
         entries (list): A list of FastaEntry objects
@@ -53,13 +53,25 @@ def fasta_verifier(entries, ambiguous=False):
 
     Raises:
         FormatError: Error when FASTA format incorrect with descriptive message
+
+    Example:
+        >>> from bio_utils.iterators import fasta_iter
+        >>> import os
+        >>> entries = r'>entry1{0}AAGGATTCG{0}' \
+        ...           r'>entry{0}AGGTCCCCCG{0}' \
+        ...           r'>entry3{0}GCCTAGC{0}'.format(os.linesep)
+        >>> fasta_entries = fasta_iter(iter(entries.split(os.linesep)))
+        >>> fasta_verifier(fasta_entries)
     """
 
+    if type(entries) is str:  # Convert single str entries to list
+        entries = [entries]
     if ambiguous:
         regex = r'^>.+{0}[ACGTURYKMSWBDHVNX]+{0}$'.format(os.linesep)
     else:
         regex = r'^>.+{0}[ACGTU]+{0}$'.format(os.linesep)
     delimiter = r'{0}'.format(os.linesep)
+
     for entry in entries:
         try:
             entry_verifier([entry.write()], regex, delimiter)
@@ -85,14 +97,18 @@ def main():
                                      formatter_class=argparse.
                                      RawDescriptionHelpFormatter)
     parser.add_argument('fasta',
-                        help='FASTA file to verify, Default: STDIN',
+                        help='FASTA file to verify [Default: STDIN]',
                         type=argparse.FileType('rU'),
                         default=sys.stdin)
+    parser.add_argument('-q', '--quiet',
+                        help='Suppresses positive message when  file is good',
+                        action='store_false')
     args = parser.parse_args()
 
     for entry in fasta_iter(args.fasta):
         fasta_verifier(entry)
-    print('{0} is valid'.format(args.fasta.name))  # Only prints if no error
+    if not args.quiet:
+        print('{0} is valid'.format(args.fasta.name))  # Prints if no error
 
 
 if __name__ == '__main__':
