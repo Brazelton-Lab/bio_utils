@@ -39,7 +39,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '2.1.0'
+__version__ = '2.1.1'
 
 
 def b6_verifier(entries, line=None):
@@ -83,53 +83,41 @@ def b6_verifier(entries, line=None):
             # Generate error
             if error.part == 0:
                 msg = '{0} has no query ID'.format(intro)
-                raise FormatError(message=msg)
             elif error.part == 1:
                 msg = '{0} has no subject ID'.format(intro)
-                raise FormatError(message=msg)
             elif error.part == 2:
                 msg = '{0} has non-numerical ' \
                       'characters in percent identity'.format(intro)
-                raise FormatError(message=msg)
             elif error.part == 3:
                 msg = '{0} has non-numerical ' \
                       'characters in alignment length'.format(intro)
-                raise FormatError(message=msg)
             elif error.part == 4:
                 msg = '{0} has non-numerical ' \
                       'characters in mismatches'.format(intro)
-                raise FormatError(message=msg)
             elif error.part == 5:
                 msg = '{0} has non-numerical ' \
                       'characters in gaps'.format(intro)
-                raise FormatError(message=msg)
             elif error.part == 6:
                 msg = '{0} has non-numerical ' \
                       'characters in query start'.format(intro)
-                raise FormatError(message=msg)
             elif error.part == 7:
                 msg = '{0} has non-numerical ' \
                       'characters in query end'.format(intro)
-                raise FormatError(message=msg)
             elif error.part == 8:
                 msg = '{0} has non-numerical ' \
                       'characters in subject start'.format(intro)
-                raise FormatError(message=msg)
             elif error.part == 9:
                 msg = '{0} has non-numerical ' \
                       'characters in subject end'.format(intro)
-                raise FormatError(message=msg)
             elif error.part == 10:
                 msg = '{0} has non-numerical ' \
                       'characters in E-value'.format(intro)
-                raise FormatError(message=msg)
             elif error.part == 11:
                 msg = '{0} has non-numerical ' \
                       'characters in bit score'.format(intro)
-                raise FormatError(message=msg)
             else:
                 msg = 'Unknown Error: Likely a Bug'
-                raise FormatError(message=msg)
+            raise FormatError(message=msg)
 
         if line:
             line += 1

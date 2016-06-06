@@ -4,6 +4,10 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- Added test_fastq_verifier. [TheOneHyer]
+
+  Added test_fastq_verifier and confirmed working.
+
 - Improved fastq_verifier. [TheOneHyer]
 
   fsatq_verifier brought up to standards with other

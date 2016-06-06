@@ -6,7 +6,7 @@ from __future__ import print_function
 
 Usage:
 
-    gff3_verifier <gff3File>
+    gff3_verifier <GFF3 file> [--quiet]
 
 Copyright:
 
@@ -28,8 +28,10 @@ Copyright:
 """
 
 import argparse
-from bio_utils.verifiers.verify_entries import entry_verifier
 from bio_utils.iterators import gff3_iter
+from bio_utils.verifiers import entry_verifier
+from bio_utils.verifiers import FormatError
+import os
 import sys
 
 __author__ = 'Alex Hyer'
@@ -41,21 +43,59 @@ __version__ = '1.2.2'
 
 
 # noinspection PyTypeChecker
-def gff3_verifier(handle):
-    """Returns True if GFF3 file is valid and False if file is not valid
+def gff3_verifier(entries, line=None):
+    """Raises error if invalid GFF3 format detected
 
-    :param handle: GFF3 file handle
-    :type handle: File Object
+    Args:
+        entries (list): A list of GFF3Entry objects
+
+        line (int): Line number of first entry
+
+    Raises:
+        FormatError: Error when GFF3 format incorrect with descriptive message
     """
 
-    lines = []
-    for entry in gff3_iter(handle):
-        lines.append(entry.write())
     regex = r'^[a-zA-Z0-9.:^*$@!+_?-|]+\t.+\t.+\t\d+\t\d+\t' \
-            + r'\d*\.?\d*\t[+-.]\t[.0-2]\t.+\n$'
+            + r'\d*\.?\d*\t[+-.]\t[.0-2]\t.+{0}$'.format(os.linesep)
     delimiter = r'\t'
-    gff3_status = entry_verifier(lines, regex, delimiter)
-    return gff3_status
+
+    for entry in entries:
+        try:
+            entry_verifier([entry.write()])
+        except FormatError as error:
+            # Format info on what entry error came from
+            if line:
+                intro = 'Line {0}'.format(str(line))
+            elif error.part == 0:
+                intro = 'Entry with source {0}'.format(entry.subject)
+            else:
+                intro = 'Entry with Sequence ID {0}'.format(entry.query)
+
+            # Generate error
+            if error.part == 0:
+                msg = '{0} has no Sequence ID'.format(intro)
+            elif error.part == 1:
+                msg = '{0} has no source data'.format(intro)
+            elif error.part == 2:
+                msg = '{0} has no type data'.format(intro)
+            elif error.part == 3:
+                msg = '{0} has no start position'.format(intro)
+            elif error.part == 4:
+                msg = '{0} has no end position'.format(intro)
+            elif error.part == 5:
+                msg = '{0} has no score data'.format(intro)
+            elif error.part == 6:
+                msg = '{0} has no strand data'.format(intro)
+            elif error.part == 7:
+                msg = '{0} has no phase data'.format(intro)
+            elif error.part == 8:
+                msg = '{0} has no attributes'.format(intro)
+            else:
+                msg = 'Unknown Error: Likely a Bug'
+            raise FormatError(message=msg)
+
+        if line:
+            line += 1
 
 
 def main():

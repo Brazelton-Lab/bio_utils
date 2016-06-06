@@ -29,7 +29,7 @@ Copyright:
 
 import argparse
 from bio_utils.iterators import fastq_iter
-from bio_utils.verifiers.verify_entries import entry_verifier
+from bio_utils.verifiers import entry_verifier
 from bio_utils.verifiers import FormatError
 import os
 import sys
@@ -39,7 +39,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '1.0.0'
+__version__ = '2.0.1'
 
 
 # noinspection PyTypeChecker
@@ -53,6 +53,15 @@ def fastq_verifier(entries, ambiguous=False):
 
     Raises:
         FormatError: Error when FASTQ format incorrect with descriptive message
+
+    Example:
+        >>> from bio_utils.iterators import fastq_iter
+        >>> import os
+        >>> entries = r'@entry1{0}AAGGATTCG{0}+{0}112234432{0}' \
+        ...           r'@entry{0}AGGTCCCCCG{0}+{0}4229888884{0}' \
+        ...           r'@entry3{0}GCCTAGC{0}9ddsa5n'.format(os.linesep)
+        >>> fastq_entries = fastq_iter(iter(entries.split(os.linesep)))
+        >>> fasta_verifier(fasta_entries)
     """
 
     if ambiguous:
