@@ -28,6 +28,7 @@ Copyright:
 """
 
 import argparse
+from bio_utils.iterators import gff3_iter
 from bio_utils.verifiers import entry_verifier
 from bio_utils.verifiers import FormatError
 import os
@@ -38,7 +39,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '1.2.3'
+__version__ = '1.3.0'
 
 
 # noinspection PyTypeChecker
@@ -103,16 +104,19 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.
                                      RawDescriptionHelpFormatter)
-    parser.add_argument('gff3File',
-                        help='GFF3 file to verify')
+    parser.add_argument('gff3',
+                        help='GFF3 file to verify [Default: STDIN]',
+                        type=argparse.FileType('rU'),
+                        default=sys.stdin)
+    parser.add_argument('-q', '--quiet',
+                        help='Suppresses message when file is good',
+                        action='store_false')
     args = parser.parse_args()
 
-    with open(args.gff3File, 'rU') as in_handle:
-        valid = gff3_verifier(in_handle)
-    if valid:
-        print('{} is valid'.format(args.gff3File))
-    else:
-        print('{} is not valid'.format(args.gff3File))
+    for entry in enumerate(gff3_iter(args.gff3)):
+        gff3_verifier(entry[1], line=entry[0] + 1)
+    if not args.quiet:
+        print('{0} is valid').format(args.gff3.name)
 
 
 if __name__ == '__main__':

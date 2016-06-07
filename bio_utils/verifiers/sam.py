@@ -28,7 +28,7 @@ Copyright:
 """
 
 import argparse
-from bio_utils.verifiers.verify_entries import entry_verifier
+from bio_utils.verifiers import entry_verifier
 from bio_utils.iterators import sam_iter
 import sys
 
