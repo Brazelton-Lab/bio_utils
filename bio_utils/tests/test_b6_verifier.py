@@ -30,7 +30,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '1.1.0'
+__version__ = '1.1.1'
 
 
 def test_b6_verifier():
@@ -162,3 +162,28 @@ def test_b6_verifier():
     except FormatError as error:
         assert error.message == 'Entry with query ID query1 has ' \
                                 'non-numerical characters in bit score'
+
+    # Test line reading functionality
+    entry.bit_score = 1890
+
+    # Store bad entry
+    entry2 = B6Entry()
+    entry2.query = 'query2'
+    entry2.subject = 'subject2'
+    entry2.perc_identical = 86.03
+    entry2.align_len = 1782
+    entry2.mismatches = 226
+    entry2.gaps = 18
+    entry2.query_start = 6038
+    entry2.query_end = 7812
+    entry2.subject_start = 755762
+    entry2.subject_end = 753997
+    entry2.evalue = 0.0
+    entry2._evalue_str = '0.0'
+    entry2.bit_score = 'bad'
+
+    try:
+        b6_verifier([entry, entry2], line=50)
+    except FormatError as error:
+        assert error.message == 'Line 51 has non-numerical characters in ' \
+                                'bit score'
