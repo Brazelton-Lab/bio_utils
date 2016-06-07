@@ -29,7 +29,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '3.1.0'
+__version__ = '3.1.1'
 
 
 class FastaFound(Exception):
@@ -88,7 +88,7 @@ class GFF3Entry:
         self.strand = None
         self.phase = None
         self.attributes = None
-        self.temp_attributes = None  # Used in case attributes is dict
+        self._temp_attributes = None  # Used in case attributes is dict
 
     def write(self):
         """Return GFF3 formatted string
@@ -99,12 +99,12 @@ class GFF3Entry:
 
         # Regain original formatting for GFF file
         if type(self.attributes) is OrderedDict:
-            self.temp_attributes = ''
+            self._temp_attributes = ''
             for key, value in self.attributes.items():
-                self.temp_attributes += '{0}={1};'.format(key, value)
-            self.temp_attributes = self.temp_attributes[:-1]
+                self._temp_attributes += '{0}={1};'.format(key, value)
+            self._temp_attributes = self._temp_attributes[:-1]
         else:
-            self.temp_attributes = self.attributes
+            self._temp_attributes = self.attributes
 
         return '{0}\t{1}\t{2}\t{3}\t{4}\t' \
                '{5}\t{6}\t{7}\t{8}{9}'.format(self.seqid,
@@ -115,7 +115,7 @@ class GFF3Entry:
                                               self._score_str,
                                               self.strand,
                                               self.phase,
-                                              self.temp_attributes,
+                                              self._temp_attributes,
                                               os.linesep)
 
 

@@ -34,7 +34,7 @@ __version__ = '1.1.1'
 
 
 def test_b6_verifier():
-    """Test bio_utils' b6_verifier with multiple entries"""
+    """Test bio_utils' b6_verifier for each error"""
 
     # Store properly formatted B6 data
     entry = B6Entry()
@@ -147,7 +147,7 @@ def test_b6_verifier():
 
     # Test non-numeric evalue
     entry.subject_end = 753997
-    entry.evalue = 'bad'
+    entry._evalue_str = 'bad'
     try:
         b6_verifier([entry])
     except FormatError as error:
@@ -155,7 +155,7 @@ def test_b6_verifier():
                                 'non-numerical characters in E-value'
 
     # Test non-numeric bit_score
-    entry.evalue = 0.0
+    entry._evalue_str = 0.0
     entry.bit_score = 'bad'
     try:
         b6_verifier([entry])

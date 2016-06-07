@@ -28,7 +28,6 @@ Copyright:
 """
 
 import argparse
-from bio_utils.iterators import gff3_iter
 from bio_utils.verifiers import entry_verifier
 from bio_utils.verifiers import FormatError
 import os
@@ -38,8 +37,8 @@ __author__ = 'Alex Hyer'
 __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
-__status__ = 'Alpha'
-__version__ = '1.2.2'
+__status__ = 'Production'
+__version__ = '1.2.3'
 
 
 # noinspection PyTypeChecker
@@ -61,33 +60,35 @@ def gff3_verifier(entries, line=None):
 
     for entry in entries:
         try:
-            entry_verifier([entry.write()])
+            entry_verifier([entry.write()], regex, delimiter)
         except FormatError as error:
             # Format info on what entry error came from
             if line:
                 intro = 'Line {0}'.format(str(line))
             elif error.part == 0:
-                intro = 'Entry with source {0}'.format(entry.subject)
+                intro = 'Entry with source {0}'.format(entry.source)
             else:
-                intro = 'Entry with Sequence ID {0}'.format(entry.query)
+                intro = 'Entry with Sequence ID {0}'.format(entry.seqid)
 
             # Generate error
             if error.part == 0:
                 msg = '{0} has no Sequence ID'.format(intro)
             elif error.part == 1:
-                msg = '{0} has no source data'.format(intro)
+                msg = '{0} has no source'.format(intro)
             elif error.part == 2:
-                msg = '{0} has no type data'.format(intro)
+                msg = '{0} has non-numerical characters in type'.format(intro)
             elif error.part == 3:
-                msg = '{0} has no start position'.format(intro)
+                msg = '{0} has non-numerical characters in ' \
+                      'start position'.format(intro)
             elif error.part == 4:
-                msg = '{0} has no end position'.format(intro)
+                msg = '{0} has non-numerical characters in ' \
+                      'end position'.format(intro)
             elif error.part == 5:
-                msg = '{0} has no score data'.format(intro)
+                msg = '{0} has non-numerical characters in score'.format(intro)
             elif error.part == 6:
-                msg = '{0} has no strand data'.format(intro)
+                msg = '{0} strand not in [+-.]'.format(intro)
             elif error.part == 7:
-                msg = '{0} has no phase data'.format(intro)
+                msg = '{0} phase not in [.0-2]'.format(intro)
             elif error.part == 8:
                 msg = '{0} has no attributes'.format(intro)
             else:
