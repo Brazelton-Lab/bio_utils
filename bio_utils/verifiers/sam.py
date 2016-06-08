@@ -38,8 +38,8 @@ __author__ = 'Alex Hyer'
 __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
-__status__ = 'Alpha'
-__version__ = '1.2.0'
+__status__ = 'Production'
+__version__ = '1.3.0'
 
 
 def sam_verifier(entries, line=None):
@@ -91,9 +91,9 @@ def sam_verifier(entries, line=None):
             if line:
                 intro = 'Line {0}'.format(str(line))
             elif error.part == 0:
-                intro = 'Query with reference {0}'.format(entry.rname)
+                intro = 'An entry with reference {0}'.format(entry.rname)
             else:
-                intro = 'Query {0}'.format(entry.qname)
+                intro = 'An entry with query {0}'.format(entry.qname)
 
             # Generate error
             if error.part == 0:
@@ -106,20 +106,20 @@ def sam_verifier(entries, line=None):
                     msg = '{0} query name contains characters not in ' \
                           '[!-?A-~]'.format(intro)
             elif error.part == 1:
-                msg = '{0} flag not in range [0-(2^31-1)]'
+                msg = '{0} flag not in range [0-(2^31-1)]'.format(intro)
             elif error.part == 2:
                 if len(entry.rname) == 0:
                     msg = '{0} has no reference name'.format(intro)
                 else:
-                    msg = '{0} has characters not in ' \
+                    msg = '{0} reference name has characters not in ' \
                           '[!-()+-<>-~][!-~]'.format(intro)
             elif error.part == 3:
                 msg = '{0} leftmost position not in range ' \
                       '[0-(2^31-1)]'.format(intro)
             elif error.part == 4:
-                msg = '{0} has mapping quality not in range ' \
+                msg = '{0} mapping quality not in range ' \
                       '[0-(2^8-1)]'.format(intro)
-            elif error.msg == 5:
+            elif error.part == 5:
                 msg = '{0} CIGAR string has characters not in ' \
                       '[0-9MIDNSHPX=]'.format(intro)
             elif error.part == 6:
@@ -141,10 +141,13 @@ def sam_verifier(entries, line=None):
                 msg = '{0}: Unknown Error: Likely a Bug'.format(intro)
             raise FormatError(message=msg)
 
+        if line:
+            line += 1
+
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__,
-                                     formatter_class=argparse. \
+                                     formatter_class=argparse.
                                      RawDescriptionHelpFormatter)
     parser.add_argument('sam',
                         help='SAM file to verify [Default: STDIN]',
@@ -155,7 +158,7 @@ def main():
                         action='store_false')
     args = parser.parse_args()
 
-    for entry in enumerate(sam_iter(args.sam)):
+    for entry in enumerate(sam_iter(args.sam, headers=True)):
         sam_verifier(entry[1], line=entry[0] + 1)
     if not args.quiet:
         print('{0} is valid').format(args.sam.name)

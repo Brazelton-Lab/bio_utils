@@ -4,6 +4,11 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- Updated sam_verifier. [TheOneHyer]
+
+  Brough sam_verifier up to par with other verifiers,
+  untested.
+
 - Improved CLI of gff3_verifier. [TheOneHyer]
 
   gff3_verifier has better CLI as per other verifiers.
