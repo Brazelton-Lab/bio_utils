@@ -3,9 +3,9 @@ bio_utils
 
 Python package containing modules of commonly used bioinformatic scripts
 
-Last Stable Version: 0.7.13
+Last Stable Version: 0.7.14
 
-Current Version: 0.7.14a2
+Current Version: 0.7.14
 
 IMPORTANT NOTE
 --------------
@@ -100,7 +100,7 @@ incorrectly formatted, a description of the formatting error is printed. All
 scripts in verifiers are also stand-alone programs and executable
  as "[script name]_verifier".
  
- Import as "from bio_utils.verifiers import [script]_verifier"
+Import as "from bio_utils.verifiers import [script]_verifier"
 
 Scripts:
 * b6: verifies a M8 file (BLAST+ output format 6)

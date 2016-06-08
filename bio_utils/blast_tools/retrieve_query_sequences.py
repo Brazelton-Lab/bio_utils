@@ -39,7 +39,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '1.2.3'
+__version__ = '2.0.0'
 
 
 def query_sequence_retriever(fastaq_handle, b6_handle, e_value,

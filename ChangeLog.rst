@@ -1,8 +1,12 @@
 Changelog
 =========
 
-%%version%% (unreleased)
-------------------------
+0.7.14 (2016-06-08)
+-------------------
+
+- Added test_sam_verifier. [TheOneHyer]
+
+  Added test_sam_verifier and confirmed working
 
 - Updated sam_verifier. [TheOneHyer]
 

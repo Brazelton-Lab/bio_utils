@@ -38,7 +38,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '1.3.0'
+__version__ = '2.0.0'
 
 
 def subject_sequence_retriever(fasta_handle, b6_handle, e_value,

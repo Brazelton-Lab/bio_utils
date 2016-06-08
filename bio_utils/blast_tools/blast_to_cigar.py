@@ -26,7 +26,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '1.1.1'
+__version__ = '2.0.0'
 
 
 def blast_to_cigar(query_seq, match_seq, subject_seq, cigar_age='new'):
