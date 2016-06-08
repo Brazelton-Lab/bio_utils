@@ -86,7 +86,7 @@ def fasta_verifier(entries, ambiguous=False):
                       '[ACGTU]'.format(entry.id)
                 raise FormatError(message=msg)
             else:
-                msg = 'Unknown Error: Likely a Bug'
+                msg = '{0}: Unknown Error: Likely a Bug'.format(entry.id)
                 raise FormatError(message=msg)
 
 

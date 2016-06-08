@@ -116,7 +116,7 @@ def b6_verifier(entries, line=None):
                 msg = '{0} has non-numerical ' \
                       'characters in bit score'.format(intro)
             else:
-                msg = 'Unknown Error: Likely a Bug'
+                msg = '{0}: Unknown Error: Likely a Bug'.format(intro)
             raise FormatError(message=msg)
 
         if line:

@@ -72,10 +72,7 @@ def fastq_verifier(entries, ambiguous=False):
                 r'{{|}}~]+{0}$'.format(os.linesep)
     else:
         regex = r'^@.+{0}[ACGTU]+{0}' \
-                r'\+.*{0}[!"#$%&\'()*+,-./0123456' \
-                r'789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ' \
-                r'[\]^_`abcdefghijklmnopqrstuvwxyz' \
-                r'{{|}}~]+{0}$'.format(os.linesep)
+                r'\+.*{0}[!-~]+{0}$'.format(os.linesep)
     delimiter = r'{0}'.format(os.linesep)
 
     for entry in entries:
@@ -102,13 +99,10 @@ def fastq_verifier(entries, ambiguous=False):
                 raise FormatError(message=msg)
             elif error.part == 3:
                 msg = r'{0} contains a quality score not in ' \
-                      r'[!"#$%&\'()*+,-./0123456' \
-                      r'789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ' \
-                      r'[\]^_`abcdefghijklmnopqrstuvwxy' \
-                      r'z{{|}}~]'.format(entry.id)
+                      r'[!-~]'.format(entry.id)
                 raise FormatError(message=msg)
             else:
-                msg = 'Unknown Error: Likely a Bug'
+                msg = '{0}: Unknown Error: Likely a Bug'.format(entry.id)
                 raise FormatError(message=msg)
 
 

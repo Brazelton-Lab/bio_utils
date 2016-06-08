@@ -75,10 +75,7 @@ def test_fastq_verifier():
         fastq_verifier([entry])
     except FormatError as error:
         assert error.message == r'entry1 contains a quality score not in ' \
-                                r'[!"#$%&\'()*+,-./0123456' \
-                                r'789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ' \
-                                r'[\]^_`abcdefghijklmnopqrstuvwxy' \
-                                r'z{|}~]'
+                                r'[!-~]'
 
     # Test not-equal sequence and quality lengths
     entry.quality = '<>_`^[]{}:!"~='

@@ -6,7 +6,7 @@ from __future__ import print_function
 
 Usage:
 
-    sam_verifier <samFile>
+    sam_verifier <SAM file> [--quiet]
 
 Copyright:
 
@@ -29,7 +29,9 @@ Copyright:
 
 import argparse
 from bio_utils.verifiers import entry_verifier
+from bio_utils.verifiers import FormatError
 from bio_utils.iterators import sam_iter
+import os
 import sys
 
 __author__ = 'Alex Hyer'
@@ -37,19 +39,21 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Alpha'
-__version__ = '1.1.3'
+__version__ = '1.2.0'
 
 
-def sam_verifier(handle):
-    """Returns True if SAM file is valid and False if file is not valid
+def sam_verifier(entries, line=None):
+    """Raises error if invalid SAM format detected
 
-    :param handle: SAM file handle
-    :type handle: File Object
+    Args:
+        entries (list): A list of SamEntry objects
+
+        line (int): Line number of first entry
+
+    Raises:
+        FormatError: Error when SAM format incorrect with descriptive message
     """
 
-    lines = []
-    for entry in sam_iter(handle):
-        lines.append(entry.write())
     regex = r'^[!-?A-~]{1,255}\t' \
             + r'([0-9]{1,4}|[0-5][0-9]{4}|' \
             + r'[0-9]{1,4}|[1-5][0-9]{4}|' \
@@ -76,26 +80,85 @@ def sam_verifier(handle):
             + r'8([0-2][0-9]{3}|3([0-5][0-9]{2}|' \
             + r'6([0-3][0-9]|4[0-7])))))))))\t' \
             + r'\*|[A-Za-z=.]+\t' \
-            + r'[!-~]+\n$'
+            + r'[!-~]+{0}$'.format(os.linesep)
     delimiter = r'\t'
-    sam_status = entry_verifier(lines, regex, delimiter)
-    return sam_status
+
+    for entry in entries:
+        try:
+            entry_verifier([entry.write()], regex, delimiter)
+        except FormatError as error:
+            # Format info on what entry error came from
+            if line:
+                intro = 'Line {0}'.format(str(line))
+            elif error.part == 0:
+                intro = 'Query with reference {0}'.format(entry.rname)
+            else:
+                intro = 'Query {0}'.format(entry.qname)
+
+            # Generate error
+            if error.part == 0:
+                if len(entry.qname) == 0:
+                    msg = '{0} has no query name'.format(intro)
+                elif len(entry.qname) > 255:
+                    msg = '{0} query name must be less than 255 ' \
+                          'characters'.format(intro)
+                else:
+                    msg = '{0} query name contains characters not in ' \
+                          '[!-?A-~]'.format(intro)
+            elif error.part == 1:
+                msg = '{0} flag not in range [0-(2^31-1)]'
+            elif error.part == 2:
+                if len(entry.rname) == 0:
+                    msg = '{0} has no reference name'.format(intro)
+                else:
+                    msg = '{0} has characters not in ' \
+                          '[!-()+-<>-~][!-~]'.format(intro)
+            elif error.part == 3:
+                msg = '{0} leftmost position not in range ' \
+                      '[0-(2^31-1)]'.format(intro)
+            elif error.part == 4:
+                msg = '{0} has mapping quality not in range ' \
+                      '[0-(2^8-1)]'.format(intro)
+            elif error.msg == 5:
+                msg = '{0} CIGAR string has characters not in ' \
+                      '[0-9MIDNSHPX=]'.format(intro)
+            elif error.part == 6:
+                msg = '{0} mate read name has characters not in ' \
+                      '[!-()+-<>-~][!-~]'.format(intro)
+            elif error.part == 7:
+                msg = '{0} mate read position not in range ' \
+                      '[0-(2^31-1)]'.format(intro)
+            elif error.part == 8:
+                msg = '{0} template length not in range ' \
+                      '[(-2^31+1)-(2^31-1)]'.format(intro)
+            elif error.part == 9:
+                msg = '{0} sequence has characters not in ' \
+                      '[A-Za-z=.]'.format(intro)
+            elif error.part == 10:
+                msg = '{0} quality scores has characters not in ' \
+                      '[!-~]'.format(intro)
+            else:
+                msg = '{0}: Unknown Error: Likely a Bug'.format(intro)
+            raise FormatError(message=msg)
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse. \
                                      RawDescriptionHelpFormatter)
-    parser.add_argument('samFile',
-                        help='SAM file to verify')
+    parser.add_argument('sam',
+                        help='SAM file to verify [Default: STDIN]',
+                        type=argparse.FileType('rU'),
+                        default=sys.stdin)
+    parser.add_argument('-q', '--quiet',
+                        help='Suppresses message when file is good',
+                        action='store_false')
     args = parser.parse_args()
 
-    with open(args.samFile, 'rU') as in_handle:
-        valid = sam_verifier(in_handle)
-    if valid:
-        print('{} is valid'.format(args.samFile))
-    else:
-        print('{} is not valid'.format(args.samFile))
+    for entry in enumerate(sam_iter(args.sam)):
+        sam_verifier(entry[1], line=entry[0] + 1)
+    if not args.quiet:
+        print('{0} is valid').format(args.sam.name)
 
 
 if __name__ == '__main__':

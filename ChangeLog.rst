@@ -4,6 +4,25 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- Improved CLI of gff3_verifier. [TheOneHyer]
+
+  gff3_verifier has better CLI as per other verifiers.
+
+- Added test_gff3_verifier. [TheOneHyer]
+
+  Added test_gff3_verifier and confirmed working.
+  Changes to gff3_verifier based on test_gff3_verifier
+
+- Improved test_b6_verifier. [TheOneHyer]
+
+  test_b6_verifier now tests multi-entry
+  case.
+
+- Updated gff3_verifier. [TheOneHyer]
+
+  gff3_verifier updated to use errors.
+  Reduced code in b6_verifier.
+
 - Added test_fastq_verifier. [TheOneHyer]
 
   Added test_fastq_verifier and confirmed working.
