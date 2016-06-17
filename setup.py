@@ -24,7 +24,7 @@ Copyright:
 from setuptools import setup
 
 setup(name='bio_utils',
-      version='0.7.14',
+      version='0.7.16',
       description='importable functions often used by bioinformatic scripts',
       classifiers=[
           'Development Status :: 3 - Alpha',
@@ -40,7 +40,7 @@ setup(name='bio_utils',
       keywords='bioinformatics iterators verifiers verify iterate utilities',
       url='https://github.com/Brazelton-Lab/bio_utils/',
       download_url='https://github.com/Brazelton-Lab/metameta/tarball/'
-                   '0.7.14',
+                   '0.7.16',
       author='Alex Hyer',
       author_email='theonehyer@gmail.com',
       license='GPLv3',

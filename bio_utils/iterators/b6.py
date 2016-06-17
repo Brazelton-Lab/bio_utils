@@ -28,7 +28,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '4.1.0'
+__version__ = '4.1.1'
 
 
 class B6Entry:
@@ -58,7 +58,7 @@ class B6Entry:
 
         evalue (float): E-value of alignment
 
-        bit_score (int): Bit score of alignment
+        bit_score (float): Bit score of alignment
     """
 
     def __init__(self):
@@ -185,7 +185,7 @@ def b6_iter(handle, start_line=None):
             data.subject_end = int(split_line[9])
             data.evalue = float(split_line[10])
             data._evalue_str = split_line[10]
-            data.bit_score = int(split_line[11])
+            data.bit_score = float(split_line[11])
 
             line = strip(next(handle))  # Raises StopIteration at EOF
 

@@ -29,7 +29,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '1.0.0'
+__version__ = '1.0.1'
 
 
 def test_b6_evalue_filter():
@@ -66,7 +66,7 @@ def test_b6_evalue_filter():
     assert entries[0]._evalue_str == '1E-5'
     assert entries[0].bit_score == 1890
     assert entries[0].write() == 'query1\tsubject1\t86.03\t10\t3\t1\t5\t15\t' \
-                                 '100\t115\t1E-5\t1890{0}'.format(os.linesep)
+                                 '100\t115\t1E-5\t1890.0{0}'.format(os.linesep)
 
     # Test second entry
     assert entries[1].query == 'query2'
@@ -83,5 +83,6 @@ def test_b6_evalue_filter():
     assert entries[1]._evalue_str == '1E-37'
     assert entries[1].bit_score == 1219
     assert entries[1].write() == 'query2\tsubject2\t95.46\t23\t5\t7\t10\t33' \
-                                 '\t50\t73\t1E-37\t1219{0}'.format(os.linesep)
+                                 '\t50\t73\t1E-37\t' \
+                                 '1219.0{0}'.format(os.linesep)
 

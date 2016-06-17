@@ -29,7 +29,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '1.0.1'
+__version__ = '1.0.2'
 
 
 def test_b6_iter():
@@ -66,7 +66,7 @@ def test_b6_iter():
     assert entries[0].bit_score == 1890
     assert entries[0].write() == 'query1\tsubject1\t86.03\t1782\t226\t18' \
                                  '\t6038\t7812\t755762\t753997\t0.0\t' \
-                                 '1890{0}'.format(os.linesep)
+                                 '1890.0{0}'.format(os.linesep)
 
     # Test second B6/M8 entry
     assert entries[1].query == 'query2'
@@ -84,7 +84,7 @@ def test_b6_iter():
     assert entries[1].bit_score == 1219
     assert entries[1].write() == 'query2\tsubject2\t85.46\t1176\t165\t5\t' \
                                  '1213\t2385\t1154754\t1153582\t0.0\t' \
-                                 '1219{0}'.format(os.linesep)
+                                 '1219.0{0}'.format(os.linesep)
 
     # Test b6_iter's ability to start iterating at arbitrary lines
     b6_handle = iter(b6_data.split(os.linesep))  # Reset list iterator
@@ -113,4 +113,4 @@ def test_b6_iter():
     assert new_entry.bit_score == 1219
     assert new_entry.write() == 'query2\tsubject2\t85.46\t1176\t165\t5\t' \
                                 '1213\t2385\t1154754\t1153582\t0.0\t' \
-                                '1219{0}'.format(os.linesep)
+                                '1219.0{0}'.format(os.linesep)
