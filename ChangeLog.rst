@@ -1,6 +1,15 @@
 Changelog
 =========
 
+0.7.18 (2016-07-26)
+-------------------
+
+- Developement moved to Beta. [TheOneHyer]
+
+  Since project has been stable thus far and simply
+  needs documentation, project developement
+  is moved to beta.
+
 0.7.17 (2016-06-17)
 -------------------
 
