@@ -2,12 +2,20 @@
 bio_utils: library of common bioinformatic tasks
 ================================================
 
-:Author: William Brazelton, Alex Hyer, Christopher Thornton
+:Authors: William Brazelton, Alex Hyer, Christopher Thornton
 :Date: |today|
 :Version: |version|
 
+
+Summary
+=======
+
 bio_utils is a library of Python modules performing routine functions in
 bioinformatic scripts.
+
+
+Introduction
+============
 
 Many bioinformatic scripts perform similar or identical tasks internally
 during the execution of a program. Such tasks include reading FASTA files or
@@ -27,7 +35,7 @@ developers actively maintain Biopython and it is quite a bit faster, in some
 regards, than SCREED. However, Biopython stocks their functions with an
 enourmous number of features that, while useful in a Python interpreter, are
 often ignored by programs or can be accomplished more quickly using built-in
-Python  features, i.e. Biopython is bloatware to many developers. As
+Python features, i.e. Biopython is bloatware to many developers. As
 aforementioned, bio_utils' vanilla design overcomes both these libraries issues
 by providing both simplicity and speed.
 
@@ -35,11 +43,17 @@ At this point in time, bio_utils is quite small and its scope limited. The
 authors intend to slowly but surely increase this library's repertoire over
 time. We welcome any and all contributions to our project.
 
-Contents:
+Install:
+
+    pip install bio_utils
+
+Contents
+========
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3
 
+   iterators.rst
    philosophy.rst
 
 
@@ -49,3 +63,10 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+
+Copyright
+=========
+
+bio_utils' operates under the :download:`GPLv3 License <LICENSE.txt>` and may
+be edited and redistributed as per the license.

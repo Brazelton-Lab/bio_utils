@@ -2,6 +2,7 @@
 Philosophy
 ==========
 
+
 Intro
 =====
 
@@ -16,6 +17,7 @@ belongs, and how to structure their script A more concrete guide on how to
 style a script in bio_utils is found in `Script_requirements.rst`.
 `Sub_Package_Requirements` describes how and when to make sub-packages in
 bio_utils.
+
 
 Core Principles
 ===============

@@ -28,7 +28,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '3.0.0'
+__version__ = '3.0.1'
 
 
 class SamEntry:
@@ -102,7 +102,7 @@ class SamEntry:
 
 
 def sam_iter(handle, start_line=None, headers=False):
-    """Iterate over SAM file and return B6/M8 entries
+    """Iterate over SAM file and return SAM entries
 
     Args:
         handle (file): SAM file handle, can be any iterator so long as it
