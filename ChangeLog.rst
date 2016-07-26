@@ -1,6 +1,25 @@
 Changelog
 =========
 
+0.7.17 (2016-06-17)
+-------------------
+
+- Bug fix in b6_iter. [TheOneHyer]
+
+  b6_iter bit score now takes floats
+
+0.7.15 (2016-06-08)
+-------------------
+
+- Rolled Project Forward. [TheOneHyer]
+
+  All scripts are confirmed working via tests and
+  all scripts are running at a much higher standard
+  than previously. There are a few things,
+  like Sphinx docs, preventing me from rolling
+  me to 1.0.0 but wanted these scripts available
+  on PyPI.
+
 0.7.14 (2016-06-08)
 -------------------
 
