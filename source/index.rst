@@ -2,7 +2,7 @@
 bio_utils: library of common bioinformatic functions
 ====================================================
 
-:Authors: William Brazelton, Alex Hyer, Christopher Thornton
+:Authors: Alex Hyer, William Brazelton, Christopher Thornton
 :Date: |today|
 :Version: |version|
 
@@ -63,6 +63,7 @@ Contents
    classes.rst
    iterators.rst
    verifiers.rst
+   blast_tools.rst
    philosophy.rst
    roadmap.rst
 

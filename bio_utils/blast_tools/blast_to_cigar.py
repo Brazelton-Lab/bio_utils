@@ -26,7 +26,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '2.0.0'
+__version__ = '2.0.1'
 
 
 def blast_to_cigar(query_seq, match_seq, subject_seq, cigar_age='new'):
@@ -53,9 +53,9 @@ def blast_to_cigar(query_seq, match_seq, subject_seq, cigar_age='new'):
         >>> subject = 'AAGCCTTCCAGGTA'
         >>> alignment_old = '|||||  |||||||'
         >>> alignment_new = 'AAG++  CC++GTA'
-        >>> blast_to_cigar(query, alignment, subject)
+        >>> blast_to_cigar(query, alignment_new, subject)
         3=2X2D2=2X3=
-        >>> blast_to_cigar(query, alignment, subject, cigar_age='old')
+        >>> blast_to_cigar(query, alignment_old, subject, cigar_age='old')
         5M2D7M
     """
 

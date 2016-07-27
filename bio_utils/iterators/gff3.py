@@ -29,7 +29,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '3.1.1'
+__version__ = '3.1.2'
 
 
 class FastaFound(Exception):
@@ -69,10 +69,10 @@ class GFF3Entry:
 
             Original String: tag1=value1;tag2=value2
 
-            Dict:
-
-            tag1: value1
+            {
+            tag1: value1,
             tag2: value2
+            }
     """
 
     def __init__(self):

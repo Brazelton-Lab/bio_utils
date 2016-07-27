@@ -4,6 +4,12 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- Added Verifiers Documentation. [TheOneHyer]
+
+  Added verifiers.rst. Clarified documentation in
+  some verifier function docstrings. Slightly
+  re-organized some rst files.
+
 - Added Classes Documentation. [TheOneHyer]
 
   Each class in the iterators subpackage is not
