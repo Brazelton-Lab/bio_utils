@@ -43,18 +43,25 @@ At this point in time, bio_utils is quite small and its scope limited. The
 authors intend to slowly but surely increase this library's repertoire over
 time. We welcome any and all contributions to our project.
 
-Install:
+
+Installation
+============
+
+.. code-block:: python
 
     pip install bio_utils
+
 
 Contents
 ========
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
 
+   classes.rst
    iterators.rst
    philosophy.rst
+   roadmap.rst
 
 
 Indices and tables
@@ -69,4 +76,4 @@ Copyright
 =========
 
 bio_utils' operates under the :download:`GPLv3 License <LICENSE.txt>` and may
-be edited and redistributed as per the license.
+be edited and redistributed as per that license.

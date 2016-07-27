@@ -1,6 +1,19 @@
 Changelog
 =========
 
+%%version%% (unreleased)
+------------------------
+
+- Added iterators documentation. [TheOneHyer]
+
+  Added nearly complete documentation for iterators
+  subpackage. index.rst now contains better hierarechal
+  structure and a link to download the Copyright.
+
+- Started creating docs. [TheOneHyer]
+
+  Began writing docs using Sphinx
+
 0.7.18 (2016-07-26)
 -------------------
 
