@@ -1,10 +1,10 @@
 #! /usr/bin/env python
 
-"""Import blast_tools functions at package level
+"""Package containing functions filtering BLAST output
 
 Copyright:
 
-    __init__.py import function from bio_utils' blast_tools package
+    __init__.py functions filtering BLAST output
     Copyright (C) 2015  William Brazelton, Alex Hyer
 
     This program is free software: you can redistribute it and/or modify
@@ -28,4 +28,4 @@ from bio_utils.blast_tools.retrieve_subject_sequences \
 from bio_utils.blast_tools.retrieve_query_sequences \
     import query_sequence_retriever
 
-__version__ = '2.0.0'
+__version__ = '2.1.0'

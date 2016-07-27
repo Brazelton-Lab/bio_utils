@@ -39,14 +39,14 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '2.1.1'
+__version__ = '2.1.2'
 
 
 def b6_verifier(entries, line=None):
     """Raises error if invalid B6/M8 format detected
 
     Args:
-        entries (list): A list of B6Entry objects
+        entries (list): A list of B6Entry instances
 
         line (int): Line number of first entry
 

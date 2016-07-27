@@ -1,10 +1,12 @@
-================================================
-bio_utils: library of common bioinformatic tasks
-================================================
+====================================================
+bio_utils: library of common bioinformatic functions
+====================================================
 
 :Authors: William Brazelton, Alex Hyer, Christopher Thornton
 :Date: |today|
 :Version: |version|
+
+.. automodule:: bio_utils
 
 
 Summary
@@ -60,6 +62,7 @@ Contents
 
    classes.rst
    iterators.rst
+   verifiers.rst
    philosophy.rst
    roadmap.rst
 

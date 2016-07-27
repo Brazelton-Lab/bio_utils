@@ -47,7 +47,7 @@ def fastq_verifier(entries, ambiguous=False):
     """Raises error if invalid FASTQ format detected
 
     Args:
-        entries (list): A list of FastqEntry objects
+        entries (list): A list of FastqEntry instances
 
         ambiguous (bool): Permit ambiguous bases, i.e. permit non-ACGTU bases
 
@@ -61,7 +61,7 @@ def fastq_verifier(entries, ambiguous=False):
         ...           r'@entry{0}AGGTCCCCCG{0}+{0}4229888884{0}' \
         ...           r'@entry3{0}GCCTAGC{0}9ddsa5n'.format(os.linesep)
         >>> fastq_entries = fastq_iter(iter(entries.split(os.linesep)))
-        >>> fasta_verifier(fasta_entries)
+        >>> fastq_verifier(fastq_entries)
     """
 
     if ambiguous:

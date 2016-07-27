@@ -47,7 +47,7 @@ def gff3_verifier(entries, line=None):
     """Raises error if invalid GFF3 format detected
 
     Args:
-        entries (list): A list of GFF3Entry objects
+        entries (list): A list of GFF3Entry instances
 
         line (int): Line number of first entry
 

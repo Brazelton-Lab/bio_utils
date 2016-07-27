@@ -46,7 +46,7 @@ def sam_verifier(entries, line=None):
     """Raises error if invalid SAM format detected
 
     Args:
-        entries (list): A list of SamEntry objects
+        entries (list): A list of SamEntry instances
 
         line (int): Line number of first entry
 

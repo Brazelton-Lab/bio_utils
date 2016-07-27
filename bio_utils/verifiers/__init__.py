@@ -1,10 +1,10 @@
 #! /usr/bin/env python
 
-"""Import verifiers functions at package level
+"""Package containing file verifying functions for biological data
 
 Copyright:
 
-    __init__.py import functions from bio_utils' verifiers package
+    __init__.py file verifying functions for biological data
     Copyright (C) 2015  William Brazelton, Alex Hyer
 
     This program is free software: you can redistribute it and/or modify
@@ -37,4 +37,4 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '2.0.0'
+__version__ = '2.1.0'

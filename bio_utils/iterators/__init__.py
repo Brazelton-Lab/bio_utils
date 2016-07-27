@@ -1,10 +1,10 @@
 #! /usr/bin/env python
 
-"""Import iterators functions and classes at package level
+"""Package containing file reading functions for biological data
 
 Copyright:
 
-    __init__.py import functions and classes from bio_utils' iterators package
+    __init__.py file reading functions for biological data
     Copyright (C) 2015  William Brazelton, Alex Hyer
 
     This program is free software: you can redistribute it and/or modify
@@ -37,4 +37,4 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '3.0.1'
+__version__ = '3.1.0'

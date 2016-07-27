@@ -47,7 +47,7 @@ def fasta_verifier(entries, ambiguous=False):
     """Raises error if invalid FASTA format detected
 
     Args:
-        entries (list): A list of FastaEntry objects
+        entries (list): A list of FastaEntry instances
 
         ambiguous (bool): Permit ambiguous bases, i.e. permit non-ACGTU bases
 

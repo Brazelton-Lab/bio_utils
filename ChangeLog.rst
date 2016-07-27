@@ -4,6 +4,14 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- Added Classes Documentation. [TheOneHyer]
+
+  Each class in the iterators subpackage is not
+  documentated. Iterator documentations reduced
+  to better explain just the iterators and not
+  file formats. Spelling errors corrected.
+  Added roadmap.rst.
+
 - Added iterators documentation. [TheOneHyer]
 
   Added nearly complete documentation for iterators

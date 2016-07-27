@@ -2,11 +2,13 @@
 Iterators
 =========
 
+.. automodule:: bio_utils.iterators
+
 
 Introduction
 ------------
 
-The bio_utils' iterator subpackage contains numerous iterators for a variety
+The bio_utils' iterators subpackage contains numerous iterators for a variety
 of biology-relevant file types. The contained iterators share numerous features
 listed in the next section. The subsequent sections detail iterator-specific
 elements. Each iterator returns file-specific Python classes. This page only
