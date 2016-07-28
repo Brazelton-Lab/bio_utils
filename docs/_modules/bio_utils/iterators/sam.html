@@ -1,0 +1,290 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bio_utils.iterators.sam &mdash; bio_utils 0.7.19a11 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.7.19a11',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="bio_utils 0.7.19a11 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for bio_utils.iterators.sam</h1><div class="highlight"><pre>
+<span class="c">#! /usr/bin/env python</span>
+
+<span class="sd">&quot;&quot;&quot;Screed-esque iterator for SAM files</span>
+
+<span class="sd">Copyright:</span>
+
+<span class="sd">    sam.py iterate over and return entries of a SAM file</span>
+<span class="sd">    Copyright (C) 2015  William Brazelton, Alex Hyer</span>
+
+<span class="sd">    This program is free software: you can redistribute it and/or modify</span>
+<span class="sd">    it under the terms of the GNU General Public License as published by</span>
+<span class="sd">    the Free Software Foundation, either version 3 of the License, or</span>
+<span class="sd">    (at your option) any later version.</span>
+
+<span class="sd">    This program is distributed in the hope that it will be useful,</span>
+<span class="sd">    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd">    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="sd">    GNU General Public License for more details.</span>
+
+<span class="sd">    You should have received a copy of the GNU General Public License</span>
+<span class="sd">    along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;Alex Hyer&#39;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s">&#39;theonehyer@gmail.com&#39;</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s">&#39;GPLv3&#39;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s">&#39;Alex Hyer&#39;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s">&#39;Production&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&#39;3.0.1&#39;</span>
+
+
+<div class="viewcode-block" id="SamEntry"><a class="viewcode-back" href="../../../classes.html#bio_utils.iterators.SamEntry">[docs]</a><span class="k">class</span> <span class="nc">SamEntry</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;A simple class to store data from SAM entries and write them</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">            qname (str): Name of query sequence</span>
+
+<span class="sd">            flag (int): Int if integer in file, str if hex given in file,</span>
+<span class="sd">                        str if flag not given. Gives various info about read</span>
+<span class="sd">                        alignment, see</span>
+<span class="sd">                        https://samtools.github.io/hts-specs/SAMv1.pdf</span>
+<span class="sd">                        for more info.</span>
+
+<span class="sd">            rname (str): Name of reference sequence or sequence aligned to</span>
+
+<span class="sd">            pos (int): first base of alignment relative to reference,</span>
+<span class="sd">                       0 = no alignment</span>
+
+<span class="sd">            mapq (int): mapping quality of alignment</span>
+
+<span class="sd">            cigar (str): CIGAR string detailing alignment</span>
+
+<span class="sd">            rnext (str): name of paired read</span>
+
+<span class="sd">            pnext (int): position of paired read, 0 = no alignment</span>
+
+<span class="sd">            tlen (int): length of alignments of all paired reads</span>
+
+<span class="sd">            seq (str): sequence of query sequence, * if no sequence</span>
+
+<span class="sd">            qual (str): quality scores of query sequence, * if no scores</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize variables to store SAM entry data&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">qname</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flag</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rname</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mapq</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cigar</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rnext</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pnext</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tlen</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seq</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qual</span> <span class="o">=</span> <span class="bp">None</span>
+
+<div class="viewcode-block" id="SamEntry.write"><a class="viewcode-back" href="../../../classes.html#bio_utils.iterators.SamEntry.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return SAM formatted string</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: SAM formatted string containing entire SAM entry</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="s">&#39;{0}</span><span class="se">\t</span><span class="s">{1}</span><span class="se">\t</span><span class="s">{2}</span><span class="se">\t</span><span class="s">{3}</span><span class="se">\t</span><span class="s">{4}</span><span class="se">\t</span><span class="s">&#39;</span> \
+               <span class="s">&#39;{5}</span><span class="se">\t</span><span class="s">{6}</span><span class="se">\t</span><span class="s">{7}</span><span class="se">\t</span><span class="s">{8}</span><span class="se">\t</span><span class="s">{9}</span><span class="se">\t</span><span class="s">&#39;</span> \
+               <span class="s">&#39;{10}{11}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qname</span><span class="p">,</span>
+                                 <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">flag</span><span class="p">),</span>
+                                 <span class="bp">self</span><span class="o">.</span><span class="n">rname</span><span class="p">,</span>
+                                 <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">),</span>
+                                 <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mapq</span><span class="p">),</span>
+                                 <span class="bp">self</span><span class="o">.</span><span class="n">cigar</span><span class="p">,</span>
+                                 <span class="bp">self</span><span class="o">.</span><span class="n">rnext</span><span class="p">,</span>
+                                 <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pnext</span><span class="p">),</span>
+                                 <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tlen</span><span class="p">),</span>
+                                 <span class="bp">self</span><span class="o">.</span><span class="n">seq</span><span class="p">,</span>
+                                 <span class="bp">self</span><span class="o">.</span><span class="n">qual</span><span class="p">,</span>
+                                 <span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="sam_iter"><a class="viewcode-back" href="../../../iterators.html#bio_utils.iterators.sam_iter">[docs]</a><span class="k">def</span> <span class="nf">sam_iter</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="n">start_line</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Iterate over SAM file and return SAM entries</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        handle (file): SAM file handle, can be any iterator so long as it</span>
+<span class="sd">            it returns subsequent &quot;lines&quot; of a SAM entry</span>
+
+<span class="sd">        start_line (str): Next SAM entry, if &#39;handle&#39; has been partially read</span>
+<span class="sd">            and you want to start iterating at the next entry, read the next</span>
+<span class="sd">            SAM entry and pass it to this variable when calling sam_iter.</span>
+<span class="sd">            See &#39;Examples.&#39;</span>
+
+<span class="sd">        headers (bool): Yields headers if True, else skips lines starting with</span>
+<span class="sd">            &quot;@&quot;</span>
+
+<span class="sd">    Yields:</span>
+<span class="sd">        SamEntry: class containing all SAM data, yields str for headers if</span>
+<span class="sd">            headers options is True then yields GamEntry for entries</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        The following two examples demonstrate how to use sam_iter.</span>
+<span class="sd">        Note: These doctests will not pass, examples are only in doctest</span>
+<span class="sd">        format as per convention. bio_utils uses pytests for testing.</span>
+
+<span class="sd">        &gt;&gt;&gt; for entry in sam_iter(open(&#39;test.sam&#39;)):</span>
+<span class="sd">        ...     print(entry.qname)  # Print query sequence name</span>
+<span class="sd">        ...     print(entry.flag)  # Print flag number of alignment</span>
+<span class="sd">        ...     print(entry.rname)  # Print reference sequence name</span>
+<span class="sd">        ...     print(entry.pos)  # Print starting position of alignment</span>
+<span class="sd">        ...     print(entry.mapq)  # Print mapping confidence of alignment</span>
+<span class="sd">        ...     print(entry.cigar)  # Print CIGAR string of alignment</span>
+<span class="sd">        ...     print(entry.rnext)  # Print paired read name</span>
+<span class="sd">        ...     print(entry.pnext)  # Print position of paired read</span>
+<span class="sd">        ...     print(entry.tlen)  # Print alignment length of all paired reads</span>
+<span class="sd">        ...     print(entry.seq)  # Print query sequence</span>
+<span class="sd">        ...     print(entry.qual)  # Print query quality scores</span>
+<span class="sd">        ...     print(entry.write())  # Print whole SAM entry</span>
+
+<span class="sd">        &gt;&gt;&gt; sam_handle = open(&#39;test.gff3&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; next(sam_handle)  # Skip first line/entry</span>
+<span class="sd">        &gt;&gt;&gt; next_line = next(sam_handle)  # Store next entry</span>
+<span class="sd">        &gt;&gt;&gt; for entry in sam_iter(open(&#39;test.sam&#39;)):</span>
+<span class="sd">        ...     print(entry.qname)  # Print query sequence name</span>
+<span class="sd">        ...     print(entry.flag)  # Print flag number of alignment</span>
+<span class="sd">        ...     print(entry.rname)  # Print reference sequence name</span>
+<span class="sd">        ...     print(entry.pos)  # Print starting position of alignment</span>
+<span class="sd">        ...     print(entry.mapq)  # Print mapping confidence of alignment</span>
+<span class="sd">        ...     print(entry.cigar)  # Print CIGAR string of alignment</span>
+<span class="sd">        ...     print(entry.rnext)  # Print paired read name</span>
+<span class="sd">        ...     print(entry.pnext)  # Print position of paired read</span>
+<span class="sd">        ...     print(entry.tlen)  # Print alignment length of all paired reads</span>
+<span class="sd">        ...     print(entry.seq)  # Print query sequence</span>
+<span class="sd">        ...     print(entry.qual)  # Print query quality scores</span>
+<span class="sd">        ...     print(entry.write())  # Print whole SAM entry</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c"># Speed tricks: reduces function calls</span>
+    <span class="n">split</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">split</span>
+    <span class="n">strip</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">strip</span>
+
+    <span class="k">if</span> <span class="n">start_line</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">strip</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">handle</span><span class="p">))</span>  <span class="c"># Read first B6/M8 entry</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">strip</span><span class="p">(</span><span class="n">start_line</span><span class="p">)</span>  <span class="c"># Set header to given header</span>
+
+    <span class="c"># A manual &#39;for&#39; loop isn&#39;t needed to read the file properly and quickly,</span>
+    <span class="c"># unlike fasta_iter and fastq_iter, but it is necessary begin iterating</span>
+    <span class="c"># partway through a file when the user gives a starting line.</span>
+    <span class="k">try</span><span class="p">:</span>  <span class="c"># Manually construct a for loop to improve speed by using &#39;next&#39;</span>
+
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>  <span class="c"># Loop until StopIteration Exception raised</span>
+
+            <span class="n">split_line</span> <span class="o">=</span> <span class="n">split</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;@&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">headers</span><span class="p">:</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="n">strip</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">handle</span><span class="p">))</span>
+                <span class="k">continue</span>
+            <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;@&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">headers</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">line</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="n">strip</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">handle</span><span class="p">))</span>
+                <span class="k">continue</span>
+
+            <span class="n">data</span> <span class="o">=</span> <span class="n">SamEntry</span><span class="p">()</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">qname</span> <span class="o">=</span> <span class="n">split_line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">try</span><span class="p">:</span>  <span class="c"># Differentiate between int and hex bit flags</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">flag</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">split_line</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">flag</span> <span class="o">=</span> <span class="n">split_line</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">rname</span> <span class="o">=</span> <span class="n">split_line</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">split_line</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">mapq</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">split_line</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">cigar</span> <span class="o">=</span> <span class="n">split_line</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">rnext</span> <span class="o">=</span> <span class="n">split_line</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">pnext</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">split_line</span><span class="p">[</span><span class="mi">7</span><span class="p">])</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">tlen</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">split_line</span><span class="p">[</span><span class="mi">8</span><span class="p">])</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">seq</span> <span class="o">=</span> <span class="n">split_line</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">qual</span> <span class="o">=</span> <span class="n">split_line</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span>
+
+            <span class="n">line</span> <span class="o">=</span> <span class="n">strip</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">handle</span><span class="p">))</span>  <span class="c"># Raises StopIteration at EOF</span>
+
+            <span class="k">yield</span> <span class="n">data</span>
+
+    <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>  <span class="c"># Yield last SAM entry</span>
+        <span class="k">yield</span> <span class="n">data</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, William Brazelton, Alex Hyer.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

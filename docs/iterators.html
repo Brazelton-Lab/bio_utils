@@ -1,0 +1,521 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Iterators &mdash; bio_utils 0.7.19a11 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.7.19a11',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="bio_utils 0.7.19a11 documentation" href="index.html" />
+    <link rel="next" title="Verifiers" href="verifiers.html" />
+    <link rel="prev" title="Classes" href="classes.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-bio_utils.iterators">
+<span id="iterators"></span><h1>Iterators<a class="headerlink" href="#module-bio_utils.iterators" title="Permalink to this headline">¶</a></h1>
+<p>Package containing file reading functions for biological data</p>
+<p>Copyright:</p>
+<blockquote>
+<div><p>__init__.py file reading functions for biological data
+Copyright (C) 2015  William Brazelton, Alex Hyer</p>
+<p>This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p>This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.</p>
+<p>You should have received a copy of the GNU General Public License
+along with this program.  If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+</div></blockquote>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>The bio_utils&#8217; iterators subpackage contains numerous iterators for a variety
+of biology-relevant file types. The contained iterators share numerous features
+listed in the next section. The subsequent sections detail iterator-specific
+elements. Each iterator returns file-specific Python classes. This page only
+details how to use the iterators not the instances they return, see
+<a class="reference external" href="classes.rst">Classes</a> for details on each class in bio_utils.</p>
+</div>
+<div class="section" id="common-features">
+<h2>Common Features<a class="headerlink" href="#common-features" title="Permalink to this headline">¶</a></h2>
+<p>Abilities shared by all iterators in this package include:</p>
+<ul class="simple">
+<li>Return file-specific instances, see <a class="reference external" href="classes.rst">Classes</a> for more details</li>
+<li>Support the <code class="docutils literal"><span class="pre">next()</span></code> and <code class="docutils literal"><span class="pre">__next__()</span></code> methods</li>
+<li>Usable in <em>for</em> loops</li>
+<li>Accept any iterator: <code class="docutils literal"><span class="pre">iter()</span></code> objects, file handles, memory files, etc.</li>
+<li>Begin iteration at arbitrary lines using <em>start_line</em> or <em>header</em> argument</li>
+</ul>
+<p>All iterators in this package are quite fast; the following table compares
+SCREED&#8217;s, Biopython&#8217;s, and bio_utils&#8217; FASTA iteration speed in seconds on a
+3.2 GB FASTA file containing 1,614,108 sequence entries averaging 158 bases
+each.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="19%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head" colspan="7">FASTA File Iteration Speed for Different Libraries (seconds)</th>
+</tr>
+<tr class="row-even"><th class="head">Library</th>
+<th class="head">Trial#1</th>
+<th class="head">Trial#2</th>
+<th class="head">Trial#3</th>
+<th class="head">Trial#4</th>
+<th class="head">Trial#5</th>
+<th class="head">Average</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-odd"><td>SCREED</td>
+<td>974.812</td>
+<td>971.185</td>
+<td>953.027</td>
+<td>961.247</td>
+<td>971.924</td>
+<td>966.439</td>
+</tr>
+<tr class="row-even"><td>Biopython</td>
+<td>581.148</td>
+<td>575.677</td>
+<td>585.322</td>
+<td>548.876</td>
+<td>516.235</td>
+<td>561.452</td>
+</tr>
+<tr class="row-odd"><td>bio_utils</td>
+<td>290.876</td>
+<td>298.047</td>
+<td>291.625</td>
+<td>291.966</td>
+<td>289.635</td>
+<td>292.430</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="b6-iter">
+<h2>b6_iter<a class="headerlink" href="#b6-iter" title="Permalink to this headline">¶</a></h2>
+<p>Iterates over B6 alignment files and returns each line as an instance of
+<a class="reference internal" href="classes.html#b6entry"><span class="std std-ref">B6Entry</span></a>. This iterator does not support arbitrary table modifications as
+does BLAST+.</p>
+<dl class="function">
+<dt id="bio_utils.iterators.b6_iter">
+<code class="descclassname">bio_utils.iterators.</code><code class="descname">b6_iter</code><span class="sig-paren">(</span><em>handle</em>, <em>start_line=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bio_utils/iterators/b6.html#b6_iter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bio_utils.iterators.b6_iter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate over B6/M8 file and return B6/M8 entries</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>handle (file): B6/M8 file handle, can be any iterator so long as it</dt>
+<dd>it returns subsequent &#8220;lines&#8221; of a B6/M8 entry</dd>
+<dt>start_line (str): Next B6/M8 entry, if &#8216;handle&#8217; has been partially read</dt>
+<dd>and you want to start iterating at the next entry, read the next
+B6/M8 entry and pass it to this variable when  calling b6_iter.
+See &#8216;Examples.&#8217;</dd>
+</dl>
+</dd>
+<dt>Yields:</dt>
+<dd>B6Entry: class containing all B6/M8 data</dd>
+<dt>Examples:</dt>
+<dd><p class="first">The following two examples demonstrate how to use b6_iter.
+Note: These doctests will not pass, examples are only in doctest
+format as per convention. bio_utils uses pytests for testing.</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">b6_iter</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;test.b6out&#39;</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">query</span><span class="p">)</span>  <span class="c"># Print Query ID</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">subject</span><span class="p">)</span>  <span class="c"># Print Subject ID</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">perc_identical</span><span class="p">)</span>  <span class="c"># Print % identity between seqs</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">mismatches</span><span class="p">)</span>  <span class="c"># Print number of mismathces in align</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">gaps</span><span class="p">)</span>  <span class="c"># Print number of gaps in alignment</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">query_start</span><span class="p">)</span>  <span class="c"># Print start of alignment on query</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">query_end</span><span class="p">)</span>  <span class="c"># Print end of alignment on query</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">subject_start</span><span class="p">)</span>  <span class="c"># Print start of align on subject</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">subject_end</span><span class="p">)</span>  <span class="c"># Print end of alignment on subject</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">evalue</span><span class="p">)</span>  <span class="c"># Print E-value of alignment</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">bit_score</span><span class="p">)</span>  <span class="c"># Print Bit score of alignment</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>  <span class="c"># Print entry B6 entry</span>
+</pre></div>
+</div>
+<div class="last highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">b6_handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;test.b6out&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">b6_handle</span><span class="p">)</span>  <span class="c"># Skip first line/entry</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">next_line</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">b6_handle</span><span class="p">)</span>  <span class="c"># Store next entry</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">b6_iter</span><span class="p">(</span><span class="n">b6_handle</span><span class="p">,</span> <span class="n">start_line</span><span class="o">=</span><span class="n">next_line</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">query</span><span class="p">)</span>  <span class="c"># Print Query ID</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">subject</span><span class="p">)</span>  <span class="c"># Print Subject ID</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">perc_identical</span><span class="p">)</span>  <span class="c"># Print % identity between seqs</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">mismatches</span><span class="p">)</span>  <span class="c"># Print number of mismathces in align</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">gaps</span><span class="p">)</span>  <span class="c"># Print number of gaps in alignment</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">query_start</span><span class="p">)</span>  <span class="c"># Print start of alignment on query</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">query_end</span><span class="p">)</span>  <span class="c"># Print end of alignment on query</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">subject_start</span><span class="p">)</span>  <span class="c"># Print start of align on subject</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">subject_end</span><span class="p">)</span>  <span class="c"># Print end of alignment on subject</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">evalue</span><span class="p">)</span>  <span class="c"># Print E-value of alignment</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">bit_score</span><span class="p">)</span>  <span class="c"># Print Bit score of alignment</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>  <span class="c"># Print entry B6 entry</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="fasta-iter">
+<h2>fasta_iter<a class="headerlink" href="#fasta-iter" title="Permalink to this headline">¶</a></h2>
+<p>Iterates over a FASTA file and returns each entry as an instance of
+<a class="reference internal" href="classes.html#fastaentry"><span class="std std-ref">FastaEntry</span></a>. This iterator can handle sequences spanning multiple lines.</p>
+<dl class="function">
+<dt id="bio_utils.iterators.fasta_iter">
+<code class="descclassname">bio_utils.iterators.</code><code class="descname">fasta_iter</code><span class="sig-paren">(</span><em>handle</em>, <em>header=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bio_utils/iterators/fasta.html#fasta_iter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bio_utils.iterators.fasta_iter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate over FASTA file and return FASTA entries</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>handle (file): FASTA file handle, can be any iterator so long as it</dt>
+<dd>it returns subsequent &#8220;lines&#8221; of a FASTA entry</dd>
+<dt>header (str): Header line of next FASTA entry, if &#8216;handle&#8217; has been</dt>
+<dd>partially read and you want to start iterating at the next entry,
+read the next FASTA header and pass it to this variable when
+calling fasta_iter. See &#8216;Examples.&#8217;</dd>
+</dl>
+</dd>
+<dt>Yields:</dt>
+<dd>FastaEntry: class containing all FASTA data</dd>
+<dt>Raises:</dt>
+<dd>IOError: If FASTA entry doesn&#8217;t start with &#8216;&gt;&#8217;</dd>
+<dt>Examples:</dt>
+<dd><p class="first">The following two examples demonstrate how to use fasta_iter.
+Note: These doctests will not pass, examples are only in doctest
+format as per convention. bio_utils uses pytests for testing.</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">fasta_iter</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;test.fasta&#39;</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>  <span class="c"># Print FASTA id</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>  <span class="c"># Print FASTA description</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">sequence</span><span class="p">)</span>  <span class="c"># Print FASTA sequence</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>  <span class="c"># Print full FASTA entry</span>
+</pre></div>
+</div>
+<div class="last highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">fasta_handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;test.fasta&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">fasta_handle</span><span class="p">)</span>  <span class="c"># Skip first entry header</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">fasta_handle</span><span class="p">)</span>  <span class="c"># Skip first entry sequence</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_line</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">fasta_handle</span><span class="p">)</span>  <span class="c"># Read second entry header</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">fasta_iter</span><span class="p">(</span><span class="n">fasta_handle</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">first_line</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>  <span class="c"># Print FASTA id</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>  <span class="c"># Print FASTA description</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">sequence</span><span class="p">)</span>  <span class="c"># Print FASTA sequence</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>  <span class="c"># Print full FASTA entry</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="fastq-iter">
+<h2>fastq_iter<a class="headerlink" href="#fastq-iter" title="Permalink to this headline">¶</a></h2>
+<p>Iterates over a FASTQ file and returns each entry as an instance of
+<a class="reference internal" href="classes.html#fastqentry"><span class="std std-ref">FastqEntry</span></a>. This iterator can handle sequences and quality score
+spanning multiple lines.</p>
+<dl class="function">
+<dt id="bio_utils.iterators.fastq_iter">
+<code class="descclassname">bio_utils.iterators.</code><code class="descname">fastq_iter</code><span class="sig-paren">(</span><em>handle</em>, <em>header=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bio_utils/iterators/fastq.html#fastq_iter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bio_utils.iterators.fastq_iter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate over FASTQ file and return FASTQ entries</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>handle (file): FASTQ file handle, can be any iterator so long as it</dt>
+<dd>it returns subsequent &#8220;lines&#8221; of a FASTQ entry</dd>
+<dt>header (str): Header line of next FASTQ entry, if &#8216;handle&#8217; has been</dt>
+<dd>partially read and you want to start iterating at the next entry,
+read the next FASTQ header and pass it to this variable when
+calling fastq_iter. See &#8216;Examples.&#8217;</dd>
+</dl>
+</dd>
+<dt>Yields:</dt>
+<dd>FastqEntry: class containing all FASTQ data</dd>
+<dt>Raises:</dt>
+<dd>IOError: If FASTQ entry doesn&#8217;t start with &#8216;&#64;&#8217;</dd>
+<dt>Examples:</dt>
+<dd><p class="first">The following two examples demonstrate how to use fastq_iter.
+Note: These doctests will not pass, examples are only in doctest
+format as per convention. bio_utils uses pytests for testing.</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">fastq_iter</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;test.fastq&#39;</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>  <span class="c"># Print FASTQ id</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>  <span class="c"># Print FASTQ description</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">sequence</span><span class="p">)</span>  <span class="c"># Print FASTQ sequence</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">quality</span><span class="p">)</span>  <span class="c"># Print FASTQ quality scores</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>  <span class="c"># Print full FASTQ entry</span>
+</pre></div>
+</div>
+<div class="last highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">fastq_handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;test.fastq&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">fastq_handle</span><span class="p">)</span>  <span class="c"># Skip first entry header</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">fastq_handle</span><span class="p">)</span>  <span class="c"># Skip first entry sequence</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">fastq_handle</span><span class="p">)</span>  <span class="c"># Skip line with &#39;+&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">fastq_handle</span><span class="p">)</span>  <span class="c"># Skip first entry quality scores</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_line</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">fastq_handle</span><span class="p">)</span>  <span class="c"># Read second entry header</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">fastq_iter</span><span class="p">(</span><span class="n">fastq_handle</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">first_line</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>  <span class="c"># Print FASTQ id</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>  <span class="c"># Print FASTQ description</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">sequence</span><span class="p">)</span>  <span class="c"># Print FASTQ sequence</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">quality</span><span class="p">)</span>  <span class="c"># Print FASTQ quality scores</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>  <span class="c"># Print full FASTQ entry</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="gff3-iter">
+<h2>gff3_iter<a class="headerlink" href="#gff3-iter" title="Permalink to this headline">¶</a></h2>
+<p>Iterates over a GFF3 file and returns each line as an instance of
+<a class="reference internal" href="classes.html#gff3entry"><span class="std std-ref">GFF3Entry</span></a>.</p>
+<dl class="function">
+<dt id="bio_utils.iterators.gff3_iter">
+<code class="descclassname">bio_utils.iterators.</code><code class="descname">gff3_iter</code><span class="sig-paren">(</span><em>handle</em>, <em>start_line=None</em>, <em>parse_attr=True</em>, <em>headers=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bio_utils/iterators/gff3.html#gff3_iter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bio_utils.iterators.gff3_iter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate over GFF3 file and return GFF3 entries</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>handle (file): GFF3 file handle, can be any iterator so long as it</dt>
+<dd>it returns subsequent &#8220;lines&#8221; of a GFF3 entry</dd>
+<dt>start_line (str): Next GFF3 entry, if &#8216;handle&#8217; has been partially read</dt>
+<dd>and you want to start iterating at the next entry, read the next
+GFF3 entry and pass it to this variable when calling gff3_iter.
+See &#8216;Examples.&#8217;</dd>
+<dt>parse_attr (bool): Parse attributes column into a dictionary such that</dt>
+<dd><p class="first">the string &#8220;tag1=value1;tag2=value2&#8221; becomes (in YAML format):</p>
+<p class="last">tag1: value1
+tag2: value2</p>
+</dd>
+<dt>headers (bool): Yields headers if True, else skips lines starting with</dt>
+<dd>&#8220;##&#8221;</dd>
+</dl>
+</dd>
+<dt>Yields:</dt>
+<dd><dl class="first last docutils">
+<dt>GFF3Entry: class containing all GFF3 data, yields str for headers if</dt>
+<dd>headers options is True then yields GFF3Entry for entries</dd>
+</dl>
+</dd>
+<dt>Examples:</dt>
+<dd><p class="first">The following three examples demonstrate how to use gff3_iter.
+Note: These doctests will not pass, examples are only in doctest
+format as per convention. bio_utils uses pytests for testing.</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">gff3_iter</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;test.gff3&#39;</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">seqid</span><span class="p">)</span>  <span class="c"># Print Sequence ID</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">source</span><span class="p">)</span>  <span class="c"># Print software that performed annotation</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>  <span class="c"># Print type of annotation</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">start</span><span class="p">)</span>  <span class="c"># Print start position of annotation</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">end</span><span class="p">)</span>  <span class="c"># Print end position of annotation</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">score</span><span class="p">)</span>  <span class="c"># Print confidence score of annotation</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">strand</span><span class="p">)</span>  <span class="c"># Print strand annotation is on</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">phase</span><span class="p">)</span>  <span class="c"># Print bases until next codon</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">attributes</span><span class="p">)</span>  <span class="c"># Print attributes of annotation</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>  <span class="c"># Print entry GFF3 entry</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">gff3_handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;test.gff3&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">gff3_handle</span><span class="p">)</span>  <span class="c"># Skip first line/entry</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">next_line</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">gff3_handle</span><span class="p">)</span>  <span class="c"># Store next entry</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">gff3_iter</span><span class="p">(</span><span class="n">gff3_handle</span><span class="p">,</span> <span class="n">start_line</span><span class="o">=</span><span class="n">next_line</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">seqid</span><span class="p">)</span>  <span class="c"># Print Sequence ID</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">source</span><span class="p">)</span>  <span class="c"># Print software that performed annotation</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>  <span class="c"># Print type of annotation</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">start</span><span class="p">)</span>  <span class="c"># Print start position of annotation</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">end</span><span class="p">)</span>  <span class="c"># Print end position of annotation</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">score</span><span class="p">)</span>  <span class="c"># Print confidence score of annotation</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">strand</span><span class="p">)</span>  <span class="c"># Print strand annotation is on</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">phase</span><span class="p">)</span>  <span class="c"># Print bases until next codon</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">attributes</span><span class="p">)</span>  <span class="c"># Print attributes of annotation</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>  <span class="c"># Print entry GFF3 entry</span>
+</pre></div>
+</div>
+<div class="last highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">gff3_iter</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;test.gff3&#39;</span><span class="p">),</span> <span class="n">parse_attr</span><span class="o">=</span><span class="k">True</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">seqid</span><span class="p">)</span>  <span class="c"># Print Sequence ID</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">source</span><span class="p">)</span>  <span class="c"># Print software that performed annotation</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>  <span class="c"># Print type of annotation</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">start</span><span class="p">)</span>  <span class="c"># Print start position of annotation</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">end</span><span class="p">)</span>  <span class="c"># Print end position of annotation</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">score</span><span class="p">)</span>  <span class="c"># Print confidence score of annotation</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">strand</span><span class="p">)</span>  <span class="c"># Print strand annotation is on</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">phase</span><span class="p">)</span>  <span class="c"># Print bases until next codon</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s">&#39;attr1&#39;</span><span class="p">])</span>  <span class="c"># Print attribute &#39;attr1&#39;</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s">&#39;attr2&#39;</span><span class="p">])</span>  <span class="c"># Print attribute &#39;attr2&#39;</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>  <span class="c"># Print entry GFF3 entry</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="sam-iter">
+<h2>sam_iter<a class="headerlink" href="#sam-iter" title="Permalink to this headline">¶</a></h2>
+<p>Iterates over a SAM file and returns each as line as an instance of
+<a class="reference internal" href="classes.html#samentry"><span class="std std-ref">SamEntry</span></a>.</p>
+<dl class="function">
+<dt id="bio_utils.iterators.sam_iter">
+<code class="descclassname">bio_utils.iterators.</code><code class="descname">sam_iter</code><span class="sig-paren">(</span><em>handle</em>, <em>start_line=None</em>, <em>headers=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bio_utils/iterators/sam.html#sam_iter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bio_utils.iterators.sam_iter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate over SAM file and return SAM entries</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>handle (file): SAM file handle, can be any iterator so long as it</dt>
+<dd>it returns subsequent &#8220;lines&#8221; of a SAM entry</dd>
+<dt>start_line (str): Next SAM entry, if &#8216;handle&#8217; has been partially read</dt>
+<dd>and you want to start iterating at the next entry, read the next
+SAM entry and pass it to this variable when calling sam_iter.
+See &#8216;Examples.&#8217;</dd>
+<dt>headers (bool): Yields headers if True, else skips lines starting with</dt>
+<dd>&#8220;&#64;&#8221;</dd>
+</dl>
+</dd>
+<dt>Yields:</dt>
+<dd><dl class="first last docutils">
+<dt>SamEntry: class containing all SAM data, yields str for headers if</dt>
+<dd>headers options is True then yields GamEntry for entries</dd>
+</dl>
+</dd>
+<dt>Examples:</dt>
+<dd><p class="first">The following two examples demonstrate how to use sam_iter.
+Note: These doctests will not pass, examples are only in doctest
+format as per convention. bio_utils uses pytests for testing.</p>
+<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">sam_iter</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;test.sam&#39;</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">qname</span><span class="p">)</span>  <span class="c"># Print query sequence name</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">flag</span><span class="p">)</span>  <span class="c"># Print flag number of alignment</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">rname</span><span class="p">)</span>  <span class="c"># Print reference sequence name</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">pos</span><span class="p">)</span>  <span class="c"># Print starting position of alignment</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">mapq</span><span class="p">)</span>  <span class="c"># Print mapping confidence of alignment</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">cigar</span><span class="p">)</span>  <span class="c"># Print CIGAR string of alignment</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">rnext</span><span class="p">)</span>  <span class="c"># Print paired read name</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">pnext</span><span class="p">)</span>  <span class="c"># Print position of paired read</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">tlen</span><span class="p">)</span>  <span class="c"># Print alignment length of all paired reads</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>  <span class="c"># Print query sequence</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">qual</span><span class="p">)</span>  <span class="c"># Print query quality scores</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>  <span class="c"># Print whole SAM entry</span>
+</pre></div>
+</div>
+<div class="last highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">sam_handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;test.gff3&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">sam_handle</span><span class="p">)</span>  <span class="c"># Skip first line/entry</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">next_line</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">sam_handle</span><span class="p">)</span>  <span class="c"># Store next entry</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">sam_iter</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;test.sam&#39;</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">qname</span><span class="p">)</span>  <span class="c"># Print query sequence name</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">flag</span><span class="p">)</span>  <span class="c"># Print flag number of alignment</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">rname</span><span class="p">)</span>  <span class="c"># Print reference sequence name</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">pos</span><span class="p">)</span>  <span class="c"># Print starting position of alignment</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">mapq</span><span class="p">)</span>  <span class="c"># Print mapping confidence of alignment</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">cigar</span><span class="p">)</span>  <span class="c"># Print CIGAR string of alignment</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">rnext</span><span class="p">)</span>  <span class="c"># Print paired read name</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">pnext</span><span class="p">)</span>  <span class="c"># Print position of paired read</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">tlen</span><span class="p">)</span>  <span class="c"># Print alignment length of all paired reads</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>  <span class="c"># Print query sequence</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">qual</span><span class="p">)</span>  <span class="c"># Print query quality scores</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>  <span class="c"># Print whole SAM entry</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Iterators</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#common-features">Common Features</a></li>
+<li><a class="reference internal" href="#b6-iter">b6_iter</a></li>
+<li><a class="reference internal" href="#fasta-iter">fasta_iter</a></li>
+<li><a class="reference internal" href="#fastq-iter">fastq_iter</a></li>
+<li><a class="reference internal" href="#gff3-iter">gff3_iter</a></li>
+<li><a class="reference internal" href="#sam-iter">sam_iter</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="classes.html" title="previous chapter">Classes</a></li>
+      <li>Next: <a href="verifiers.html" title="next chapter">Verifiers</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/iterators.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, William Brazelton, Alex Hyer.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/iterators.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

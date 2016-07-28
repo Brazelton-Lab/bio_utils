@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bio_utils.blast_tools.blast_to_cigar &mdash; bio_utils 0.7.19a11 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.7.19a11',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="bio_utils 0.7.19a11 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for bio_utils.blast_tools.blast_to_cigar</h1><div class="highlight"><pre>
+<span class="c">#! /usr/bin/env python</span>
+
+<span class="sd">&quot;&quot;&quot;Translates a BLAST XML alignment into a CIGAR line</span>
+
+<span class="sd">Copyright:</span>
+
+<span class="sd">    blast_to_cigar.py convert BLAST XML alignments into CIGAR lines</span>
+<span class="sd">    Copyright (C) 2015  William Brazelton, Alex Hyer</span>
+
+<span class="sd">    This program is free software: you can redistribute it and/or modify</span>
+<span class="sd">    it under the terms of the GNU General Public License as published by</span>
+<span class="sd">    the Free Software Foundation, either version 3 of the License, or</span>
+<span class="sd">    (at your option) any later version.</span>
+
+<span class="sd">    This program is distributed in the hope that it will be useful,</span>
+<span class="sd">    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd">    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="sd">    GNU General Public License for more details.</span>
+
+<span class="sd">    You should have received a copy of the GNU General Public License</span>
+<span class="sd">    along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;Alex Hyer&#39;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s">&#39;theonehyer@gmail.com&#39;</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s">&#39;GPLv3&#39;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s">&#39;Alex Hyer&#39;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s">&#39;Production&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&#39;2.0.1&#39;</span>
+
+
+<div class="viewcode-block" id="blast_to_cigar"><a class="viewcode-back" href="../../../blast_tools.html#bio_utils.blast_tools.blast_to_cigar">[docs]</a><span class="k">def</span> <span class="nf">blast_to_cigar</span><span class="p">(</span><span class="n">query_seq</span><span class="p">,</span> <span class="n">match_seq</span><span class="p">,</span> <span class="n">subject_seq</span><span class="p">,</span> <span class="n">cigar_age</span><span class="o">=</span><span class="s">&#39;new&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;converts BLAST alignment into a old or new CIGAR line</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        query_seq (str): Aligned portion of query sequence</span>
+
+<span class="sd">        match_seq (str): Alignment sequence</span>
+
+<span class="sd">        subject_seq (str): Aligned portion of subject/reference sequence</span>
+
+<span class="sd">        cigar_age (str): [&#39;old&#39;, &#39;new&#39;] CIGAR format to use, new is highly</span>
+<span class="sd">            detailed while old is fairly minimalistic</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: CIGAR string</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If query_seq, match_seq, and match_seq not same length</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; query = &#39;AAGGG--CCTTGTA&#39;</span>
+<span class="sd">        &gt;&gt;&gt; subject = &#39;AAGCCTTCCAGGTA&#39;</span>
+<span class="sd">        &gt;&gt;&gt; alignment_old = &#39;|||||  |||||||&#39;</span>
+<span class="sd">        &gt;&gt;&gt; alignment_new = &#39;AAG++  CC++GTA&#39;</span>
+<span class="sd">        &gt;&gt;&gt; blast_to_cigar(query, alignment_new, subject)</span>
+<span class="sd">        3=2X2D2=2X3=</span>
+<span class="sd">        &gt;&gt;&gt; blast_to_cigar(query, alignment_old, subject, cigar_age=&#39;old&#39;)</span>
+<span class="sd">        5M2D7M</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">query_seq</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">match_seq</span><span class="p">)</span> \
+            <span class="ow">or</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">query_seq</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">subject_seq</span><span class="p">)</span> \
+            <span class="ow">or</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">subject_seq</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">match_seq</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;query_seq, match_seq, and subject_seq not same &#39;</span>
+                         <span class="s">&#39;lengths.&#39;</span><span class="p">)</span>
+
+    <span class="c"># Translate XML alignment to CIGAR characters</span>
+    <span class="n">cigar_line_raw</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">query</span><span class="p">,</span> <span class="n">match</span><span class="p">,</span> <span class="n">subject</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">query_seq</span><span class="p">,</span> <span class="n">match_seq</span><span class="p">,</span> <span class="n">subject_seq</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">query</span> <span class="o">==</span> <span class="s">&#39;-&#39;</span><span class="p">:</span>  <span class="c"># Deletion</span>
+            <span class="n">cigar_line_raw</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;D&#39;</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="k">elif</span> <span class="n">subject</span> <span class="o">==</span> <span class="s">&#39;-&#39;</span><span class="p">:</span>  <span class="c"># Insertion</span>
+            <span class="n">cigar_line_raw</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;I&#39;</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="k">elif</span> <span class="n">match</span> <span class="o">==</span> <span class="s">&#39;+&#39;</span> <span class="ow">or</span> <span class="n">match</span> <span class="o">==</span> <span class="s">&#39;|&#39;</span> <span class="ow">or</span> <span class="n">match</span><span class="o">.</span><span class="n">isalpha</span><span class="p">():</span>  <span class="c"># Match</span>
+            <span class="k">if</span> <span class="n">match</span> <span class="o">!=</span> <span class="s">&#39;+&#39;</span> <span class="ow">and</span> <span class="n">cigar_age</span> <span class="o">==</span> <span class="s">&#39;new&#39;</span><span class="p">:</span>  <span class="c"># Positive match</span>
+                <span class="n">cigar_line_raw</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="k">elif</span> <span class="n">match</span> <span class="o">==</span> <span class="s">&#39;+&#39;</span> <span class="ow">and</span> <span class="n">cigar_age</span> <span class="o">==</span> <span class="s">&#39;new&#39;</span><span class="p">:</span>  <span class="c"># Mismatch</span>
+                <span class="n">cigar_line_raw</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;X&#39;</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cigar_line_raw</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;M&#39;</span><span class="p">)</span>
+                <span class="k">continue</span>
+        <span class="k">elif</span> <span class="n">cigar_age</span> <span class="o">==</span> <span class="s">&#39;new&#39;</span><span class="p">:</span>
+            <span class="n">cigar_line_raw</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;X&#39;</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cigar_line_raw</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;M&#39;</span><span class="p">)</span>
+
+    <span class="c"># Replace repeat characters with numbers</span>
+    <span class="n">cigar_line</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">last_position</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+    <span class="n">repeats</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">cigar_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cigar_line_raw</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cigar_line_raw</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">letter</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">last_position</span><span class="p">:</span>
+            <span class="n">repeats</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">repeats</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">cigar_line</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">repeats</span><span class="p">))</span>
+                <span class="n">repeats</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">cigar_line</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">last_position</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">letter</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">cigar_len</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">repeats</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">cigar_line</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">repeats</span><span class="p">))</span>
+                <span class="n">repeats</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">cigar_line</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">letter</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">last_position</span> <span class="o">=</span> <span class="n">letter</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cigar_line</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, William Brazelton, Alex Hyer.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bio_utils.verifiers.fastq &mdash; bio_utils 0.7.19a11 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.7.19a11',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="bio_utils 0.7.19a11 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for bio_utils.verifiers.fastq</h1><div class="highlight"><pre>
+<span class="c">#! /usr/bin/env python</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+
+<span class="sd">&quot;&quot;&quot;Verifies a FASTQ file</span>
+
+<span class="sd">Usage:</span>
+
+<span class="sd">    fastq_verifier &lt;FASTQ File&gt; [--quiet]</span>
+
+<span class="sd">Copyright:</span>
+
+<span class="sd">    fastq.py verify validity of a FASTQ file</span>
+<span class="sd">    Copyright (C) 2015  William Brazelton, Alex Hyer</span>
+
+<span class="sd">    This program is free software: you can redistribute it and/or modify</span>
+<span class="sd">    it under the terms of the GNU General Public License as published by</span>
+<span class="sd">    the Free Software Foundation, either version 3 of the License, or</span>
+<span class="sd">    (at your option) any later version.</span>
+
+<span class="sd">    This program is distributed in the hope that it will be useful,</span>
+<span class="sd">    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd">    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="sd">    GNU General Public License for more details.</span>
+
+<span class="sd">    You should have received a copy of the GNU General Public License</span>
+<span class="sd">    along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">from</span> <span class="nn">bio_utils.iterators</span> <span class="kn">import</span> <span class="n">fastq_iter</span>
+<span class="kn">from</span> <span class="nn">bio_utils.verifiers</span> <span class="kn">import</span> <span class="n">entry_verifier</span>
+<span class="kn">from</span> <span class="nn">bio_utils.verifiers</span> <span class="kn">import</span> <span class="n">FormatError</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;Alex Hyer&#39;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s">&#39;theonehyer@gmail.com&#39;</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s">&#39;GPLv3&#39;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s">&#39;Alex Hyer&#39;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s">&#39;Production&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&#39;2.0.1&#39;</span>
+
+
+<span class="c"># noinspection PyTypeChecker</span>
+<div class="viewcode-block" id="fastq_verifier"><a class="viewcode-back" href="../../../verifiers.html#bio_utils.verifiers.fastq_verifier">[docs]</a><span class="k">def</span> <span class="nf">fastq_verifier</span><span class="p">(</span><span class="n">entries</span><span class="p">,</span> <span class="n">ambiguous</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Raises error if invalid FASTQ format detected</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        entries (list): A list of FastqEntry instances</span>
+
+<span class="sd">        ambiguous (bool): Permit ambiguous bases, i.e. permit non-ACGTU bases</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        FormatError: Error when FASTQ format incorrect with descriptive message</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; from bio_utils.iterators import fastq_iter</span>
+<span class="sd">        &gt;&gt;&gt; import os</span>
+<span class="sd">        &gt;&gt;&gt; entries = r&#39;@entry1{0}AAGGATTCG{0}+{0}112234432{0}&#39; \</span>
+<span class="sd">        ...           r&#39;@entry{0}AGGTCCCCCG{0}+{0}4229888884{0}&#39; \</span>
+<span class="sd">        ...           r&#39;@entry3{0}GCCTAGC{0}9ddsa5n&#39;.format(os.linesep)</span>
+<span class="sd">        &gt;&gt;&gt; fastq_entries = fastq_iter(iter(entries.split(os.linesep)))</span>
+<span class="sd">        &gt;&gt;&gt; fastq_verifier(fastq_entries)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">ambiguous</span><span class="p">:</span>
+        <span class="n">regex</span> <span class="o">=</span> <span class="s">r&#39;^@.+{0}[ACGTURYKMSWBDHVNX]+{0}&#39;</span> \
+                <span class="s">r&#39;\+.*{0}[!&quot;#$%&amp;</span><span class="se">\&#39;</span><span class="s">()*+,-./0123456&#39;</span> \
+                <span class="s">r&#39;789:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ&#39;</span> \
+                <span class="s">r&#39;[\]^_`abcdefghijklmnopqrstuvwxyz&#39;</span> \
+                <span class="s">r&#39;{{|}}~]+{0}$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">regex</span> <span class="o">=</span> <span class="s">r&#39;^@.+{0}[ACGTU]+{0}&#39;</span> \
+                <span class="s">r&#39;\+.*{0}[!-~]+{0}$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="p">)</span>
+    <span class="n">delimiter</span> <span class="o">=</span> <span class="s">r&#39;{0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">sequence</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">quality</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;The number of bases in {0} does not match the number &#39;</span> \
+                  <span class="s">&#39;of quality scores&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">FormatError</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">entry_verifier</span><span class="p">([</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">()],</span> <span class="n">regex</span><span class="p">,</span> <span class="n">delimiter</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">FormatError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">error</span><span class="o">.</span><span class="n">part</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Unknown Header Error with {0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">FormatError</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">error</span><span class="o">.</span><span class="n">part</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">ambiguous</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;{0} contains a base not in &#39;</span> \
+                      <span class="s">&#39;[ACGTURYKMSWBDHVNX]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">FormatError</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">error</span><span class="o">.</span><span class="n">part</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">ambiguous</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;{0} contains a base not in &#39;</span> \
+                      <span class="s">&#39;[ACGTU]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">FormatError</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">error</span><span class="o">.</span><span class="n">part</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Unknown error with line 3 of {0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">FormatError</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">error</span><span class="o">.</span><span class="n">part</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s">r&#39;{0} contains a quality score not in &#39;</span> \
+                      <span class="s">r&#39;[!-~]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">FormatError</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;{0}: Unknown Error: Likely a Bug&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">FormatError</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">__doc__</span><span class="p">,</span>
+                                     <span class="n">formatter_class</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span>
+                                     <span class="n">RawDescriptionHelpFormatter</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;fastq&#39;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s">&#39;FASTQ file to verify [Default: STDIN]&#39;</span><span class="p">,</span>
+                        <span class="nb">type</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">FileType</span><span class="p">(</span><span class="s">&#39;rU&#39;</span><span class="p">),</span>
+                        <span class="n">default</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;-q&#39;</span><span class="p">,</span> <span class="s">&#39;--quiet&#39;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Suppresses message when file is good&#39;</span><span class="p">,</span>
+                        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_false&#39;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">fastq_iter</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">fasta</span><span class="p">):</span>
+        <span class="n">fastq_verifier</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">quiet</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;{0} is valid&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">fastq</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>  <span class="c"># Prints if no error</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, William Brazelton, Alex Hyer.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
