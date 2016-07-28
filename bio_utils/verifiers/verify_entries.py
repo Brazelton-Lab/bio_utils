@@ -32,9 +32,6 @@ __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
 __version__ = '2.0.1'
 
-
-# TODO: Make a general store for things like FormatError and x readers
-
 class FormatError(Exception):
     """Exception to store errors when bad format found
 
