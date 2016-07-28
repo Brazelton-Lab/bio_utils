@@ -37,7 +37,7 @@ SCREED's, Biopython's, and bio_utils' FASTA iteration speed in seconds on a
 each.
 
 ==========  =======  =======  =======  =======  =======  =======
- FASTA File Iteration Speed for Different Libraries (seconds)
+  FASTA File Iteration Speed for Different Libraries (seconds)
 ----------------------------------------------------------------
 Library     Trial#1  Trial#2  Trial#3  Trial#4  Trial#5  Average
 ==========  =======  =======  =======  =======  =======  =======

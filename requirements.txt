@@ -1,0 +1,8 @@
+alabaster==0.7.7
+docutils==0.12
+gitchangelog==2.3.0
+Pygments==2.0.2
+pytest==2.9.1
+rst2pdf==0.93.dev0
+Sphinx==1.4.1
+sphinx-rtd-theme==0.1.9
