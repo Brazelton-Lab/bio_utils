@@ -14,7 +14,12 @@ formatted. These function check file entries against a regex matching a
 given file format. If the match fails, the verifier will subdivide the entry
 and determine what part of the entry fails the regex. This investigation of the
 entry permits the verifiers to return detailed error messages on what and where
-the file failed.
+the file failed. Each verifier except `entry_verifier`_ is also a program with
+the simple syntax
+
+[file]_verifier <file>
+
+which simply reads through a file and prints whether ot not it is valid.
 
 
 entry_verifier

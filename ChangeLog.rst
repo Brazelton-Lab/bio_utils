@@ -4,6 +4,16 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- Added contributions.rst. [TheOneHyer]
+
+  Started documentation about contribution
+  requirements. This will replace current
+  Core_Documentation.
+
+- Added blast_tools Documentation. [TheOneHyer]
+
+  Added blast_tools.rst. Minor spelling errors.
+
 - Added Verifiers Documentation. [TheOneHyer]
 
   Added verifiers.rst. Clarified documentation in

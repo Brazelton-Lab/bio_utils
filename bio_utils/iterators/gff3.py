@@ -57,7 +57,7 @@ class GFF3Entry:
         score (float): score/confidence of feature, often a P-value, returns
             str "." if no score given
 
-        strand (str): [+, -, .] strand feature is located on
+        strand (str): [+, -, .] strand that feature is located on
 
         phase (int): int if phase given in file, else str. Required for
             features of type "CDS," indicates bases until next codon in feature

@@ -64,7 +64,7 @@ Contents
    iterators.rst
    verifiers.rst
    blast_tools.rst
-   philosophy.rst
+   contributing.rst
    roadmap.rst
 
 

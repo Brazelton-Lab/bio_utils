@@ -7,3 +7,5 @@ Roadmap
 * Classes in own subpackage
 
 * Make iterators use verifiers
+
+* Call iterators into readers, many doc changes
