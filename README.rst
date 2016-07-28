@@ -22,7 +22,8 @@ Documentation
 =============
 
 bio_utils documentation is hosted at
-`Read the Docs <http://bio-utils.readthedocs.io/en/latest/>`_.
+`Read the Docs <http://bio-utils.readthedocs.io/en/latest/>`_. A copy of this
+documentation is included in `docs <docs>`_.
 
 
 Copyright
