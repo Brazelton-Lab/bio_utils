@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bio_utils.verifiers.gff3 &mdash; bio_utils 0.7.19a10 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.7.19a10',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="bio_utils 0.7.19a10 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for bio_utils.verifiers.gff3</h1><div class="highlight"><pre>
+<span class="c">#! /usr/bin/env python</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+
+<span class="sd">&quot;&quot;&quot;Verifies a GFF3 file</span>
+
+<span class="sd">Usage:</span>
+
+<span class="sd">    gff3_verifier &lt;GFF3 file&gt; [--quiet]</span>
+
+<span class="sd">Copyright:</span>
+
+<span class="sd">    gff3.py verify validity of a GFF3 file</span>
+<span class="sd">    Copyright (C) 2015  William Brazelton, Alex Hyer</span>
+
+<span class="sd">    This program is free software: you can redistribute it and/or modify</span>
+<span class="sd">    it under the terms of the GNU General Public License as published by</span>
+<span class="sd">    the Free Software Foundation, either version 3 of the License, or</span>
+<span class="sd">    (at your option) any later version.</span>
+
+<span class="sd">    This program is distributed in the hope that it will be useful,</span>
+<span class="sd">    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd">    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="sd">    GNU General Public License for more details.</span>
+
+<span class="sd">    You should have received a copy of the GNU General Public License</span>
+<span class="sd">    along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">from</span> <span class="nn">bio_utils.iterators</span> <span class="kn">import</span> <span class="n">gff3_iter</span>
+<span class="kn">from</span> <span class="nn">bio_utils.verifiers</span> <span class="kn">import</span> <span class="n">entry_verifier</span>
+<span class="kn">from</span> <span class="nn">bio_utils.verifiers</span> <span class="kn">import</span> <span class="n">FormatError</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;Alex Hyer&#39;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s">&#39;theonehyer@gmail.com&#39;</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s">&#39;GPLv3&#39;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s">&#39;Alex Hyer&#39;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s">&#39;Production&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&#39;2.0.0&#39;</span>
+
+
+<span class="c"># noinspection PyTypeChecker</span>
+<div class="viewcode-block" id="gff3_verifier"><a class="viewcode-back" href="../../../verifiers.html#bio_utils.verifiers.gff3_verifier">[docs]</a><span class="k">def</span> <span class="nf">gff3_verifier</span><span class="p">(</span><span class="n">entries</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Raises error if invalid GFF3 format detected</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        entries (list): A list of GFF3Entry instances</span>
+
+<span class="sd">        line (int): Line number of first entry</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        FormatError: Error when GFF3 format incorrect with descriptive message</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">regex</span> <span class="o">=</span> <span class="s">r&#39;^[a-zA-Z0-9.:^*$@!+_?-|]+\t.+\t.+\t\d+\t\d+\t&#39;</span> \
+            <span class="o">+</span> <span class="s">r&#39;\d*\.?\d*\t[+-.]\t[.0-2]\t.+{0}$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="p">)</span>
+    <span class="n">delimiter</span> <span class="o">=</span> <span class="s">r&#39;\t&#39;</span>
+
+    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">entry_verifier</span><span class="p">([</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">()],</span> <span class="n">regex</span><span class="p">,</span> <span class="n">delimiter</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">FormatError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="c"># Format info on what entry error came from</span>
+            <span class="k">if</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">intro</span> <span class="o">=</span> <span class="s">&#39;Line {0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">error</span><span class="o">.</span><span class="n">part</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">intro</span> <span class="o">=</span> <span class="s">&#39;Entry with source {0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">source</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">intro</span> <span class="o">=</span> <span class="s">&#39;Entry with Sequence ID {0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">seqid</span><span class="p">)</span>
+
+            <span class="c"># Generate error</span>
+            <span class="k">if</span> <span class="n">error</span><span class="o">.</span><span class="n">part</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;{0} has no Sequence ID&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">error</span><span class="o">.</span><span class="n">part</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;{0} has no source&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">error</span><span class="o">.</span><span class="n">part</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;{0} has non-numerical characters in type&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">error</span><span class="o">.</span><span class="n">part</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;{0} has non-numerical characters in &#39;</span> \
+                      <span class="s">&#39;start position&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">error</span><span class="o">.</span><span class="n">part</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;{0} has non-numerical characters in &#39;</span> \
+                      <span class="s">&#39;end position&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">error</span><span class="o">.</span><span class="n">part</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;{0} has non-numerical characters in score&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">error</span><span class="o">.</span><span class="n">part</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;{0} strand not in [+-.]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">error</span><span class="o">.</span><span class="n">part</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;{0} phase not in [.0-2]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">error</span><span class="o">.</span><span class="n">part</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;{0} has no attributes&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Unknown Error: Likely a Bug&#39;</span>
+            <span class="k">raise</span> <span class="n">FormatError</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">line</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">+=</span> <span class="mi">1</span></div>
+
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">__doc__</span><span class="p">,</span>
+                                     <span class="n">formatter_class</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span>
+                                     <span class="n">RawDescriptionHelpFormatter</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;gff3&#39;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s">&#39;GFF3 file to verify [Default: STDIN]&#39;</span><span class="p">,</span>
+                        <span class="nb">type</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">FileType</span><span class="p">(</span><span class="s">&#39;rU&#39;</span><span class="p">),</span>
+                        <span class="n">default</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;-q&#39;</span><span class="p">,</span> <span class="s">&#39;--quiet&#39;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Suppresses message when file is good&#39;</span><span class="p">,</span>
+                        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_false&#39;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">gff3_iter</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">gff3</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">True</span><span class="p">)):</span>
+        <span class="n">gff3_verifier</span><span class="p">(</span><span class="n">entry</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span><span class="o">=</span><span class="n">entry</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">quiet</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;{0} is valid&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">gff3</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, William Brazelton, Alex Hyer.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,245 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>bio_utils: library of common bioinformatic functions &mdash; bio_utils 0.7.19a10 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.7.19a10',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="bio_utils 0.7.19a10 documentation" href="#" />
+    <link rel="next" title="Classes" href="classes.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="bio-utils-library-of-common-bioinformatic-functions">
+<h1>bio_utils: library of common bioinformatic functions<a class="headerlink" href="#bio-utils-library-of-common-bioinformatic-functions" title="Permalink to this headline">¶</a></h1>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Authors:</th><td class="field-body">Alex Hyer, William Brazelton, Christopher Thornton</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Date:</th><td class="field-body">Jul 28, 2016</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Version:</th><td class="field-body">0.7</td>
+</tr>
+</tbody>
+</table>
+<span class="target" id="module-bio_utils"></span><p>Software library containing common bioinformatic functions</p>
+<p>Copyright:</p>
+<blockquote>
+<div><p>__init__.py software library containing common bioinformatic functions
+Copyright (C) 2015  William Brazelton, Alex Hyer</p>
+<p>This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p>This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.</p>
+<p>You should have received a copy of the GNU General Public License
+along with this program.  If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+</div></blockquote>
+<div class="section" id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<p>bio_utils is a library of Python modules performing routine functions in
+bioinformatic scripts.</p>
+</div>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Many bioinformatic scripts perform similar or identical tasks internally
+during the execution of a program. Such tasks include reading FASTA files or
+filtering BLAST+ results. bio_utils contains numerous functions that quickly
+and simply handle simple, mundane, everyday tasks in a streamlined and simple
+fashion to save developers time. bio_utils aims to be as simple as possible,
+providing functionality without adding in unnecessary features, i.e. bio_utils
+is as vanilla as reasonable. This both increases the speed of most functions
+and greatly simplifies APIs.</p>
+<p>Many libraries, such as
+<a class="reference external" href="https://screed.readthedocs.io/en/v0.9/">SCREED</a> and
+<a class="reference external" href="http://biopython.org/">Biopython</a>, already provide importable functions that
+execute these simple tasks. SCREED maintains a fairly simple API but is fairly
+slow and no one has updated the original repo since 2012-06-17. Numerous
+developers actively maintain Biopython and it is quite a bit faster, in some
+regards, than SCREED. However, Biopython stocks their functions with an
+enourmous number of features that, while useful in a Python interpreter, are
+often ignored by programs or can be accomplished more quickly using built-in
+Python features, i.e. Biopython is bloatware to many developers. As
+aforementioned, bio_utils&#8217; vanilla design overcomes both these libraries issues
+by providing both simplicity and speed.</p>
+<p>At this point in time, bio_utils is quite small and its scope limited. The
+authors intend to slowly but surely increase this library&#8217;s repertoire over
+time. We welcome any and all contributions to our project.</p>
+</div>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default"><div class="highlight"><pre><span class="n">pip</span> <span class="n">install</span> <span class="n">bio_utils</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="contents">
+<h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="classes.html">Classes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="classes.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes.html#b6entry">B6Entry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes.html#fastaentry">FastaEntry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes.html#fastqentry">FastqEntry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes.html#gff3entry">GFF3Entry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classes.html#samentry">SamEntry</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="iterators.html">Iterators</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="iterators.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iterators.html#common-features">Common Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iterators.html#b6-iter">b6_iter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iterators.html#fasta-iter">fasta_iter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iterators.html#fastq-iter">fastq_iter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iterators.html#gff3-iter">gff3_iter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iterators.html#sam-iter">sam_iter</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="verifiers.html">Verifiers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="verifiers.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verifiers.html#entry-verifier">entry_verifier</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verifiers.html#b6-verifier">b6_verifier</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verifiers.html#binary-guesser">binary_guesser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verifiers.html#fasta-verifier">fasta_verifier</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verifiers.html#fastq-verifier">fastq_verifier</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verifiers.html#gff3-verifier">gff3_verifier</a></li>
+<li class="toctree-l2"><a class="reference internal" href="verifiers.html#sam-verifier">sam_verifier</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="blast_tools.html">Blast Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="blast_tools.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blast_tools.html#blast-to-cigar">blast_to_cigar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blast_tools.html#b6-evalue-filter">b6_evalue_filter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blast_tools.html#query-sequence-retriever">query_sequence_retriever</a></li>
+<li class="toctree-l2"><a class="reference internal" href="blast_tools.html#subject-sequence-retriever">subject_sequence_retriever</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#how-to-contribute">How to Contribute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#core-principles">Core Principles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#script-requirements">Script Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#sub-package-requirements">Sub-Package Requirements</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="roadmap.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="roadmap.html#v1-1">V1.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="roadmap.html#v1-2">V1.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="roadmap.html#v2-0">V2.0</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+<div class="section" id="copyright">
+<h2>Copyright<a class="headerlink" href="#copyright" title="Permalink to this headline">¶</a></h2>
+<p>bio_utils&#8217; operates under the <a class="reference download internal" href="_downloads/LICENSE.txt" download=""><code class="xref download docutils literal"><span class="pre">GPLv3</span> <span class="pre">License</span></code></a> and may
+be edited and redistributed as per that license.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">bio_utils: library of common bioinformatic functions</a><ul>
+<li><a class="reference internal" href="#summary">Summary</a></li>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#contents">Contents</a></li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+<li><a class="reference internal" href="#copyright">Copyright</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="classes.html" title="next chapter">Classes</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, William Brazelton, Alex Hyer.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/index.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
