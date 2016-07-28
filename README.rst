@@ -21,7 +21,8 @@ Installation
 Documentation
 =============
 
-See `Documentation <Documentation/index.html>`_
+bio_utils documentation is hosted at
+`Read the Docs <http://bio-utils.readthedocs.io/en/latest/>`_.
 
 
 Copyright
