@@ -23,6 +23,74 @@ This section is placed near the top for your convenience, if this is your first
 time contributing, please read the rest of this document first.
 
 
+Start-Up Preparation
+--------------------
+
+Follow these steps if you have never contributed to bio_utils before:
+
+1. Install the following software:
+
+    * `Git <https://git-scm.com/book/en/v2/Getting-Started-Installing-Git>`_
+
+    * `Sphinx <http://www.sphinx-doc.org/en/stable/install.html>`_
+
+    * `pytest <http://docs.pytest.org/en/latest/getting-started.html>`_
+
+    * `gitchangelog <https://pypi.python.org/pypi/gitchangelog>`_
+
+2. Get a `GitHub <https://github.com/>`_ account
+
+3. Fork the `repo <https://github.com/Brazelton-Lab/bio_utils>`_ ('fork' button)
+
+4. Clone your copy of bio_utils::
+
+    git clone https://github.com/<your GitHub account username>/bio_utils.git
+
+5. Connect the "official" bio_utils repo to your fork::
+
+    git remote add braz https://github.com/Brazelton-Lab/bio_utils.git
+
+
+Actually Contributing
+---------------------
+
+Before editing anything, run the following command to make sure your copy of
+bio_utils is up-to-date with the "official" branch::
+
+    git pull braz master
+
+After editing or adding files, perform the following steps:
+
+1. Write a unit `test <http://docs.pytest.org/en/latest/getting-started.html>`_ if you wrote a new script.
+
+2. Run unit tests and do not continue with this workflow unless they pass::
+
+    cd <main directory of git repo>
+    py.test
+
+3. Add files to your git commit::
+
+    git add <file>
+
+4. Update ChangeLog.rst::
+
+    gitchangelog > ChangeLog.rst
+
+5. Commit your changes, add a detailed message in whatever text editor appears::
+
+    git commit
+
+6. Push your commit to GitHub::
+
+    git push origin
+
+7. Repeat steps 1-6 until you want to merge your changes to the "official" repo
+
+8. To merge your changes, go to you GitHub copy of bio_utils and click 'Compare & pull request'
+
+9. In your pull request mention @TheOneHyer for review
+
+
 Core Principles
 ===============
 
@@ -306,5 +374,3 @@ format::
     one-liner>
 
     .. autofunction:: <function>
-
-

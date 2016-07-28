@@ -4,6 +4,10 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- Added Sub-Package Requirements. [TheOneHyer]
+
+  Sub-package requirements are now in contributions.rst.
+
 - Added to contributions.rst. [TheOneHyer]
 
   Added script requirements and philosophy

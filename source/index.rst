@@ -49,7 +49,7 @@ time. We welcome any and all contributions to our project.
 Installation
 ============
 
-.. code-block:: python
+::
 
     pip install bio_utils
 
