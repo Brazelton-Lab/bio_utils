@@ -30,7 +30,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '2.0.0'
+__version__ = '2.0.1'
 
 
 # TODO: Make a general store for things like FormatError and x readers
@@ -95,6 +95,11 @@ def entry_verifier(entries, regex, delimiter):
 
     Raises:
         FormatError: Class containing regex match error data
+
+    Example:
+        >>> regex = r'^>.+\\n[ACGTU]+\\n$'
+        >>> entry = [r'>entry1\\nAGGGACTA\\n']
+        >>> entry_verifier(entry, regex, '\\n')
     """
 
     cregex = re.compile(regex)  # Compiling saves time if many entries given

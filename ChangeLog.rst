@@ -4,6 +4,11 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- Added to contributions.rst. [TheOneHyer]
+
+  Added script requirements and philosophy
+  to contributions.rst.
+
 - Added contributions.rst. [TheOneHyer]
 
   Started documentation about contribution

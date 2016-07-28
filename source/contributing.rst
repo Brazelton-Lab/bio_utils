@@ -11,10 +11,16 @@ helpful to have an underlying, general philosophy concerning what should be
 included in bio_utils, how it should be coded, and where it should go within
 the library. This ensures that everything is structured logically and that
 the library is both intuitive to use and internally consistent. This document
-explains these philosophies and should be read by anyone looking to contribute
-to the library on whether or not their script belongs in bio_utils, where it
-belongs, and how to structure their script. It also contains concrete guides
-on what each script and sub-package should contain.
+explains these philosophies—and their implementations—and should be read by
+anyone looking to contribute to the library on whether or not their script
+belongs in bio_utils, where it belongs, and how to structure their script.
+
+
+How to Contribute
+=================
+
+This section is placed near the top for your convenience, if this is your first
+time contributing, please read the rest of this document first.
 
 
 Core Principles
@@ -93,7 +99,7 @@ intermediate favoring ASAP over speed.
 Script Requirements
 ===================
 
-This section acts as a practical coding guide to implement the above principles
+This section is as a practical coding guide to implement the above principles
 in bio_utils' scripts.
 
 
@@ -201,15 +207,13 @@ about each function. Full API should also be described in our Sphinx
 Metadata and Copyright
 ----------------------
 
-All scripts should start with the shebang line:
+All scripts must start with the following code:
 
 .. code-block:: python
 
     #! /usr/bin/env python
 
-followed by docstrings of the following format:
-
-.. code-block:: python
+    # from __future__ imports go here
 
     """<one-liner describing software>
 
@@ -234,10 +238,6 @@ followed by docstrings of the following format:
         along with this program.  If not, see <http://www.gnu.org/licenses/>.
     """
 
-and, finally, have metadata variables as such:
-
-.. code-block:: python
-
     __author__ = '<authors>'
     __email__ = '<email of lead author or maintainer>'
     __license__ = 'GPLv3'
@@ -246,6 +246,65 @@ and, finally, have metadata variables as such:
     __version__ = '<script version>'
     __credits__ = '<credit for legally borrowed code if appropriate>'
 
+    # imports, then rest of script
+
 
 Sub-Package Requirements
-------------------------
+========================
+
+This section details what sub-packages in bio_utils contain and when it is
+appropriate to start a new one.
+
+
+2+ Scripts per Package
+----------------------
+
+While you can have a package with just a single script, try for at least two
+scripts per package. The reasoning behind this is simple, a package with a
+single script feels like an unnecessary "package" in the import statement
+and chances are you can think of a second script useful to the concept driving
+the sub-package. If a script truly doesn't fit in any other sub-package, try
+to think of a second function fitting the schema and code it. bio_utils will
+never have a "misc" package.
+
+
+Import at Package Level
+-----------------------
+
+Since each script should have only one (or a few functions), they should be
+imported at the package level—in the "__init__.py" file—so that a programmer
+doesn't have to write redundant words in import statements. For example:
+
+from bio_utils.iterators import sam_iter (package level = better)
+
+from bio_utils.iterators.sam import sam_iter (file level = worse)
+
+
+Own Documentation Page
+----------------------
+
+Each sub-package must have its own web page in the documentation following this
+format::
+
+    =====
+    Title
+    =====
+
+    .. automodule:: <module>
+
+    Introduction
+    ------------
+
+    <what package contains and any globally relevant information>
+
+    <optional sections>
+
+    <first function>
+    ----------------
+
+    <short function description, should be longer/give more info than function
+    one-liner>
+
+    .. autofunction:: <function>
+
+
