@@ -37,6 +37,6 @@ more intuitive and better organized. While some changes seem smaller, like
 renaming packages, they constitute a major as they will break current API and
 not be backwards compatible.
 
-* Rename iterators package to readers, many doc changes
+* Rename iterators package to parsers, many doc changes
 
 * Moving classes in iterators to a new "data storage structures" package

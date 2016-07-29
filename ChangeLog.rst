@@ -4,6 +4,72 @@ Changelog
 %%version%% (unreleased)
 ------------------------
 
+- RTD Fix? [TheOneHyer]
+
+  I beleive I got RTD to use its own theme with
+  autofunction. Attempting fix.
+
+1.0.1 (2016-07-28)
+------------------
+
+- Major Version Bump. [TheOneHyer]
+
+  bio_utils is now V1.0.0!
+
+1.0.0 (2016-07-28)
+------------------
+
+- Resorted to Alabaster. [TheOneHyer]
+
+  RTD failed to generate autofunction with own theme.
+  Using Alabaster.
+
+- Edited requirements.txt. [TheOneHyer]
+
+  Removed broken link from requirements.txt
+
+- RTD test. [TheOneHyer]
+
+  Added requirements.txt to fix RTD docs
+
+- Version Bump. [TheOneHyer]
+
+- Changed HTML theme to RTD. [TheOneHyer]
+
+  Docs theme is now Sphinx RTD
+
+- README has a bit more info. [TheOneHyer]
+
+  README now has both docs links
+
+- README updated. [TheOneHyer]
+
+  README now correctly links to documentation
+
+- Removed line from conf.py. [TheOneHyer]
+
+  Removed line to attempt to use RTD
+
+- Moved Documentation to docs. [TheOneHyer]
+
+  Moved Documentation folder to docs for RTD
+
+- Rendered Documentation. [TheOneHyer]
+
+  Documentation now exists as web pages under the
+  Documentation folder. README is now in rst format
+  and links to proper locations.
+
+- Finished roadmap. [TheOneHyer]
+
+  roadmap.rst now has all planned changes
+  documented.
+
+- Finished contributions.rst. [TheOneHyer]
+
+  Added how to contribute sections to
+  contributions.rst.
+
 - Added Sub-Package Requirements. [TheOneHyer]
 
   Sub-package requirements are now in contributions.rst.
