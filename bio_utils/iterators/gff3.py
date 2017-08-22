@@ -29,7 +29,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '3.1.2'
+__version__ = '3.1.3'
 
 
 class FastaFound(Exception):
@@ -37,6 +37,7 @@ class FastaFound(Exception):
 
     def __init__(self):
         """This exception acts as a flag for iteration and nothing more"""
+
         pass
 
 
@@ -206,6 +207,8 @@ def gff3_iter(handle, start_line=None, parse_attr=True, headers=False):
 
         while True:  # Loop until StopIteration Exception raised
 
+            data = GFF3Entry()  # Initialize early to prevent access error
+
             if line.startswith('##FASTA'):  # Skip FASTA entries
                 raise FastaFound
 
@@ -219,7 +222,6 @@ def gff3_iter(handle, start_line=None, parse_attr=True, headers=False):
 
             split_line = split(line, '\t')
 
-            data = GFF3Entry()
             data.seqid = split_line[0]
             data.source = split_line[1]
             data.type = split_line[2]
@@ -231,7 +233,7 @@ def gff3_iter(handle, start_line=None, parse_attr=True, headers=False):
                 data.score = split_line[5]
             data._score_str = split_line[5]
             data.strand = split_line[6]
-            try: # Get phase as int unless phase not given
+            try:  # Get phase as int unless phase not given
                 data.phase = int(split_line[7])
             except ValueError:
                 data.phase = split_line[7]

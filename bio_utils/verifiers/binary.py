@@ -29,6 +29,7 @@ Copyright:
 
 import argparse
 from bio_utils.verifiers import FormatError
+import string
 import sys
 
 __author__ = 'Alex Hyer'
@@ -36,7 +37,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '2.0.0'
+__version__ = '2.0.1'
 __credits__ = 'Andrew Dalke'
 
 
@@ -66,10 +67,10 @@ def binary_guesser(handle, bytes=512):
     """
 
     text_characters = ''.join(map(chr, range(32, 127))) + '\n\r\t\b'
-    trans_table = dict.fromkeys(map(ord, text_characters), None)
+    null_trans = string.maketrans("", "")
     handle_location = handle.tell()
     first_block = handle.read(bytes)
-    filtered_block = first_block.translate(trans_table)
+    filtered_block = first_block.translate(null_trans, text_characters)
     handle.seek(handle_location)  # Return to original handle location
     if float(len(filtered_block)) / float(len(first_block)) > 0.30:
         pass  # File is likely binary
