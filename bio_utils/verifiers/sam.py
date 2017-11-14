@@ -159,7 +159,7 @@ def main():
     args = parser.parse_args()
 
     for entry in enumerate(sam_iter(args.sam, headers=True)):
-        sam_verifier(entry[1], line=entry[0] + 1)
+        sam_verifier([entry[1]], line=entry[0] + 1)
     if not args.quiet:
         print('{0} is valid').format(args.sam.name)
 

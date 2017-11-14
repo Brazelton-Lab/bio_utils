@@ -35,7 +35,7 @@ execute these simple tasks. SCREED maintains a fairly simple API but is fairly
 slow and no one has updated the original repo since 2012-06-17. Numerous
 developers actively maintain Biopython and it is quite a bit faster, in some
 regards, than SCREED. However, Biopython stocks their functions with an
-enourmous number of features that, while useful in a Python interpreter, are
+enormous number of features that, while useful in a Python interpreter, are
 often ignored by programs or can be accomplished more quickly using built-in
 Python features, i.e. Biopython is bloatware to many developers. As
 aforementioned, bio_utils' vanilla design overcomes both these libraries issues

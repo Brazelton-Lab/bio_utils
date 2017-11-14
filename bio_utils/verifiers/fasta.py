@@ -39,7 +39,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '2.1.0'
+__version__ = '2.1.1'
 
 
 # noinspection PyTypeChecker
@@ -104,7 +104,7 @@ def main():
     args = parser.parse_args()
 
     for entry in fasta_iter(args.fasta):
-        fasta_verifier(entry)
+        fasta_verifier([entry])
     if not args.quiet:
         print('{0} is valid'.format(args.fasta.name))  # Prints if no error
 

@@ -39,7 +39,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '2.0.0'
+__version__ = '2.0.1'
 
 
 # noinspection PyTypeChecker
@@ -114,7 +114,7 @@ def main():
     args = parser.parse_args()
 
     for entry in enumerate(gff3_iter(args.gff3, headers=True)):
-        gff3_verifier(entry[1], line=entry[0] + 1)
+        gff3_verifier([entry[1]], line=entry[0] + 1)
     if not args.quiet:
         print('{0} is valid').format(args.gff3.name)
 
