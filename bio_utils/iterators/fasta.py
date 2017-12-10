@@ -115,7 +115,17 @@ def fasta_iter(handle, header=None):
     strip = str.strip
 
     if header is None:
-        header = strip(next(handle))  # Read first FASTA entry header
+        header = next(handle)  # Read first FASTQ entry header
+
+        # Check if input is text or bytestream
+        if (isinstance(header, bytes)):
+            def next_line(i):
+                return next(i).decode('utf-8')
+
+            header = strip(header.decode('utf-8'))
+        else:
+            next_line = next
+
     else:
         header = strip(header)  # Set header to given header
 
@@ -123,7 +133,7 @@ def fasta_iter(handle, header=None):
 
         while True:  # Loop until StopIteration Exception raised
 
-            line = strip(next(handle))
+            line = strip(next_line(handle))
 
             data = FastaEntry()
 
@@ -140,7 +150,7 @@ def fasta_iter(handle, header=None):
             sequence_list = []
             while line and not line[0] == '>':
                 append(sequence_list, line)
-                line = strip(next(handle))  # Raises StopIteration at EOF
+                line = strip(next_line(handle))  # Raises StopIteration at EOF
             header = line  # Store current line so it's not lost next iteration
             data.sequence = join('', sequence_list)
 
