@@ -134,6 +134,7 @@ def fastq_iter(handle, header=None):
             header = strip(header.decode('utf-8'))
         else:
             next_line = next
+            header = strip(header)
 
     else:
         header = strip(header)  # Set header to given header
