@@ -123,21 +123,19 @@ def fastq_iter(handle, header=None):
     join = str.join
     strip = str.strip
 
+    next_line = next
+
     if header is None:
         header = next(handle)  # Read first FASTQ entry header
 
-        # Check if input is text or bytestream
-        if (isinstance(header, bytes)):
-            def next_line(i):
-                return next(i).decode('utf-8')
+    # Check if input is text or bytestream
+    if (isinstance(header, bytes)):
+        def next_line(i):
+            return next(i).decode('utf-8')
 
-            header = strip(header.decode('utf-8'))
-        else:
-            next_line = next
-            header = strip(header)
-
+        header = strip(header.decode('utf-8'))
     else:
-        header = strip(header)  # Set header to given header
+        header = strip(header)
 
     try:  # Manually construct a for loop to improve speed by using 'next'
 
