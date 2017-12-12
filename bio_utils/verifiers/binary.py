@@ -29,7 +29,6 @@ Copyright:
 
 import argparse
 from bio_utils.verifiers import FormatError
-import string
 import sys
 
 __author__ = 'Alex Hyer'
@@ -37,13 +36,13 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '2.0.1'
+__version__ = '3.0.0'
 __credits__ = 'Andrew Dalke'
 
 
 # Credit: http://code.activestate.com/
 # recipes/173220-test-if-a-file-or-string-is-text-or-binary/
-def binary_guesser(handle, bytes=512):
+def binary_guesser(handle, num_bytes=512):
     """Raise error if file not likely binary
 
     Guesses if a file is binary, raises error if file is not likely binary,
@@ -52,8 +51,8 @@ def binary_guesser(handle, bytes=512):
     Args:
         handle (file): File handle of file thought to be binary
 
-        bytes (int): Bytes of file to read to guess binary, more bytes
-            is often better but takes longer
+        num_bytes (int): Bytes of file to read to guess binary, more bytes
+                         is often better but takes longer
 
     Raises:
         FormatError: Error raised if file is not likely binary
@@ -66,11 +65,13 @@ def binary_guesser(handle, bytes=512):
         >>> binary_guesser(open('test.binary'))
     """
 
-    text_characters = ''.join(map(chr, range(32, 127))) + '\n\r\t\b'
-    null_trans = string.maketrans("", "")
+    text_chars = ''.join(map(chr, range(32, 127))) + '\n\r\t\b'
+    byte_chars = text_chars.encode()
     handle_location = handle.tell()
-    first_block = handle.read(bytes)
-    filtered_block = first_block.translate(null_trans, text_characters)
+    first_block = handle.read(num_bytes)
+    if type(first_block) is str:
+        first_block = first_block.encode()
+    filtered_block = first_block.translate(None, delete=byte_chars)
     handle.seek(handle_location)  # Return to original handle location
     if float(len(filtered_block)) / float(len(first_block)) > 0.30:
         pass  # File is likely binary
