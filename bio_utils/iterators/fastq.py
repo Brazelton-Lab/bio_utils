@@ -123,16 +123,25 @@ def fastq_iter(handle, header=None):
     join = str.join
     strip = str.strip
 
+    next_line = next
+
     if header is None:
-        header = strip(next(handle))  # Read first FASTQ entry header
+        header = next(handle)  # Read first FASTQ entry header
+
+    # Check if input is text or bytestream
+    if (isinstance(header, bytes)):
+        def next_line(i):
+            return next(i).decode('utf-8')
+
+        header = strip(header.decode('utf-8'))
     else:
-        header = strip(header)  # Set header to given header
+        header = strip(header)
 
     try:  # Manually construct a for loop to improve speed by using 'next'
 
         while True:  # Loop until StopIteration Exception raised
 
-            line = strip(next(handle))
+            line = strip(next_line(handle))
 
             data = FastqEntry()
 
@@ -149,10 +158,10 @@ def fastq_iter(handle, header=None):
             sequence_list = []
             while line and not line[0] == '+' and not line[0] == '#':
                 append(sequence_list, line)
-                line = strip(next(handle))
+                line = strip(next_line(handle))
             data.sequence = join('', sequence_list)
 
-            line = strip(next(handle))  # Skip line containing only '+'
+            line = strip(next_line(handle))  # Skip line containing only '+'
 
             # Obtain quality scores
             quality_list = []
@@ -161,7 +170,7 @@ def fastq_iter(handle, header=None):
             while line and qual_len < seq_len:
                 append(quality_list, line)
                 qual_len += len(line)
-                line = strip(next(handle))  # Raises StopIteration at EOF
+                line = strip(next_line(handle))  # Raises StopIteration at EOF
             header = line  # Store current line so it's not lost next iteration
             data.quality = join('', quality_list)
 
