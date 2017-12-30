@@ -119,7 +119,7 @@ def main():
                         action='store_false')
     args = parser.parse_args()
 
-    for entry in fastq_iter(args.fasta):
+    for entry in fastq_iter(args.fastq):
         fastq_verifier([entry])
     if not args.quiet:
         print('{0} is valid'.format(args.fastq.name))  # Prints if no error
