@@ -31,6 +31,14 @@ __status__ = 'Production'
 __version__ = '4.1.2'
 
 
+class FormatError(Exception):
+    """A simple exception that is raised when an input file is formatted 
+    incorrectly
+    """
+    def __init__(self,*args,**kwargs):
+        Exception.__init__(self,*args,**kwargs)
+
+
 class B6Entry:
     """A simple class to store data from B6/M8 entries and write them
 
@@ -59,6 +67,8 @@ class B6Entry:
         evalue (float): E-value of alignment
 
         bit_score (float): Bit score of alignment
+
+        add_specs (list): List of non-default format specifiers
     """
 
     def __init__(self):
@@ -75,8 +85,9 @@ class B6Entry:
         self.subject_start = None
         self.subject_end = None
         self.evalue = None
-        self._evalue_str = None  # Store original formatting of E-value
+        self._evalue_str = None  #store original formatting of E-value
         self.bit_score = None
+        self.add_specs = None  #store additional format specifiers
 
     def write(self):
         """Return B6/M8 formatted string
@@ -85,9 +96,14 @@ class B6Entry:
             str: B6/M8 formatted string containing entire B6/M8 entry
         """
 
+        if self.add_specs:
+            specs = "\t{}".format('\t'.join(self.add_specs))
+        else:
+            specs = ''
+
         return '{0}\t{1}\t{2}\t{3}\t{4}\t' \
                '{5}\t{6}\t{7}\t{8}\t{9}\t' \
-               '{10}\t{11}{12}'.format(self.query,
+               '{10}\t{11}{12}{13}'.format(self.query,
                                        self.subject,
                                        str(self.perc_identical),
                                        str(self.align_len),
@@ -99,10 +115,11 @@ class B6Entry:
                                        str(self.subject_end),
                                        self._evalue_str,
                                        str(self.bit_score),
+                                       specs,
                                        os.linesep)
 
 
-def b6_iter(handle, start_line=None):
+def b6_iter(handle, start_line=None, header=None, comments=False):
     """Iterate over B6/M8 file and return B6/M8 entries
 
     Args:
@@ -113,6 +130,13 @@ def b6_iter(handle, start_line=None):
             and you want to start iterating at the next entry, read the next
             B6/M8 entry and pass it to this variable when  calling b6_iter.
             See 'Examples.'
+
+        header (list): List of custom format specifiers if B6 file not in 
+            default Blast+ 6 format. The default format specifiers must be 
+            included somewhere in the list, although order is not important
+
+        comments (bool): Yields comments if True, else skips lines starting
+            with "#"
 
     Yields:
         B6Entry: class containing all B6/M8 data
@@ -158,10 +182,52 @@ def b6_iter(handle, start_line=None):
     split = str.split
     strip = str.strip
 
+    required_specs = ['qend', 'mismatch', 'pident', 'qaccver', 'qstart', \
+                      'sstart', 'bitscore', 'evalue', 'gapopen', 'send', \
+                      'length', 'saccver']
+
+    if header:  #custom header format
+        h = {}
+        for index, specifier in enumerate(header):
+            h[specifier] = index
+
+        for def_spec in required_specs:
+            if def_spec not in h:
+                raise FormatError("Required format specifier '{}' is "\
+                                  "missing from the header".format(def_spec))
+
+    else:  #default header format
+        h = {
+             'qaccver': 0,
+             'saccver': 1,
+             'pident': 2,
+             'length': 3,
+             'mismatch': 4,
+             'gapopen': 5,
+             'qstart': 6,
+             'qend': 7,
+             'sstart': 8,
+             'send': 9,
+             'evalue': 10,
+             'bitscore': 11
+            }
+
+    next_line = next
+
     if start_line is None:
-        line = strip(next(handle))  # Read first B6/M8 entry
+        line = next_line(handle)  # Read first B6/M8 entry
     else:
-        line = strip(start_line)  # Set header to given header
+        line = start_line  # Set header to given header
+
+    # Check if input is text or bytestream
+    if (isinstance(line, bytes)):
+        def next_line(i):
+            return next(i).decode('utf-8')
+
+        line = strip(line.decode('utf-8'))
+    else:
+        line = strip(line)
+
 
     # A manual 'for' loop isn't needed to read the file properly and quickly,
     # unlike fasta_iter and fastq_iter, but it is necessary begin iterating
@@ -170,24 +236,37 @@ def b6_iter(handle, start_line=None):
 
         while True:  # Loop until StopIteration Exception raised
 
+            data = B6Entry()
+
+            if line.startswith('#') and not comments:
+                line = strip(next_line(handle))
+                continue
+            elif line.startswith('#') and comments:
+                yield line
+                line = strip(next_line(handle))
+                continue
+
             split_line = split(line, '\t')
 
-            data = B6Entry()
-            data.query = split_line[0]
-            data.subject = split_line[1]
-            data.perc_identical = float(split_line[2])
-            data.align_len = int(split_line[3])
-            data.mismatches = int(split_line[4])
-            data.gaps = int(split_line[5])
-            data.query_start = int(split_line[6])
-            data.query_end = int(split_line[7])
-            data.subject_start = int(split_line[8])
-            data.subject_end = int(split_line[9])
-            data.evalue = float(split_line[10])
-            data._evalue_str = split_line[10]
-            data.bit_score = float(split_line[11])
+            data.query = split_line[h['qaccver']]
+            data.subject = split_line[h['saccver']]
+            data.perc_identical = float(split_line[h['pident']])
+            data.align_len = int(split_line[h['length']])
+            data.mismatches = int(split_line[h['mismatch']])
+            data.gaps = int(split_line[h['gapopen']])
+            data.query_start = int(split_line[h['qstart']])
+            data.query_end = int(split_line[h['qend']])
+            data.subject_start = int(split_line[h['sstart']])
+            data.subject_end = int(split_line[h['send']])
+            data.evalue = float(split_line[h['evalue']])
+            data._evalue_str = split_line[h['evalue']]
+            data.bit_score = float(split_line[h['bitscore']])
 
-            line = strip(next(handle))  # Raises StopIteration at EOF
+            # Add additional format specifiers if custom format used
+            data.add_specs = [i for i in sorted(h, key=h.get, reverse=False) \
+                              if i not in required_specs]
+
+            line = strip(next_line(handle))  # Raises StopIteration at EOF
 
             yield data
 
