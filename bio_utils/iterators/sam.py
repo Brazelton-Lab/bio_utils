@@ -28,7 +28,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '3.0.1'
+__version__ = '3.0.2'
 
 
 class SamEntry:
@@ -161,10 +161,22 @@ def sam_iter(handle, start_line=None, headers=False):
     split = str.split
     strip = str.strip
 
+    next_line = next
+
     if start_line is None:
-        line = strip(next(handle))  # Read first B6/M8 entry
+        line = next_line(handle)  # Read first B6/M8 entry
     else:
-        line = strip(start_line)  # Set header to given header
+        line = start_line  # Set header to given header
+
+    # Check if input is text or bytestream
+    if (isinstance(line, bytes)):
+        def next_line(i):
+            return next(i).decode('utf-8')
+
+        line = strip(line.decode('utf-8'))
+    else:
+        line = strip(line)
+
 
     # A manual 'for' loop isn't needed to read the file properly and quickly,
     # unlike fasta_iter and fastq_iter, but it is necessary begin iterating
@@ -176,11 +188,11 @@ def sam_iter(handle, start_line=None, headers=False):
             split_line = split(line, '\t')
 
             if line.startswith('@') and not headers:
-                line = strip(next(handle))
+                line = strip(next_line(handle))
                 continue
             elif line.startswith('@') and headers:
                 yield line
-                line = strip(next(handle))
+                line = strip(next_line(handle))
                 continue
 
             data = SamEntry()
@@ -199,7 +211,7 @@ def sam_iter(handle, start_line=None, headers=False):
             data.seq = split_line[9]
             data.qual = split_line[10]
 
-            line = strip(next(handle))  # Raises StopIteration at EOF
+            line = strip(next_line(handle))  # Raises StopIteration at EOF
 
             yield data
 
