@@ -120,7 +120,8 @@ class GFF3Entry:
                                               os.linesep)
 
 
-def gff3_iter(handle, start_line=None, parse_attr=True, headers=False):
+def gff3_iter(handle, start_line=None, parse_attr=True, headers=False, \
+              comments=False):
     """Iterate over GFF3 file and return GFF3 entries
 
     Args:
@@ -140,6 +141,9 @@ def gff3_iter(handle, start_line=None, parse_attr=True, headers=False):
 
         headers (bool): Yields headers if True, else skips lines starting with
             "##"
+
+        comments (bool): Yields comments if True, else skips lines starting
+            with "#"
 
     Yields:
         GFF3Entry: class containing all GFF3 data, yields str for headers if
@@ -195,10 +199,22 @@ def gff3_iter(handle, start_line=None, parse_attr=True, headers=False):
     split = str.split
     strip = str.strip
 
+    next_line = next
+
     if start_line is None:
-        line = strip(next(handle))  # Read first GFF3 entry
+        line = next_line(handle)  # Read first GFF3
     else:
-        line = strip(start_line)  # Set header to given header
+        line = start_line  # Set header to given header
+
+    # Check if input is text or bytestream
+    if (isinstance(line, bytes)):
+        def next_line(i):
+            return next(i).decode('utf-8')
+
+        line = strip(line.decode('utf-8'))
+    else:
+        line = strip(line)
+
 
     # A manual 'for' loop isn't needed to read the file properly and quickly,
     # unlike fasta_iter and fastq_iter, but it is necessary begin iterating
@@ -213,11 +229,19 @@ def gff3_iter(handle, start_line=None, parse_attr=True, headers=False):
                 raise FastaFound
 
             if line.startswith('##') and not headers:
-                line = strip(next(handle))
+                line = strip(next_line(handle))
                 continue
             elif line.startswith('##') and headers:
                 yield line
-                line = strip(next(handle))
+                line = strip(next_line(handle))
+                continue
+
+            if line.startswith('#') and not comments:
+                line = strip(next_line(handle))
+                continue
+            elif line.startswith('#') and comments:
+                yield line
+                line = strip(next_line(handle))
                 continue
 
             split_line = split(line, '\t')
@@ -249,7 +273,7 @@ def gff3_iter(handle, start_line=None, parse_attr=True, headers=False):
                     if not key == '':  # Avoid semicolon split at end of line
                         data.attributes[key] = value
 
-            line = strip(next(handle))  # Raises StopIteration at EOF
+            line = strip(next_line(handle))  # Raises StopIteration at EOF
 
             yield data
 
