@@ -263,8 +263,8 @@ def b6_iter(handle, start_line=None, header=None, comments=False):
             data.bit_score = float(split_line[h['bitscore']])
 
             # Add additional format specifiers if custom format used
-            data.add_specs = [i for i in sorted(h, key=h.get, reverse=False) \
-                              if i not in required_specs]
+            data.add_specs = [split_line[h[i]] for i in sorted(h, key=h.get, \
+                              reverse=False) if i not in required_specs]
 
             line = strip(next_line(handle))  # Raises StopIteration at EOF
 
