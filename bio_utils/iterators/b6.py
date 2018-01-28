@@ -89,14 +89,18 @@ class B6Entry:
         self.bit_score = None
         self.add_specs = None  #store additional format specifiers
 
-    def write(self):
+    def write(self, defaults=False):
         """Return B6/M8 formatted string
+
+        Args:
+            defaults (bool): Write only default BLAST+ format specifiers 
+                if True
 
         Returns:
             str: B6/M8 formatted string containing entire B6/M8 entry
         """
 
-        if self.add_specs:
+        if self.add_specs and not defaults:
             specs = "\t{}".format('\t'.join(self.add_specs))
         else:
             specs = ''
