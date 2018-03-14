@@ -21,6 +21,7 @@ Copyright:
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
+from collections import OrderedDict
 import os
 
 __author__ = 'Alex Hyer'
@@ -68,7 +69,7 @@ class B6Entry:
 
         bit_score (float): Bit score of alignment
 
-        add_specs (list): List of non-default format specifiers
+        add_specs (dict): OrderedDict of non-default format specifiers
     """
 
     def __init__(self):
@@ -88,6 +89,7 @@ class B6Entry:
         self._evalue_str = None  #store original formatting of E-value
         self.bit_score = None
         self.add_specs = None  #store additional format specifiers
+        self._add_specs = None  #used in case add_specs is not None
 
     def write(self, defaults=False):
         """Return B6/M8 formatted string
@@ -100,10 +102,11 @@ class B6Entry:
             str: B6/M8 formatted string containing entire B6/M8 entry
         """
 
-        if self.add_specs and not defaults:
-            specs = "\t{}".format('\t'.join(self.add_specs))
+        if type(self.add_specs) is OrderedDict and not defaults:
+            # Regain original formatting
+            self._add_specs = "\t" + "\t".join(self.add_specs.values())
         else:
-            specs = ''
+            self._add_specs = ''
 
         return '{0}\t{1}\t{2}\t{3}\t{4}\t' \
                '{5}\t{6}\t{7}\t{8}\t{9}\t' \
@@ -119,7 +122,7 @@ class B6Entry:
                                        str(self.subject_end),
                                        self._evalue_str,
                                        str(self.bit_score),
-                                       specs,
+                                       self._add_specs,
                                        os.linesep)
 
 
@@ -267,8 +270,10 @@ def b6_iter(handle, start_line=None, header=None, comments=False):
             data.bit_score = float(split_line[h['bitscore']])
 
             # Add additional format specifiers if custom format used
-            data.add_specs = [split_line[h[i]] for i in sorted(h, key=h.get, \
-                              reverse=False) if i not in required_specs]
+            data.add_specs = OrderedDict()
+            for key in [i for i in sorted(h, key=h.get, reverse=False) if i \
+                        not in required_specs]:
+                data.add_specs[key] = split_line[h[key]]
 
             line = strip(next_line(handle))  # Raises StopIteration at EOF
 
