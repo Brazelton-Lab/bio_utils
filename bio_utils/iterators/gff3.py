@@ -80,6 +80,7 @@ class GFF3Entry:
         """Initialize variables to store GFF3 entry data"""
 
         self.seqid = None
+        self.origline = None
         self.source = None
         self.type = None
         self.start = None
@@ -246,6 +247,7 @@ def gff3_iter(handle, start_line=None, parse_attr=True, headers=False, \
 
             split_line = split(line, '\t')
 
+            data.origline = line
             data.seqid = split_line[0]
             data.source = split_line[1]
             data.type = split_line[2]
@@ -278,6 +280,9 @@ def gff3_iter(handle, start_line=None, parse_attr=True, headers=False, \
             yield data
 
     except StopIteration:  # Yield last GFF3 entry
-        yield data
+        if data.origline:
+            yield data
+        else:  #handle case where GFF ends in comment
+            pass
     except FastaFound:  # When FASTA found, last entry is repeat so pass
         pass
