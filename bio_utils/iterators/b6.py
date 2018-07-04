@@ -23,13 +23,14 @@ Copyright:
 
 from collections import OrderedDict
 import os
+import sys
 
 __author__ = 'Alex Hyer'
 __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '4.1.5'
+__version__ = '4.2.0'
 
 
 class FormatError(Exception):
@@ -126,7 +127,32 @@ class B6Entry:
                                        os.linesep)
 
 
-def b6_iter(handle, start_line=None, header=None, comments=False):
+
+def compare_hits(hit1, hit2):
+    """Compare the alignment quality scores of two hits, returning the hit 
+    with the best scores
+
+    Args:
+        hit1 (class): B6Entry for first hit
+
+        hit2 (class): B6Entry for second hit
+    """
+    # Take hit with highest bit-score
+    if hit1.bit_score > hit2.bit_score:
+        best_hit = hit1
+    elif hit1.bit_score == hit2.bit_score:
+        # Take hit with largest e-value when bit-scores equal
+        if hit1.evalue >= hit2.evalue:
+            best_hit = hit1
+        else:
+            best_hit = hit2
+    else:
+        best_hit = hit2
+
+    return best_hit
+
+
+def b6_iter(handle, start_line=None, header=None, comments=False, bh=False):
     """Iterate over B6/M8 file and return B6/M8 entries
 
     Args:
@@ -144,6 +170,10 @@ def b6_iter(handle, start_line=None, header=None, comments=False):
 
         comments (bool): Yields comments if True, else skips lines starting
             with "#"
+
+        bh (bool): Yields only the record with best score (bit-score or 
+            e-value) if the query has multiple hits to a database. Requires 
+            that the inpput file be sorted by query name
 
     Yields:
         B6Entry: class containing all B6/M8 data
@@ -235,6 +265,9 @@ def b6_iter(handle, start_line=None, header=None, comments=False):
     else:
         line = strip(line)
 
+    # Initialize variables for when best-hit filtering indicated
+    best_hit = None
+    dup_hits = 0
 
     # A manual 'for' loop isn't needed to read the file properly and quickly,
     # unlike fasta_iter and fastq_iter, but it is necessary begin iterating
@@ -277,7 +310,27 @@ def b6_iter(handle, start_line=None, header=None, comments=False):
 
             line = strip(next_line(handle))  # Raises StopIteration at EOF
 
-            yield data
+            if bh and best_hit:
+                # Yield only best-hit when multiple hits of a query found
+                if best_hit.query == data.query:
+                    dup_hits += 1
+                    best_hit = compare_hits(best_hit, data)
+                else:
+                    yield best_hit  #yield previous queries best-hit
+                    best_hit = data  #start comparing next queries hits
+            else:
+                best_hit = data
+                yield data
 
     except StopIteration:  # Yield last B6/M8 entry
-        yield data
+        if bh and best_hit:
+            if best_hit.query == data.query:
+                dup_hits += 1
+                yield compare_hits(best_hit, data)
+            else:
+                yield data
+
+            print("warning: {!s} hits removed due to best-hit filtering\n"\
+                  .format(dup_hits), file=sys.stderr)
+        else:
+            yield data
