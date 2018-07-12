@@ -29,7 +29,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '3.1.3'
+__version__ = '3.2.0'
 
 
 class FastaFound(Exception):
@@ -90,7 +90,6 @@ class GFF3Entry:
         self.strand = None
         self.phase = None
         self.attributes = None
-        self._temp_attributes = None  # Used in case attributes is dict
 
     def write(self):
         """Return GFF3 formatted string
@@ -99,14 +98,29 @@ class GFF3Entry:
             str: GFF3 formatted string containing entire GFF3 entry
         """
 
-        # Regain original formatting for GFF file
-        if type(self.attributes) is OrderedDict:
-            self._temp_attributes = ''
-            for key, value in self.attributes.items():
-                self._temp_attributes += '{0}={1};'.format(key, value)
-            self._temp_attributes = self._temp_attributes[:-1]
+        # Format attributes for writing
+        attrs = self.attributes
+        if type(attrs) is OrderedDict:
+            reserved_attrs = []
+            other_attrs = []
+
+            for attr in attrs.items():
+                # Escape reserved characters
+                key, value = url_escape_attributes(attr)
+
+                # Regain original formatting of attribute column
+                out_attr = '{0}={1}'.format(key, value)
+
+                # Order attributes so that reserved tags are output first
+                if key[0].isupper():
+                    reserved_attrs.append(out_attr)
+                else:
+                    other_attrs.append(out_attr)
+
+            out_attrs = ';'.join(reserved_attrs + other_attrs)
+
         else:
-            self._temp_attributes = self.attributes
+            out_attrs = attrs
 
         return '{0}\t{1}\t{2}\t{3}\t{4}\t' \
                '{5}\t{6}\t{7}\t{8}{9}'.format(self.seqid,
@@ -117,8 +131,32 @@ class GFF3Entry:
                                               self._score_str,
                                               self.strand,
                                               self.phase,
-                                              self._temp_attributes,
+                                              out_attrs,
                                               os.linesep)
+
+
+def url_escape_attributes(attribute):
+    """Escape reserved characters in an attribute's tag-value pair
+    """
+    escape_map = {ord('='): '%3D',
+                  ord(','): '%2C',
+                  ord(';'): '%3B',
+                  ord('&'): '%26',
+                  ord('\t'): '%09',
+                 }
+    try:
+        key, value = attribute
+    except ValueError:
+        raise ValueError("attributes must be composed of a (tag, value) pair")
+
+    key = key.translate(escape_map)
+
+    if type(value) == type(list()):
+        value = ','.join([i.translate(escape_map) for i in value])
+    else:
+        value = value.translate(escape_map)
+
+    return (key, value)
 
 
 def gff3_iter(handle, start_line=None, parse_attr=True, headers=False, \
@@ -271,7 +309,8 @@ def gff3_iter(handle, start_line=None, parse_attr=True, headers=False, \
                 for attribute in attributes:
                     split_attribute = attribute.split('=')
                     key = split_attribute[0]
-                    value = split_attribute[-1]
+                    value = split_attribute[-1].split(',') if ',' in \
+                            split_attribute[-1] else split_attribute[-1]
                     if not key == '':  # Avoid semicolon split at end of line
                         data.attributes[key] = value
 
