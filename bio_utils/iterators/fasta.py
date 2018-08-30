@@ -28,7 +28,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '3.0.0'
+__version__ = '3.0.1'
 
 
 class FastaEntry:
@@ -136,8 +136,11 @@ def fasta_iter(handle, header=None):
 
             data = FastaEntry()
 
-            if not header[0] == '>':
-                raise IOError('Bad FASTA format: no ">" at beginning of line')
+            try:
+                if not header[0] == '>':
+                    raise IOError('Bad FASTA format: no ">" at beginning of line')
+            except IndexError:
+                raise IOError('Bad FASTA format: file contains blank lines')
 
             try:
                 data.id, data.description = header[1:].split(' ', 1)
