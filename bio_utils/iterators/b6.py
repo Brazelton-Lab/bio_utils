@@ -91,7 +91,7 @@ class B6Entry:
         self.subject_start = None
         self.subject_end = None
         self.evalue = None
-        self.bit_score = None
+        self.bitscore = None
         self.custom_fs = None  # Store additional format specifiers
 
     def write(self, default: bool=False):
