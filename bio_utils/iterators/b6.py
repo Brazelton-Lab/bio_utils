@@ -30,7 +30,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '4.2.0'
+__version__ = '5.0.0'
 
 
 class FormatError(Exception):
@@ -45,18 +45,21 @@ class B6Entry:
     """A simple class to store data from B6/M8 entries and write them
 
     Attributes:
+        fs_order (dict): dictionary storing the original order of the format
+            specifiers with names as keys and indices as values
+
         query (str): query ID (sequence aligned with)
 
         subject (str): subject ID (sequence aligned to)
 
-        perc_identical (float): percent of query and subject sequences that are
-            identical
+        identity (float): percentage of aligned bases between the subject 
+            and query that are identical
 
-        align_len (int): length of alignment
+        length (int): length of alignment (number of aligned bases)
 
-        mismatches (int): number of mismatches in alignment
+        mismatches (int): number of mismatches in the alignment
 
-        gaps (int): number of gaps in alignment
+        gaps (int): number of gaps in the alignment
 
         query_start (int): alignment start position in query sequence
 
@@ -68,18 +71,19 @@ class B6Entry:
 
         evalue (float): E-value of alignment
 
-        bit_score (float): Bit score of alignment
+        bitscore (float): Bit score of alignment
 
-        add_specs (dict): OrderedDict of non-default format specifiers
+        custom_fs (dict): OrderedDict of non-default format specifiers
     """
 
     def __init__(self):
         """Initialize variables to store B6/M8 entry data"""
 
+        self.fs_order = None
         self.query = None
         self.subject = None
-        self.perc_identical = None
-        self.align_len = None
+        self.identity = None
+        self.length = None
         self.mismatches = None
         self.gaps = None
         self.query_start = None
@@ -87,72 +91,37 @@ class B6Entry:
         self.subject_start = None
         self.subject_end = None
         self.evalue = None
-        self._evalue_str = None  #store original formatting of E-value
         self.bit_score = None
-        self.add_specs = None  #store additional format specifiers
-        self._add_specs = None  #used in case add_specs is not None
+        self.custom_fs = None  # Store additional format specifiers
 
-    def write(self, defaults=False):
+    def write(self, default: bool=False):
         """Return B6/M8 formatted string
 
         Args:
-            defaults (bool): Write only default BLAST+ format specifiers 
-                if True
+            default (bool): output entry in default BLAST+ B6 format 
 
         Returns:
             str: B6/M8 formatted string containing entire B6/M8 entry
         """
 
-        if type(self.add_specs) is OrderedDict and not defaults:
-            # Regain original formatting
-            self._add_specs = "\t" + "\t".join(self.add_specs.values())
-        else:
-            self._add_specs = ''
+        if default:  # Default order of format specifiers
+            ordered_vals = ['query', 'subject', 'identity', 'length', 
+                            'mismatches', 'gaps', 'query_start', 'query_end', 
+                            'subject_start', 'subject_end', 'evalue', 
+                            'bitscore']
+        else:  # Restore original order of B6 entry format specifiers
+            ordered_vals = [self.custom_fs[i] if i in self.custom_fs 
+                            else getattr(self, i) for i in self.fs_order]
 
-        return '{0}\t{1}\t{2}\t{3}\t{4}\t' \
-               '{5}\t{6}\t{7}\t{8}\t{9}\t' \
-               '{10}\t{11}{12}{13}'.format(self.query,
-                                       self.subject,
-                                       str(self.perc_identical),
-                                       str(self.align_len),
-                                       str(self.mismatches),
-                                       str(self.gaps),
-                                       str(self.query_start),
-                                       str(self.query_end),
-                                       str(self.subject_start),
-                                       str(self.subject_end),
-                                       self._evalue_str,
-                                       str(self.bit_score),
-                                       self._add_specs,
-                                       os.linesep)
+        fstr = "\t".join(['-' if type(i) == type(None) else i for i in 
+                        ordered_vals])
+
+        return '{}{}'.format(fstr, os.linesep)
 
 
-
-def compare_hits(hit1, hit2):
-    """Compare the alignment quality scores of two hits, returning the hit 
-    with the best scores
-
-    Args:
-        hit1 (class): B6Entry for first hit
-
-        hit2 (class): B6Entry for second hit
-    """
-    # Take hit with highest bit-score
-    if hit1.bit_score > hit2.bit_score:
-        best_hit = hit1
-    elif hit1.bit_score == hit2.bit_score:
-        # Take hit with largest e-value when bit-scores equal
-        if hit1.evalue >= hit2.evalue:
-            best_hit = hit1
-        else:
-            best_hit = hit2
-    else:
-        best_hit = hit2
-
-    return best_hit
-
-
-def b6_iter(handle, start_line=None, header=None, comments=False, bh=False):
+def b6_iter(handle, start_line=None, header: list=['qaccver', 'saccver', 'pident', 
+    'length', 'mismatch', 'gapopen', 'qstart', 'qend', 'sstart', 'send', 
+    'evalue', 'bitscore'], comments: bool=False):
     """Iterate over B6/M8 file and return B6/M8 entries
 
     Args:
@@ -165,15 +134,10 @@ def b6_iter(handle, start_line=None, header=None, comments=False, bh=False):
             See 'Examples.'
 
         header (list): List of custom format specifiers if B6 file not in 
-            default Blast+ 6 format. The default format specifiers must be 
-            included somewhere in the list, although order is not important
+            default Blast+ 6 format
 
         comments (bool): Yields comments if True, else skips lines starting
             with "#"
-
-        bh (bool): Yields only the record with best score (bit-score or 
-            e-value) if the query has multiple hits to a database. Requires 
-            that the inpput file be sorted by query name
 
     Yields:
         B6Entry: class containing all B6/M8 data
@@ -186,7 +150,7 @@ def b6_iter(handle, start_line=None, header=None, comments=False, bh=False):
         >>> for entry in b6_iter(open('test.b6out')):
         ...     print(entry.query)  # Print Query ID
         ...     print(entry.subject)  # Print Subject ID
-        ...     print(entry.perc_identical)  # Print % identity between seqs
+        ...     print(entry.identity)  # Print % identity between seqs
         ...     print(entry.mismatches)  # Print number of mismathces in align
         ...     print(entry.gaps)  # Print number of gaps in alignment
         ...     print(entry.query_start)  # Print start of alignment on query
@@ -194,8 +158,8 @@ def b6_iter(handle, start_line=None, header=None, comments=False, bh=False):
         ...     print(entry.subject_start)  # Print start of align on subject
         ...     print(entry.subject_end)  # Print end of alignment on subject
         ...     print(entry.evalue)  # Print E-value of alignment
-        ...     print(entry.bit_score)  # Print Bit score of alignment
-        ...     print(entry.write())  # Print entry B6 entry
+        ...     print(entry.bitscore)  # Print Bit score of alignment
+        ...     print(entry.write())  # Print B6 entry
 
         >>> b6_handle = open('test.b6out')
         >>> next(b6_handle)  # Skip first line/entry
@@ -203,7 +167,7 @@ def b6_iter(handle, start_line=None, header=None, comments=False, bh=False):
         >>> for entry in b6_iter(b6_handle, start_line=next_line):
         ...     print(entry.query)  # Print Query ID
         ...     print(entry.subject)  # Print Subject ID
-        ...     print(entry.perc_identical)  # Print % identity between seqs
+        ...     print(entry.identity)  # Print % identity between seqs
         ...     print(entry.mismatches)  # Print number of mismathces in align
         ...     print(entry.gaps)  # Print number of gaps in alignment
         ...     print(entry.query_start)  # Print start of alignment on query
@@ -211,48 +175,44 @@ def b6_iter(handle, start_line=None, header=None, comments=False, bh=False):
         ...     print(entry.subject_start)  # Print start of align on subject
         ...     print(entry.subject_end)  # Print end of alignment on subject
         ...     print(entry.evalue)  # Print E-value of alignment
-        ...     print(entry.bit_score)  # Print Bit score of alignment
-        ...     print(entry.write())  # Print entry B6 entry
+        ...     print(entry.bitscore)  # Print Bit score of alignment
+        ...     print(entry.write())  # Print B6 entry
     """
 
     # Speed tricks: reduces function calls
     split = str.split
     strip = str.strip
 
-    required_specs = ['qend', 'mismatch', 'pident', 'qaccver', 'qstart', \
-                      'sstart', 'bitscore', 'evalue', 'gapopen', 'send', \
-                      'length', 'saccver']
+    # Map attribute names to default format specifier names
+    def_map = {'query_end': ('qend', str), 
+               'mismatches': ('mismatch', int), 
+               'identity': ('pident', float), 
+               'query': ('qaccver', str),
+               'query_start': ('qstart', int), 
+               'subject_start': ('sstart', int), 
+               'bitscore': ('bitscore', int), 
+               'evalue': ('evalue', float), 
+               'gaps': ('gapopen', int), 
+               'subject_end': ('send', int),
+               'length': ('length', int), 
+               'subject': ('saccver', str)
+              }
 
-    if header:  #custom header format
-        h = {}
-        for index, specifier in enumerate(header):
+    def_map_rev = {j[0]: k for k, j in def_map.items()}
+    def_specs = list(def_map_rev.keys())
+
+    uheader = list(OrderedDict.fromkeys(header))
+    spec_order = [def_map_rev[i] if i in def_map_rev else i for i in uheader]
+
+    # Store order of format specifiers
+    h = {}
+    for index, specifier in enumerate(header):
+        if specifier not in h:  # Ignor duplicate columns
             h[specifier] = index
 
-        for def_spec in required_specs:
-            if def_spec not in h:
-                raise FormatError("Required format specifier '{}' is "\
-                                  "missing from the header".format(def_spec))
-
-    else:  #default header format
-        h = {
-             'qaccver': 0,
-             'saccver': 1,
-             'pident': 2,
-             'length': 3,
-             'mismatch': 4,
-             'gapopen': 5,
-             'qstart': 6,
-             'qend': 7,
-             'sstart': 8,
-             'send': 9,
-             'evalue': 10,
-             'bitscore': 11
-            }
-
-    next_line = next
-
+    # Begin reading text
     if start_line is None:
-        line = next_line(handle)  # Read first B6/M8 entry
+        line = next(handle)  # Read first B6/M8 entry
     else:
         line = start_line  # Set header to given header
 
@@ -263,20 +223,21 @@ def b6_iter(handle, start_line=None, header=None, comments=False, bh=False):
 
         line = strip(line.decode('utf-8'))
     else:
+        next_line = next
         line = strip(line)
-
-    # Initialize variables for when best-hit filtering indicated
-    best_hit = None
-    dup_hits = 0
 
     # A manual 'for' loop isn't needed to read the file properly and quickly,
     # unlike fasta_iter and fastq_iter, but it is necessary begin iterating
     # partway through a file when the user gives a starting line.
+    line_number = 1
     try:  # Manually construct a for loop to improve speed by using 'next'
 
         while True:  # Loop until StopIteration Exception raised
 
+            line_number += 1
+
             data = B6Entry()
+            data.fs_order = spec_order  # All entries store original order
 
             if line.startswith('#') and not comments:
                 line = strip(next_line(handle))
@@ -288,49 +249,53 @@ def b6_iter(handle, start_line=None, header=None, comments=False, bh=False):
 
             split_line = split(line, '\t')
 
-            data.query = split_line[h['qaccver']]
-            data.subject = split_line[h['saccver']]
-            data.perc_identical = float(split_line[h['pident']])
-            data.align_len = int(split_line[h['length']])
-            data.mismatches = int(split_line[h['mismatch']])
-            data.gaps = int(split_line[h['gapopen']])
-            data.query_start = int(split_line[h['qstart']])
-            data.query_end = int(split_line[h['qend']])
-            data.subject_start = int(split_line[h['sstart']])
-            data.subject_end = int(split_line[h['send']])
-            data.evalue = float(split_line[h['evalue']])
-            data._evalue_str = split_line[h['evalue']]
-            data.bit_score = float(split_line[h['bitscore']])
+            # Replace empty values with None
+            spec_values = [None if i == '-' else i for i in split_line]
 
-            # Add additional format specifiers if custom format used
-            data.add_specs = OrderedDict()
-            for key in [i for i in sorted(h, key=h.get, reverse=False) if i \
-                        not in required_specs]:
-                data.add_specs[key] = split_line[h[key]]
+            # Add default specifiers
+            def_attrs = data.__dict__.keys()
+            for attr in def_attrs:
+                try:
+                    def_spec, spec_type = def_map[attr]
+                except KeyError:
+                    continue
+
+                try:
+                    value = spec_values[h[def_spec]]
+                except KeyError:  # Custom format, no value
+                    continue
+                except IndexError:
+                    raise FormatError("the number of columns does not match "
+                                      "the number of specifiers in the header "
+                                      "at line {!s}".format(line_number))
+
+                if type(value) != type(None):
+                    try:
+                        value = spec_type(value)
+                    except ValueError:
+                        raise FormatError("{} is of wrong type at line {!s}"\
+                                          .format(def_spec, line_number))
+ 
+                setattr(data, attr, value)
+
+            # Add non-default specifiers to custom_fs attribute
+            custom_specs = [i for i in sorted(h, key=h.get, reverse=False) \
+                            if i not in def_specs]
+            if custom_specs:
+                data.custom_fs = OrderedDict()
+                for key in custom_specs:
+                    try:
+                        value = spec_values[h[key]]
+                    except IndexError:
+                        raise FormatError("the number of columns does not match "
+                                      "the number of specifiers in the header "
+                                      "at line {!s}".format(line_number))
+
+                    data.custom_fs[key] = value
 
             line = strip(next_line(handle))  # Raises StopIteration at EOF
 
-            if bh and best_hit:
-                # Yield only best-hit when multiple hits of a query found
-                if best_hit.query == data.query:
-                    dup_hits += 1
-                    best_hit = compare_hits(best_hit, data)
-                else:
-                    yield best_hit  #yield previous queries best-hit
-                    best_hit = data  #start comparing next queries hits
-            else:
-                best_hit = data
-                yield data
+            yield data
 
     except StopIteration:  # Yield last B6/M8 entry
-        if bh and best_hit:
-            if best_hit.query == data.query:
-                dup_hits += 1
-                yield compare_hits(best_hit, data)
-            else:
-                yield data
-
-            print("warning: {!s} hits removed due to best-hit filtering\n"\
-                  .format(dup_hits), file=sys.stderr)
-        else:
-            yield data
+        yield data
