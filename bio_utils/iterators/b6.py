@@ -190,7 +190,7 @@ def b6_iter(handle, start_line=None, header: list=['qaccver', 'saccver', 'pident
                'query': ('qaccver', str),
                'query_start': ('qstart', int), 
                'subject_start': ('sstart', int), 
-               'bitscore': ('bitscore', int), 
+               'bitscore': ('bitscore', float), 
                'evalue': ('evalue', float), 
                'gaps': ('gapopen', int), 
                'subject_end': ('send', int),
