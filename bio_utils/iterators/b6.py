@@ -95,207 +95,235 @@ class B6Entry:
         self.custom_fs = None  # Store additional format specifiers
 
     def write(self, default: bool=False):
-        """Return B6/M8 formatted string
+        """Restore B6/M8 entry to original format
 
         Args:
             default (bool): output entry in default BLAST+ B6 format 
 
         Returns:
-            str: B6/M8 formatted string containing entire B6/M8 entry
+            str: properly formatted string containing the B6/M8 entry
         """
+
+        none_type = type(None)
 
         if default:  # Default order of format specifiers
             ordered_vals = ['query', 'subject', 'identity', 'length', 
                             'mismatches', 'gaps', 'query_start', 'query_end', 
                             'subject_start', 'subject_end', 'evalue', 
                             'bitscore']
-        else:  # Restore original order of B6 entry format specifiers
-            ordered_vals = [self.custom_fs[i] if i in self.custom_fs 
+        else:  # Original order of B6 entry format specifiers
+            try:
+                ordered_vals = [self.custom_fs[i] if i in self.custom_fs 
                             else getattr(self, i) for i in self.fs_order]
+            except TypeError:
+                ordered_vals = [getattr(self, i) for i in self.fs_order]
 
-        fstr = "\t".join(['-' if type(i) == type(None) else i for i in 
+        # Format entry for writing
+        fstr = "\t".join(['-' if type(i) == none_type else str(i) for i in 
                         ordered_vals])
 
         return '{}{}'.format(fstr, os.linesep)
 
 
-def b6_iter(handle, start_line=None, header: list=['qaccver', 'saccver', 'pident', 
-    'length', 'mismatch', 'gapopen', 'qstart', 'qend', 'sstart', 'send', 
-    'evalue', 'bitscore'], comments: bool=False):
-    """Iterate over B6/M8 file and return B6/M8 entries
+class B6Reader():
+    """Class to read from B6/M8 files and store lines as B6Entry objects
 
-    Args:
+    Attributes:
         handle (file): B6/M8 file handle, can be any iterator so long as it
             it returns subsequent "lines" of a B6/M8 entry
 
-        start_line (str): Next B6/M8 entry, if 'handle' has been partially read
-            and you want to start iterating at the next entry, read the next
-            B6/M8 entry and pass it to this variable when  calling b6_iter.
-            See 'Examples.'
-
-        header (list): List of custom format specifiers if B6 file not in 
-            default Blast+ 6 format
-
-        comments (bool): Yields comments if True, else skips lines starting
-            with "#"
-
-    Yields:
-        B6Entry: class containing all B6/M8 data
-
-    Examples:
-        The following two examples demonstrate how to use b6_iter.
-        Note: These doctests will not pass, examples are only in doctest
-        format as per convention. bio_utils uses pytests for testing.
-
-        >>> for entry in b6_iter(open('test.b6out')):
-        ...     print(entry.query)  # Print Query ID
-        ...     print(entry.subject)  # Print Subject ID
-        ...     print(entry.identity)  # Print % identity between seqs
-        ...     print(entry.mismatches)  # Print number of mismathces in align
-        ...     print(entry.gaps)  # Print number of gaps in alignment
-        ...     print(entry.query_start)  # Print start of alignment on query
-        ...     print(entry.query_end)  # Print end of alignment on query
-        ...     print(entry.subject_start)  # Print start of align on subject
-        ...     print(entry.subject_end)  # Print end of alignment on subject
-        ...     print(entry.evalue)  # Print E-value of alignment
-        ...     print(entry.bitscore)  # Print Bit score of alignment
-        ...     print(entry.write())  # Print B6 entry
-
-        >>> b6_handle = open('test.b6out')
-        >>> next(b6_handle)  # Skip first line/entry
-        >>> next_line = next(b6_handle)  # Store next entry
-        >>> for entry in b6_iter(b6_handle, start_line=next_line):
-        ...     print(entry.query)  # Print Query ID
-        ...     print(entry.subject)  # Print Subject ID
-        ...     print(entry.identity)  # Print % identity between seqs
-        ...     print(entry.mismatches)  # Print number of mismathces in align
-        ...     print(entry.gaps)  # Print number of gaps in alignment
-        ...     print(entry.query_start)  # Print start of alignment on query
-        ...     print(entry.query_end)  # Print end of alignment on query
-        ...     print(entry.subject_start)  # Print start of align on subject
-        ...     print(entry.subject_end)  # Print end of alignment on subject
-        ...     print(entry.evalue)  # Print E-value of alignment
-        ...     print(entry.bitscore)  # Print Bit score of alignment
-        ...     print(entry.write())  # Print B6 entry
+        filename (str): name of the B6 file
+    
+        current_line (int): current line in file [default: 0]
     """
 
-    # Speed tricks: reduces function calls
-    split = str.split
-    strip = str.strip
+    def __init__(self, handle):
+        """Initialize variables to store B6/M8 file information"""
 
-    # Map attribute names to default format specifier names
-    def_map = {'query_end': ('qend', str), 
-               'mismatches': ('mismatch', int), 
-               'identity': ('pident', float), 
-               'query': ('qaccver', str),
-               'query_start': ('qstart', int), 
-               'subject_start': ('sstart', int), 
-               'bitscore': ('bitscore', float), 
-               'evalue': ('evalue', float), 
-               'gaps': ('gapopen', int), 
-               'subject_end': ('send', int),
-               'length': ('length', int), 
-               'subject': ('saccver', str)
-              }
+        self.handle = handle
+        self.filename = handle.name
+        self.current_line = 0
 
-    def_map_rev = {j[0]: k for k, j in def_map.items()}
-    def_specs = list(def_map_rev.keys())
+    def iterate(self, start_line=None, header: list=['qaccver', 'saccver', 
+        'pident', 'length', 'mismatch', 'gapopen', 'qstart', 'qend', 'sstart',
+        'send', 'evalue', 'bitscore'], comments: bool=False):
+        """Iterate over B6/M8 file and return B6/M8 entries
 
-    uheader = list(OrderedDict.fromkeys(header))
-    spec_order = [def_map_rev[i] if i in def_map_rev else i for i in uheader]
+        Args:
+            start_line (str): Next B6/M8 entry. If 'handle' has been partially
+                read and you want to start iterating at the next entry, read 
+                the next B6/M8 entry and pass it to this variable when calling 
+                b6_iter. See 'Examples' for proper usage.
 
-    # Store order of format specifiers
-    h = {}
-    for index, specifier in enumerate(header):
-        if specifier not in h:  # Ignor duplicate columns
-            h[specifier] = index
+            header (list): List of custom format specifiers if B6 file not in 
+                default Blast+ 6 format
 
-    # Begin reading text
-    if start_line is None:
-        line = next(handle)  # Read first B6/M8 entry
-    else:
-        line = start_line  # Set header to given header
+            comments (bool): Yields comments if True, else skips lines starting
+                with "#"
 
-    # Check if input is text or bytestream
-    if (isinstance(line, bytes)):
-        def next_line(i):
-            return next(i).decode('utf-8')
+        Yields:
+            B6Entry: class containing all B6/M8 data
 
-        line = strip(line.decode('utf-8'))
-    else:
-        next_line = next
-        line = strip(line)
+        Examples:
+            The following two examples demonstrate how to use b6_iter.
+            Note: These doctests will not pass, examples are only in doctest
+            format as per convention. bio_utils uses pytests for testing.
 
-    # A manual 'for' loop isn't needed to read the file properly and quickly,
-    # unlike fasta_iter and fastq_iter, but it is necessary begin iterating
-    # partway through a file when the user gives a starting line.
-    line_number = 1
-    try:  # Manually construct a for loop to improve speed by using 'next'
+            >>> for entry in b6_iter(open('test.b6out')):
+            ...     print(entry.query)  # Query ID
+            ...     print(entry.subject)  # Subject ID
+            ...     print(entry.identity)  # Percent identity between seqs
+            ...     print(entry.mismatches)  # Number mismatches in alignment
+            ...     print(entry.gaps)  # Number gaps in alignment
+            ...     print(entry.query_start)  # Start of alignment on query
+            ...     print(entry.query_end)  # End of alignment on query
+            ...     print(entry.subject_start)  # Start of align on subject
+            ...     print(entry.subject_end)  # End of alignment on subject
+            ...     print(entry.evalue)  # E-value of alignment
+            ...     print(entry.bitscore)  # Bitscore of alignment
+            ...     print(entry.write())  # Reconsitituted B6 entry
 
-        while True:  # Loop until StopIteration Exception raised
+            >>> b6_handle = open('test.b6out')
+            >>> next(b6_handle)  # Skip first line/entry
+            >>> next_line = next(b6_handle)  # Store next entry
+            >>> for entry in b6_iter(b6_handle, start_line=next_line):
+            ...     print(entry.query)  # Query ID
+            ...     print(entry.subject)  # Subject ID
+            ...     print(entry.identity)  # Percent identity between seqs
+            ...     print(entry.mismatches)  # Number mismatches in alignment
+            ...     print(entry.gaps)  # Number gaps in alignment
+            ...     print(entry.query_start)  # Start of alignment on query
+            ...     print(entry.query_end)  # End of alignment on query
+            ...     print(entry.subject_start)  # Start of align on subject
+            ...     print(entry.subject_end)  # End of alignment on subject
+            ...     print(entry.evalue)  # E-value of alignment
+            ...     print(entry.bitscore)  # Bitscore of alignment
+            ...     print(entry.write())  # Reconstituted B6 entry
+        """
 
-            line_number += 1
+        handle = self.handle
 
-            data = B6Entry()
-            data.fs_order = spec_order  # All entries store original order
+        # Speed tricks: reduces function calls
+        split = str.split
+        strip = str.strip
 
-            if line.startswith('#') and not comments:
-                line = strip(next_line(handle))
-                continue
-            elif line.startswith('#') and comments:
-                yield line
-                line = strip(next_line(handle))
-                continue
+        # Map attribute names to default format specifier names
+        def_map = {'query_end': ('qend', str), 
+                   'mismatches': ('mismatch', int), 
+                   'identity': ('pident', float), 
+                   'query': ('qaccver', str),
+                   'query_start': ('qstart', int), 
+                   'subject_start': ('sstart', int), 
+                   'bitscore': ('bitscore', float), 
+                   'evalue': ('evalue', float), 
+                   'gaps': ('gapopen', int), 
+                   'subject_end': ('send', int),
+                   'length': ('length', int), 
+                   'subject': ('saccver', str)
+                  }
 
-            split_line = split(line, '\t')
+        def_map_rev = {j[0]: k for k, j in def_map.items()}
+        def_specs = list(def_map_rev.keys())
 
-            # Replace empty values with None
-            spec_values = [None if i == '-' else i for i in split_line]
+        uheader = list(OrderedDict.fromkeys(header))
+        spec_order = [def_map_rev[i] if i in def_map_rev else i \
+                      for i in uheader]
 
-            # Add default specifiers
-            def_attrs = data.__dict__.keys()
-            for attr in def_attrs:
-                try:
-                    def_spec, spec_type = def_map[attr]
-                except KeyError:
+        # Store order of format specifiers
+        h = {}
+        for index, specifier in enumerate(header):
+            if specifier not in h:  # Ignor duplicate columns
+                h[specifier] = index
+
+        # Begin reading text
+        if start_line is None:
+            line = next(handle)  # Read first B6/M8 entry
+        else:
+            line = start_line  # Set header to given header
+
+        # Check if input is text or bytestream
+        if (isinstance(line, bytes)):
+            def next_line(i):
+                return next(i).decode('utf-8')
+
+            line = strip(line.decode('utf-8'))
+        else:
+            next_line = next
+            line = strip(line)
+
+        # Manual 'for' loop isn't needed to read the file properly and quickly,
+        # unlike fasta_iter and fastq_iter, but it is necessary begin iterating
+        # partway through a file when the user gives a starting line.
+        try:  # Manually construct a for loop to improve speed by using 'next'
+
+            while True:  # Loop until StopIteration Exception raised
+
+                self.current_line += 1
+
+                data = B6Entry()
+                data.fs_order = spec_order  # All entries store original order
+
+                if line.startswith('#') and not comments:
+                    line = strip(next_line(handle))
+                    continue
+                elif line.startswith('#') and comments:
+                    yield line
+                    line = strip(next_line(handle))
                     continue
 
-                try:
-                    value = spec_values[h[def_spec]]
-                except KeyError:  # Custom format, no value
-                    continue
-                except IndexError:
-                    raise FormatError("the number of columns does not match "
-                                      "the number of specifiers in the header "
-                                      "at line {!s}".format(line_number))
+                split_line = split(line, '\t')
 
-                if type(value) != type(None):
-                    try:
-                        value = spec_type(value)
-                    except ValueError:
-                        raise FormatError("{} is of wrong type at line {!s}"\
-                                          .format(def_spec, line_number))
- 
-                setattr(data, attr, value)
+                # Replace empty values with None
+                spec_values = [None if i == '-' else i for i in split_line]
 
-            # Add non-default specifiers to custom_fs attribute
-            custom_specs = [i for i in sorted(h, key=h.get, reverse=False) \
-                            if i not in def_specs]
-            if custom_specs:
-                data.custom_fs = OrderedDict()
-                for key in custom_specs:
+                # Add default specifiers
+                def_attrs = data.__dict__.keys()
+                for attr in def_attrs:
                     try:
-                        value = spec_values[h[key]]
+                        def_spec, spec_type = def_map[attr]
+                    except KeyError:
+                        continue
+
+                    try:
+                        value = spec_values[h[def_spec]]
+                    except KeyError:  # Custom format, no value
+                        continue
                     except IndexError:
-                        raise FormatError("the number of columns does not match "
-                                      "the number of specifiers in the header "
-                                      "at line {!s}".format(line_number))
+                        current_line = self.current_line
+                        raise FormatError("line {!s}: the number of columns "
+                            "is less than the number of specifiers"\
+                            .format(current_line))
 
-                    data.custom_fs[key] = value
+                    if type(value) != type(None):
+                        try:
+                            value = spec_type(value)
+                        except ValueError:
+                            current_line = self.current_line
+                            raise FormatError("line {!s}: {} is of wrong type"\
+                                .format(current_line, def_spec))
+ 
+                    setattr(data, attr, value)
 
-            line = strip(next_line(handle))  # Raises StopIteration at EOF
+                # Add non-default specifiers to custom_fs attribute
+                custom_specs = [i for i in sorted(h, key=h.get, reverse=False) \
+                                if i not in def_specs]
 
+                if custom_specs:
+                    data.custom_fs = OrderedDict()
+                    for key in custom_specs:
+                        try:
+                            value = spec_values[h[key]]
+                        except IndexError:
+                            current_line = self.current_line
+                            raise FormatError("line {!s}: the number of "
+                                "columns is less than the number of "
+                                "specifiers".format(current_line))
+
+                        data.custom_fs[key] = value
+
+                line = strip(next_line(handle))  # Raises StopIteration at EOF
+
+                yield data
+
+        except StopIteration:  # Yield last B6/M8 entry
             yield data
-
-    except StopIteration:  # Yield last B6/M8 entry
-        yield data

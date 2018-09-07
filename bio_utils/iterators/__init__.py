@@ -25,9 +25,9 @@ from bio_utils.iterators.fasta import fasta_iter
 from bio_utils.iterators.fasta import FastaEntry
 from bio_utils.iterators.fastq import fastq_iter
 from bio_utils.iterators.fastq import FastqEntry
-from bio_utils.iterators.gff3 import gff3_iter
+from bio_utils.iterators.gff3 import GFF3Reader
 from bio_utils.iterators.gff3 import GFF3Entry
-from bio_utils.iterators.b6 import b6_iter
+from bio_utils.iterators.b6 import B6Reader
 from bio_utils.iterators.b6 import B6Entry
 from bio_utils.iterators.sam import sam_iter
 from bio_utils.iterators.sam import SamEntry
