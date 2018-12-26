@@ -8,9 +8,11 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>bio_utils.blast_tools.retrieve_query_sequences &mdash; bio_utils 1.0.2 documentation</title>
+  <title>bio_utils.blast_tools.retrieve_query_sequences &mdash; bio_utils 1.1.2 documentation</title>
   
 
+  
+  
   
   
 
@@ -30,7 +32,10 @@
   
 
   
-    <link rel="top" title="bio_utils 1.0.2 documentation" href="../../../index.html"/>
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="bio_utils 1.1.2 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -40,6 +45,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -80,7 +86,10 @@
           
             
             
-                <ul>
+              
+            
+            
+              <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../classes.html">Classes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../iterators.html">Iterators</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../verifiers.html">Verifiers</a></li>
@@ -99,8 +108,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../../../index.html">bio_utils</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">bio_utils</a>
+        
       </nav>
 
 
@@ -113,26 +124,43 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../../../index.html">Docs</a> &raquo;</li>
-      
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
           <li><a href="../../index.html">Module code</a> &raquo;</li>
-      
-    <li>bio_utils.blast_tools.retrieve_query_sequences</li>
+        
+      <li>bio_utils.blast_tools.retrieve_query_sequences</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
   <h1>Source code for bio_utils.blast_tools.retrieve_query_sequences</h1><div class="highlight"><pre>
-<span class="c">#! /usr/bin/env python</span>
+<span></span><span class="ch">#! /usr/bin/env python</span>
 
 <span class="sd">&quot;&quot;&quot;Returns query sequence from BLAST hits below a specified E-Value</span>
 
@@ -162,22 +190,22 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">argparse</span>
-<span class="kn">from</span> <span class="nn">bio_utils.blast_tools</span> <span class="kn">import</span> <span class="n">b6_evalue_filter</span>
-<span class="kn">from</span> <span class="nn">bio_utils.iterators</span> <span class="kn">import</span> <span class="n">fasta_iter</span>
-<span class="kn">from</span> <span class="nn">bio_utils.iterators</span> <span class="kn">import</span> <span class="n">fastq_iter</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">bio_utils.blast_tools</span> <span class="k">import</span> <span class="n">b6_evalue_filter</span>
+<span class="kn">from</span> <span class="nn">bio_utils.iterators</span> <span class="k">import</span> <span class="n">fasta_iter</span>
+<span class="kn">from</span> <span class="nn">bio_utils.iterators</span> <span class="k">import</span> <span class="n">fastq_iter</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
-<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;William Brazelton, Alex Hyer&#39;</span>
-<span class="n">__email__</span> <span class="o">=</span> <span class="s">&#39;theonehyer@gmail.com&#39;</span>
-<span class="n">__license__</span> <span class="o">=</span> <span class="s">&#39;GPLv3&#39;</span>
-<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s">&#39;Alex Hyer&#39;</span>
-<span class="n">__status__</span> <span class="o">=</span> <span class="s">&#39;Production&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s">&#39;2.0.0&#39;</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;William Brazelton, Alex Hyer&#39;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;theonehyer@gmail.com&#39;</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;GPLv3&#39;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Alex Hyer&#39;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Production&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;2.0.0&#39;</span>
 
 
 <div class="viewcode-block" id="query_sequence_retriever"><a class="viewcode-back" href="../../../blast_tools.html#bio_utils.blast_tools.query_sequence_retriever">[docs]</a><span class="k">def</span> <span class="nf">query_sequence_retriever</span><span class="p">(</span><span class="n">fastaq_handle</span><span class="p">,</span> <span class="n">b6_handle</span><span class="p">,</span> <span class="n">e_value</span><span class="p">,</span>
-                             <span class="n">fastaq</span><span class="o">=</span><span class="s">&#39;fasta&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                             <span class="n">fastaq</span><span class="o">=</span><span class="s1">&#39;fasta&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Returns FASTA entries for subject sequences from BLAST hits</span>
 
 <span class="sd">    Stores B6/M8 entries with E-Values below the e_value cutoff. Then iterates</span>
@@ -220,14 +248,14 @@
     <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">b6_evalue_filter</span><span class="p">(</span><span class="n">b6_handle</span><span class="p">,</span> <span class="n">e_value</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">filtered_b6</span><span class="p">[</span><span class="n">entry</span><span class="o">.</span><span class="n">query</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">query_start</span><span class="p">,</span> <span class="n">entry</span><span class="o">.</span><span class="n">query_end</span><span class="p">,</span> <span class="n">entry</span><span class="o">.</span><span class="n">_evalue_str</span><span class="p">))</span>
-    <span class="n">fastaq_iter</span> <span class="o">=</span> <span class="n">fasta_iter</span> <span class="k">if</span> <span class="n">fastaq</span> <span class="o">==</span> <span class="s">&#39;fasta&#39;</span> <span class="k">else</span> <span class="n">fastq_iter</span>
+    <span class="n">fastaq_iter</span> <span class="o">=</span> <span class="n">fasta_iter</span> <span class="k">if</span> <span class="n">fastaq</span> <span class="o">==</span> <span class="s1">&#39;fasta&#39;</span> <span class="k">else</span> <span class="n">fastq_iter</span>
     <span class="k">for</span> <span class="n">fastaqEntry</span> <span class="ow">in</span> <span class="n">fastaq_iter</span><span class="p">(</span><span class="n">fastaq_handle</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">fastaqEntry</span><span class="o">.</span><span class="n">id</span> <span class="ow">in</span> <span class="n">filtered_b6</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">alignment</span> <span class="ow">in</span> <span class="n">filtered_b6</span><span class="p">[</span><span class="n">fastaqEntry</span><span class="o">.</span><span class="n">id</span><span class="p">]:</span>
                 <span class="n">start</span> <span class="o">=</span> <span class="n">alignment</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
                 <span class="n">end</span> <span class="o">=</span> <span class="n">alignment</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
 
-                <span class="c"># Get query sequence</span>
+                <span class="c1"># Get query sequence</span>
                 <span class="k">if</span> <span class="n">start</span> <span class="o">&lt;</span> <span class="n">end</span><span class="p">:</span>
                     <span class="n">query_sequence</span> <span class="o">=</span> <span class="n">fastaqEntry</span><span class="o">.</span><span class="n">sequence</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span>
                 <span class="k">elif</span> <span class="n">start</span> <span class="o">&gt;</span> <span class="n">end</span><span class="p">:</span>
@@ -236,8 +264,8 @@
                     <span class="n">query_sequence</span> <span class="o">=</span> <span class="n">fastaqEntry</span><span class="o">.</span><span class="n">sequence</span><span class="p">[</span><span class="n">start</span><span class="p">]</span>
                 <span class="n">fastaqEntry</span><span class="o">.</span><span class="n">sequence</span> <span class="o">=</span> <span class="n">query_sequence</span>
 
-                <span class="c"># Get query quality</span>
-                <span class="k">if</span> <span class="n">fastaq</span> <span class="o">==</span> <span class="s">&#39;fastq&#39;</span><span class="p">:</span>
+                <span class="c1"># Get query quality</span>
+                <span class="k">if</span> <span class="n">fastaq</span> <span class="o">==</span> <span class="s1">&#39;fastq&#39;</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">start</span> <span class="o">&lt;</span> <span class="n">end</span><span class="p">:</span>
                         <span class="n">query_quality</span> <span class="o">=</span> <span class="n">fastaqEntry</span><span class="o">.</span><span class="n">quality</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span>
                     <span class="k">elif</span> <span class="n">start</span> <span class="o">&gt;</span> <span class="n">end</span><span class="p">:</span>
@@ -246,40 +274,40 @@
                         <span class="n">query_quality</span> <span class="o">=</span> <span class="n">fastaqEntry</span><span class="o">.</span><span class="n">quality</span><span class="p">[</span><span class="n">start</span><span class="p">]</span>
                     <span class="n">fastaqEntry</span><span class="o">.</span><span class="n">quality</span> <span class="o">=</span> <span class="n">query_quality</span>
 
-                <span class="c"># Add E-value to FASTA/Q header</span>
-                <span class="k">if</span> <span class="n">fastaqEntry</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="s">&#39;&#39;</span><span class="p">:</span>
-                    <span class="n">fastaqEntry</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s">&#39;E-value: &#39;</span>
+                <span class="c1"># Add E-value to FASTA/Q header</span>
+                <span class="k">if</span> <span class="n">fastaqEntry</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+                    <span class="n">fastaqEntry</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s1">&#39;E-value: &#39;</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">fastaqEntry</span><span class="o">.</span><span class="n">description</span> <span class="o">+=</span> <span class="s">&#39; E-value: &#39;</span>
+                    <span class="n">fastaqEntry</span><span class="o">.</span><span class="n">description</span> <span class="o">+=</span> <span class="s1">&#39; E-value: &#39;</span>
                 <span class="n">fastaqEntry</span><span class="o">.</span><span class="n">description</span> <span class="o">+=</span> <span class="n">alignment</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 
                 <span class="k">yield</span> <span class="n">fastaqEntry</span></div>
 
 
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">__doc__</span><span class="p">,</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="vm">__doc__</span><span class="p">,</span>
                                      <span class="n">formatter_class</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span>
                                      <span class="n">RawDescriptionHelpFormatter</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;-f&#39;</span><span class="p">,</span> <span class="s">&#39;--fastaq&#39;</span><span class="p">,</span>
-                        <span class="nb">type</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">FileType</span><span class="p">(</span><span class="s">&#39;rU&#39;</span><span class="p">),</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s">&#39;query FASTAQ file&#39;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;-b&#39;</span><span class="p">,</span> <span class="s">&#39;--b6&#39;</span><span class="p">,</span>
-                        <span class="nb">type</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">FileType</span><span class="p">(</span><span class="s">&#39;rU&#39;</span><span class="p">),</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s">&#39;B6/M8 file with alignment data&#39;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;-e&#39;</span><span class="p">,</span> <span class="s">&#39;--e_value&#39;</span><span class="p">,</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-f&#39;</span><span class="p">,</span> <span class="s1">&#39;--fastaq&#39;</span><span class="p">,</span>
+                        <span class="nb">type</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">FileType</span><span class="p">(</span><span class="s1">&#39;rU&#39;</span><span class="p">),</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;query FASTAQ file&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-b&#39;</span><span class="p">,</span> <span class="s1">&#39;--b6&#39;</span><span class="p">,</span>
+                        <span class="nb">type</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">FileType</span><span class="p">(</span><span class="s1">&#39;rU&#39;</span><span class="p">),</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;B6/M8 file with alignment data&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-e&#39;</span><span class="p">,</span> <span class="s1">&#39;--e_value&#39;</span><span class="p">,</span>
                         <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s">&#39;upper E-Value cutoff&#39;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;--fastq&#39;</span><span class="p">,</span>
-                        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s">&#39;specifies that input is FASTQ&#39;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;-o&#39;</span><span class="p">,</span> <span class="s">&#39;--output&#39;</span><span class="p">,</span>
-                        <span class="nb">type</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">FileType</span><span class="p">(</span><span class="s">&#39;w&#39;</span><span class="p">),</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;upper E-Value cutoff&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--fastq&#39;</span><span class="p">,</span>
+                        <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;specifies that input is FASTQ&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-o&#39;</span><span class="p">,</span> <span class="s1">&#39;--output&#39;</span><span class="p">,</span>
+                        <span class="nb">type</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">FileType</span><span class="p">(</span><span class="s1">&#39;w&#39;</span><span class="p">),</span>
                         <span class="n">default</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span>
-                        <span class="n">nargs</span><span class="o">=</span><span class="s">&#39;?&#39;</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s">&#39; optional output file [Default: STDOUT]&#39;</span><span class="p">)</span>
+                        <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;?&#39;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39; optional output file [Default: STDOUT]&#39;</span><span class="p">)</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
 
-    <span class="n">fastaq</span> <span class="o">=</span> <span class="s">&#39;fastq&#39;</span> <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">fastq</span> <span class="k">else</span> <span class="s">&#39;fasta&#39;</span>
+    <span class="n">fastaq</span> <span class="o">=</span> <span class="s1">&#39;fastq&#39;</span> <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">fastq</span> <span class="k">else</span> <span class="s1">&#39;fasta&#39;</span>
     <span class="k">for</span> <span class="n">fastaEntry</span> <span class="ow">in</span> <span class="n">query_sequence_retriever</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">fastaq</span><span class="p">,</span>
                                                <span class="n">args</span><span class="o">.</span><span class="n">b6</span><span class="p">,</span>
                                                <span class="n">args</span><span class="o">.</span><span class="n">e_value</span><span class="p">,</span>
@@ -287,11 +315,14 @@
         <span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">fastaEntry</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>
 
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span>
     <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
 
+           </div>
+           <div class="articleComments">
+            
            </div>
           </div>
           <footer>
@@ -323,10 +354,11 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'1.0.2',
+            VERSION:'1.1.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="../../../_static/jquery.js"></script>

@@ -8,9 +8,11 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>bio_utils.verifiers.fasta &mdash; bio_utils 1.0.2 documentation</title>
+  <title>bio_utils.verifiers.fasta &mdash; bio_utils 1.1.2 documentation</title>
   
 
+  
+  
   
   
 
@@ -30,7 +32,10 @@
   
 
   
-    <link rel="top" title="bio_utils 1.0.2 documentation" href="../../../index.html"/>
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="bio_utils 1.1.2 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -40,6 +45,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -80,7 +86,10 @@
           
             
             
-                <ul>
+              
+            
+            
+              <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../classes.html">Classes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../iterators.html">Iterators</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../verifiers.html">Verifiers</a></li>
@@ -99,8 +108,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../../../index.html">bio_utils</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">bio_utils</a>
+        
       </nav>
 
 
@@ -113,28 +124,45 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../../../index.html">Docs</a> &raquo;</li>
-      
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
           <li><a href="../../index.html">Module code</a> &raquo;</li>
-      
-    <li>bio_utils.verifiers.fasta</li>
+        
+      <li>bio_utils.verifiers.fasta</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
   <h1>Source code for bio_utils.verifiers.fasta</h1><div class="highlight"><pre>
-<span class="c">#! /usr/bin/env python</span>
+<span></span><span class="ch">#! /usr/bin/env python</span>
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
 
 <span class="sd">&quot;&quot;&quot;Verifies a FASTA file</span>
 
@@ -162,22 +190,22 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">argparse</span>
-<span class="kn">from</span> <span class="nn">bio_utils.iterators</span> <span class="kn">import</span> <span class="n">fasta_iter</span>
-<span class="kn">from</span> <span class="nn">bio_utils.verifiers</span> <span class="kn">import</span> <span class="n">entry_verifier</span>
-<span class="kn">from</span> <span class="nn">bio_utils.verifiers</span> <span class="kn">import</span> <span class="n">FormatError</span>
+<span class="kn">from</span> <span class="nn">bio_utils.iterators</span> <span class="k">import</span> <span class="n">fasta_iter</span>
+<span class="kn">from</span> <span class="nn">bio_utils.verifiers</span> <span class="k">import</span> <span class="n">entry_verifier</span>
+<span class="kn">from</span> <span class="nn">bio_utils.verifiers</span> <span class="k">import</span> <span class="n">FormatError</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
-<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;Alex Hyer&#39;</span>
-<span class="n">__email__</span> <span class="o">=</span> <span class="s">&#39;theonehyer@gmail.com&#39;</span>
-<span class="n">__license__</span> <span class="o">=</span> <span class="s">&#39;GPLv3&#39;</span>
-<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s">&#39;Alex Hyer&#39;</span>
-<span class="n">__status__</span> <span class="o">=</span> <span class="s">&#39;Production&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s">&#39;2.1.0&#39;</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Alex Hyer&#39;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;theonehyer@gmail.com&#39;</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;GPLv3&#39;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Alex Hyer&#39;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Production&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;2.1.0&#39;</span>
 
 
-<span class="c"># noinspection PyTypeChecker</span>
-<div class="viewcode-block" id="fasta_verifier"><a class="viewcode-back" href="../../../verifiers.html#bio_utils.verifiers.fasta_verifier">[docs]</a><span class="k">def</span> <span class="nf">fasta_verifier</span><span class="p">(</span><span class="n">entries</span><span class="p">,</span> <span class="n">ambiguous</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<span class="c1"># noinspection PyTypeChecker</span>
+<div class="viewcode-block" id="fasta_verifier"><a class="viewcode-back" href="../../../verifiers.html#bio_utils.verifiers.fasta_verifier">[docs]</a><span class="k">def</span> <span class="nf">fasta_verifier</span><span class="p">(</span><span class="n">entries</span><span class="p">,</span> <span class="n">ambiguous</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Raises error if invalid FASTA format detected</span>
 
 <span class="sd">    Args:</span>
@@ -199,55 +227,58 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="n">ambiguous</span><span class="p">:</span>
-        <span class="n">regex</span> <span class="o">=</span> <span class="s">r&#39;^&gt;.+{0}[ACGTURYKMSWBDHVNX]+{0}$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="p">)</span>
+        <span class="n">regex</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;^&gt;.+</span><span class="si">{0}</span><span class="s1">[ACGTURYKMSWBDHVNX]+</span><span class="si">{0}</span><span class="s1">$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">regex</span> <span class="o">=</span> <span class="s">r&#39;^&gt;.+{0}[ACGTU]+{0}$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="p">)</span>
-    <span class="n">delimiter</span> <span class="o">=</span> <span class="s">r&#39;{0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="p">)</span>
+        <span class="n">regex</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;^&gt;.+</span><span class="si">{0}</span><span class="s1">[ACGTU]+</span><span class="si">{0}</span><span class="s1">$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="p">)</span>
+    <span class="n">delimiter</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">entry_verifier</span><span class="p">([</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">()],</span> <span class="n">regex</span><span class="p">,</span> <span class="n">delimiter</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">FormatError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">error</span><span class="o">.</span><span class="n">part</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Unknown Header Error with {0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Unknown Header Error with </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
                 <span class="k">raise</span> <span class="n">FormatError</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">error</span><span class="o">.</span><span class="n">part</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">ambiguous</span><span class="p">:</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;{0} contains a base not in &#39;</span> \
-                      <span class="s">&#39;[ACGTURYKMSWBDHVNX]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1"> contains a base not in &#39;</span> \
+                      <span class="s1">&#39;[ACGTURYKMSWBDHVNX]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
                 <span class="k">raise</span> <span class="n">FormatError</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">error</span><span class="o">.</span><span class="n">part</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">ambiguous</span><span class="p">:</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;{0} contains a base not in &#39;</span> \
-                      <span class="s">&#39;[ACGTU]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1"> contains a base not in &#39;</span> \
+                      <span class="s1">&#39;[ACGTU]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
                 <span class="k">raise</span> <span class="n">FormatError</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;{0}: Unknown Error: Likely a Bug&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">: Unknown Error: Likely a Bug&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
                 <span class="k">raise</span> <span class="n">FormatError</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span></div>
 
 
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">__doc__</span><span class="p">,</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="vm">__doc__</span><span class="p">,</span>
                                      <span class="n">formatter_class</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span>
                                      <span class="n">RawDescriptionHelpFormatter</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;fasta&#39;</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s">&#39;FASTA file to verify [Default: STDIN]&#39;</span><span class="p">,</span>
-                        <span class="nb">type</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">FileType</span><span class="p">(</span><span class="s">&#39;rU&#39;</span><span class="p">),</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;fasta&#39;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;FASTA file to verify [Default: STDIN]&#39;</span><span class="p">,</span>
+                        <span class="nb">type</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">FileType</span><span class="p">(</span><span class="s1">&#39;rU&#39;</span><span class="p">),</span>
                         <span class="n">default</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;-q&#39;</span><span class="p">,</span> <span class="s">&#39;--quiet&#39;</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Suppresses message when file is good&#39;</span><span class="p">,</span>
-                        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_false&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-q&#39;</span><span class="p">,</span> <span class="s1">&#39;--quiet&#39;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Suppresses message when file is good&#39;</span><span class="p">,</span>
+                        <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_false&#39;</span><span class="p">)</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
 
     <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">fasta_iter</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">fasta</span><span class="p">):</span>
         <span class="n">fasta_verifier</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">quiet</span><span class="p">:</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&#39;{0} is valid&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">fasta</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>  <span class="c"># Prints if no error</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0}</span><span class="s1"> is valid&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">fasta</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>  <span class="c1"># Prints if no error</span>
 
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span>
     <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
 
+           </div>
+           <div class="articleComments">
+            
            </div>
           </div>
           <footer>
@@ -279,10 +310,11 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'1.0.2',
+            VERSION:'1.1.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="../../../_static/jquery.js"></script>

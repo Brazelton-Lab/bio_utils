@@ -8,9 +8,11 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Iterators &mdash; bio_utils 1.0.2 documentation</title>
+  <title>Iterators &mdash; bio_utils 1.1.2 documentation</title>
   
 
+  
+  
   
   
 
@@ -30,7 +32,10 @@
   
 
   
-    <link rel="top" title="bio_utils 1.0.2 documentation" href="index.html"/>
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="bio_utils 1.1.2 documentation" href="index.html"/>
         <link rel="next" title="Verifiers" href="verifiers.html"/>
         <link rel="prev" title="Classes" href="classes.html"/> 
 
@@ -41,6 +46,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -81,7 +87,10 @@
           
             
             
-                <ul class="current">
+              
+            
+            
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="classes.html">Classes</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Iterators</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
@@ -109,8 +118,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">bio_utils</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">bio_utils</a>
+        
       </nav>
 
 
@@ -119,23 +130,40 @@
         <div class="rst-content">
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="index.html">Docs</a> &raquo;</li>
-      
-    <li>Iterators</li>
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Iterators</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
-            <a href="_sources/iterators.txt" rel="nofollow"> View page source</a>
+            
+            <a href="_sources/iterators.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -161,7 +189,7 @@ along with this program.  If not, see &lt;<a class="reference external" href="ht
 </div></blockquote>
 <div class="section" id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
-<p>The bio_utils&#8217; iterators subpackage contains numerous iterators for a variety
+<p>The bio_utils’ iterators subpackage contains numerous iterators for a variety
 of biology-relevant file types. The contained iterators share numerous features
 listed in the next section. The subsequent sections detail iterator-specific
 elements. Each iterator returns file-specific Python classes. This page only
@@ -179,7 +207,7 @@ details how to use the iterators not the instances they return, see
 <li>Begin iteration at arbitrary lines using <em>start_line</em> or <em>header</em> argument</li>
 </ul>
 <p>All iterators in this package are quite fast; the following table compares
-SCREED&#8217;s, Biopython&#8217;s, and bio_utils&#8217; FASTA iteration speed in seconds on a
+SCREED’s, Biopython’s, and bio_utils’ FASTA iteration speed in seconds on a
 3.2 GB FASTA file containing 1,614,108 sequence entries averaging 158 bases
 each.</p>
 <table border="1" class="docutils">
@@ -245,11 +273,11 @@ does BLAST+.</p>
 <dt>Args:</dt>
 <dd><dl class="first last docutils">
 <dt>handle (file): B6/M8 file handle, can be any iterator so long as it</dt>
-<dd>it returns subsequent &#8220;lines&#8221; of a B6/M8 entry</dd>
-<dt>start_line (str): Next B6/M8 entry, if &#8216;handle&#8217; has been partially read</dt>
+<dd>it returns subsequent “lines” of a B6/M8 entry</dd>
+<dt>start_line (str): Next B6/M8 entry, if ‘handle’ has been partially read</dt>
 <dd>and you want to start iterating at the next entry, read the next
 B6/M8 entry and pass it to this variable when  calling b6_iter.
-See &#8216;Examples.&#8217;</dd>
+See ‘Examples.’</dd>
 </dl>
 </dd>
 <dt>Yields:</dt>
@@ -258,37 +286,37 @@ See &#8216;Examples.&#8217;</dd>
 <dd><p class="first">The following two examples demonstrate how to use b6_iter.
 Note: These doctests will not pass, examples are only in doctest
 format as per convention. bio_utils uses pytests for testing.</p>
-<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">b6_iter</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;test.b6out&#39;</span><span class="p">)):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">query</span><span class="p">)</span>  <span class="c"># Print Query ID</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">subject</span><span class="p">)</span>  <span class="c"># Print Subject ID</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">perc_identical</span><span class="p">)</span>  <span class="c"># Print % identity between seqs</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">mismatches</span><span class="p">)</span>  <span class="c"># Print number of mismathces in align</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">gaps</span><span class="p">)</span>  <span class="c"># Print number of gaps in alignment</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">query_start</span><span class="p">)</span>  <span class="c"># Print start of alignment on query</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">query_end</span><span class="p">)</span>  <span class="c"># Print end of alignment on query</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">subject_start</span><span class="p">)</span>  <span class="c"># Print start of align on subject</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">subject_end</span><span class="p">)</span>  <span class="c"># Print end of alignment on subject</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">evalue</span><span class="p">)</span>  <span class="c"># Print E-value of alignment</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">bit_score</span><span class="p">)</span>  <span class="c"># Print Bit score of alignment</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>  <span class="c"># Print entry B6 entry</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">b6_iter</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;test.b6out&#39;</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">query</span><span class="p">)</span>  <span class="c1"># Print Query ID</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">subject</span><span class="p">)</span>  <span class="c1"># Print Subject ID</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">perc_identical</span><span class="p">)</span>  <span class="c1"># Print % identity between seqs</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">mismatches</span><span class="p">)</span>  <span class="c1"># Print number of mismathces in align</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">gaps</span><span class="p">)</span>  <span class="c1"># Print number of gaps in alignment</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">query_start</span><span class="p">)</span>  <span class="c1"># Print start of alignment on query</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">query_end</span><span class="p">)</span>  <span class="c1"># Print end of alignment on query</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">subject_start</span><span class="p">)</span>  <span class="c1"># Print start of align on subject</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">subject_end</span><span class="p">)</span>  <span class="c1"># Print end of alignment on subject</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">evalue</span><span class="p">)</span>  <span class="c1"># Print E-value of alignment</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">bit_score</span><span class="p">)</span>  <span class="c1"># Print Bit score of alignment</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>  <span class="c1"># Print entry B6 entry</span>
 </pre></div>
 </div>
-<div class="last highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">b6_handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;test.b6out&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">b6_handle</span><span class="p">)</span>  <span class="c"># Skip first line/entry</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">next_line</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">b6_handle</span><span class="p">)</span>  <span class="c"># Store next entry</span>
+<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">b6_handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;test.b6out&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">b6_handle</span><span class="p">)</span>  <span class="c1"># Skip first line/entry</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">next_line</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">b6_handle</span><span class="p">)</span>  <span class="c1"># Store next entry</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">b6_iter</span><span class="p">(</span><span class="n">b6_handle</span><span class="p">,</span> <span class="n">start_line</span><span class="o">=</span><span class="n">next_line</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">query</span><span class="p">)</span>  <span class="c"># Print Query ID</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">subject</span><span class="p">)</span>  <span class="c"># Print Subject ID</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">perc_identical</span><span class="p">)</span>  <span class="c"># Print % identity between seqs</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">mismatches</span><span class="p">)</span>  <span class="c"># Print number of mismathces in align</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">gaps</span><span class="p">)</span>  <span class="c"># Print number of gaps in alignment</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">query_start</span><span class="p">)</span>  <span class="c"># Print start of alignment on query</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">query_end</span><span class="p">)</span>  <span class="c"># Print end of alignment on query</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">subject_start</span><span class="p">)</span>  <span class="c"># Print start of align on subject</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">subject_end</span><span class="p">)</span>  <span class="c"># Print end of alignment on subject</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">evalue</span><span class="p">)</span>  <span class="c"># Print E-value of alignment</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">bit_score</span><span class="p">)</span>  <span class="c"># Print Bit score of alignment</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>  <span class="c"># Print entry B6 entry</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">query</span><span class="p">)</span>  <span class="c1"># Print Query ID</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">subject</span><span class="p">)</span>  <span class="c1"># Print Subject ID</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">perc_identical</span><span class="p">)</span>  <span class="c1"># Print % identity between seqs</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">mismatches</span><span class="p">)</span>  <span class="c1"># Print number of mismathces in align</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">gaps</span><span class="p">)</span>  <span class="c1"># Print number of gaps in alignment</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">query_start</span><span class="p">)</span>  <span class="c1"># Print start of alignment on query</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">query_end</span><span class="p">)</span>  <span class="c1"># Print end of alignment on query</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">subject_start</span><span class="p">)</span>  <span class="c1"># Print start of align on subject</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">subject_end</span><span class="p">)</span>  <span class="c1"># Print end of alignment on subject</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">evalue</span><span class="p">)</span>  <span class="c1"># Print E-value of alignment</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">bit_score</span><span class="p">)</span>  <span class="c1"># Print Bit score of alignment</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>  <span class="c1"># Print entry B6 entry</span>
 </pre></div>
 </div>
 </dd>
@@ -308,37 +336,37 @@ format as per convention. bio_utils uses pytests for testing.</p>
 <dt>Args:</dt>
 <dd><dl class="first last docutils">
 <dt>handle (file): FASTA file handle, can be any iterator so long as it</dt>
-<dd>it returns subsequent &#8220;lines&#8221; of a FASTA entry</dd>
-<dt>header (str): Header line of next FASTA entry, if &#8216;handle&#8217; has been</dt>
+<dd>it returns subsequent “lines” of a FASTA entry</dd>
+<dt>header (str): Header line of next FASTA entry, if ‘handle’ has been</dt>
 <dd>partially read and you want to start iterating at the next entry,
 read the next FASTA header and pass it to this variable when
-calling fasta_iter. See &#8216;Examples.&#8217;</dd>
+calling fasta_iter. See ‘Examples.’</dd>
 </dl>
 </dd>
 <dt>Yields:</dt>
 <dd>FastaEntry: class containing all FASTA data</dd>
 <dt>Raises:</dt>
-<dd>IOError: If FASTA entry doesn&#8217;t start with &#8216;&gt;&#8217;</dd>
+<dd>IOError: If FASTA entry doesn’t start with ‘&gt;’</dd>
 <dt>Examples:</dt>
 <dd><p class="first">The following two examples demonstrate how to use fasta_iter.
 Note: These doctests will not pass, examples are only in doctest
 format as per convention. bio_utils uses pytests for testing.</p>
-<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">fasta_iter</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;test.fasta&#39;</span><span class="p">)):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>  <span class="c"># Print FASTA id</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>  <span class="c"># Print FASTA description</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">sequence</span><span class="p">)</span>  <span class="c"># Print FASTA sequence</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>  <span class="c"># Print full FASTA entry</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">fasta_iter</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;test.fasta&#39;</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>  <span class="c1"># Print FASTA id</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>  <span class="c1"># Print FASTA description</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">sequence</span><span class="p">)</span>  <span class="c1"># Print FASTA sequence</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>  <span class="c1"># Print full FASTA entry</span>
 </pre></div>
 </div>
-<div class="last highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">fasta_handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;test.fasta&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">fasta_handle</span><span class="p">)</span>  <span class="c"># Skip first entry header</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">fasta_handle</span><span class="p">)</span>  <span class="c"># Skip first entry sequence</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">first_line</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">fasta_handle</span><span class="p">)</span>  <span class="c"># Read second entry header</span>
+<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fasta_handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;test.fasta&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">fasta_handle</span><span class="p">)</span>  <span class="c1"># Skip first entry header</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">fasta_handle</span><span class="p">)</span>  <span class="c1"># Skip first entry sequence</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_line</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">fasta_handle</span><span class="p">)</span>  <span class="c1"># Read second entry header</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">fasta_iter</span><span class="p">(</span><span class="n">fasta_handle</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">first_line</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>  <span class="c"># Print FASTA id</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>  <span class="c"># Print FASTA description</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">sequence</span><span class="p">)</span>  <span class="c"># Print FASTA sequence</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>  <span class="c"># Print full FASTA entry</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>  <span class="c1"># Print FASTA id</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>  <span class="c1"># Print FASTA description</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">sequence</span><span class="p">)</span>  <span class="c1"># Print FASTA sequence</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>  <span class="c1"># Print full FASTA entry</span>
 </pre></div>
 </div>
 </dd>
@@ -359,41 +387,41 @@ spanning multiple lines.</p>
 <dt>Args:</dt>
 <dd><dl class="first last docutils">
 <dt>handle (file): FASTQ file handle, can be any iterator so long as it</dt>
-<dd>it returns subsequent &#8220;lines&#8221; of a FASTQ entry</dd>
-<dt>header (str): Header line of next FASTQ entry, if &#8216;handle&#8217; has been</dt>
+<dd>it returns subsequent “lines” of a FASTQ entry</dd>
+<dt>header (str): Header line of next FASTQ entry, if ‘handle’ has been</dt>
 <dd>partially read and you want to start iterating at the next entry,
 read the next FASTQ header and pass it to this variable when
-calling fastq_iter. See &#8216;Examples.&#8217;</dd>
+calling fastq_iter. See ‘Examples.’</dd>
 </dl>
 </dd>
 <dt>Yields:</dt>
 <dd>FastqEntry: class containing all FASTQ data</dd>
 <dt>Raises:</dt>
-<dd>IOError: If FASTQ entry doesn&#8217;t start with &#8216;&#64;&#8217;</dd>
+<dd>IOError: If FASTQ entry doesn’t start with ‘&#64;’</dd>
 <dt>Examples:</dt>
 <dd><p class="first">The following two examples demonstrate how to use fastq_iter.
 Note: These doctests will not pass, examples are only in doctest
 format as per convention. bio_utils uses pytests for testing.</p>
-<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">fastq_iter</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;test.fastq&#39;</span><span class="p">)):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>  <span class="c"># Print FASTQ id</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>  <span class="c"># Print FASTQ description</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">sequence</span><span class="p">)</span>  <span class="c"># Print FASTQ sequence</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">quality</span><span class="p">)</span>  <span class="c"># Print FASTQ quality scores</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>  <span class="c"># Print full FASTQ entry</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">fastq_iter</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;test.fastq&#39;</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>  <span class="c1"># Print FASTQ id</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>  <span class="c1"># Print FASTQ description</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">sequence</span><span class="p">)</span>  <span class="c1"># Print FASTQ sequence</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">quality</span><span class="p">)</span>  <span class="c1"># Print FASTQ quality scores</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>  <span class="c1"># Print full FASTQ entry</span>
 </pre></div>
 </div>
-<div class="last highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">fastq_handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;test.fastq&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">fastq_handle</span><span class="p">)</span>  <span class="c"># Skip first entry header</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">fastq_handle</span><span class="p">)</span>  <span class="c"># Skip first entry sequence</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">fastq_handle</span><span class="p">)</span>  <span class="c"># Skip line with &#39;+&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">fastq_handle</span><span class="p">)</span>  <span class="c"># Skip first entry quality scores</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">first_line</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">fastq_handle</span><span class="p">)</span>  <span class="c"># Read second entry header</span>
+<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fastq_handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;test.fastq&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">fastq_handle</span><span class="p">)</span>  <span class="c1"># Skip first entry header</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">fastq_handle</span><span class="p">)</span>  <span class="c1"># Skip first entry sequence</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">fastq_handle</span><span class="p">)</span>  <span class="c1"># Skip line with &#39;+&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">fastq_handle</span><span class="p">)</span>  <span class="c1"># Skip first entry quality scores</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_line</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">fastq_handle</span><span class="p">)</span>  <span class="c1"># Read second entry header</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">fastq_iter</span><span class="p">(</span><span class="n">fastq_handle</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="n">first_line</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>  <span class="c"># Print FASTQ id</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>  <span class="c"># Print FASTQ description</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">sequence</span><span class="p">)</span>  <span class="c"># Print FASTQ sequence</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">quality</span><span class="p">)</span>  <span class="c"># Print FASTQ quality scores</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>  <span class="c"># Print full FASTQ entry</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>  <span class="c1"># Print FASTQ id</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>  <span class="c1"># Print FASTQ description</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">sequence</span><span class="p">)</span>  <span class="c1"># Print FASTQ sequence</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">quality</span><span class="p">)</span>  <span class="c1"># Print FASTQ quality scores</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>  <span class="c1"># Print full FASTQ entry</span>
 </pre></div>
 </div>
 </dd>
@@ -413,18 +441,18 @@ format as per convention. bio_utils uses pytests for testing.</p>
 <dt>Args:</dt>
 <dd><dl class="first last docutils">
 <dt>handle (file): GFF3 file handle, can be any iterator so long as it</dt>
-<dd>it returns subsequent &#8220;lines&#8221; of a GFF3 entry</dd>
-<dt>start_line (str): Next GFF3 entry, if &#8216;handle&#8217; has been partially read</dt>
+<dd>it returns subsequent “lines” of a GFF3 entry</dd>
+<dt>start_line (str): Next GFF3 entry, if ‘handle’ has been partially read</dt>
 <dd>and you want to start iterating at the next entry, read the next
 GFF3 entry and pass it to this variable when calling gff3_iter.
-See &#8216;Examples.&#8217;</dd>
+See ‘Examples.’</dd>
 <dt>parse_attr (bool): Parse attributes column into a dictionary such that</dt>
-<dd><p class="first">the string &#8220;tag1=value1;tag2=value2&#8221; becomes (in YAML format):</p>
+<dd><p class="first">the string “tag1=value1;tag2=value2” becomes (in YAML format):</p>
 <p class="last">tag1: value1
 tag2: value2</p>
 </dd>
 <dt>headers (bool): Yields headers if True, else skips lines starting with</dt>
-<dd>&#8220;##&#8221;</dd>
+<dd>“##”</dd>
 </dl>
 </dd>
 <dt>Yields:</dt>
@@ -437,47 +465,47 @@ tag2: value2</p>
 <dd><p class="first">The following three examples demonstrate how to use gff3_iter.
 Note: These doctests will not pass, examples are only in doctest
 format as per convention. bio_utils uses pytests for testing.</p>
-<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">gff3_iter</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;test.gff3&#39;</span><span class="p">)):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">seqid</span><span class="p">)</span>  <span class="c"># Print Sequence ID</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">source</span><span class="p">)</span>  <span class="c"># Print software that performed annotation</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>  <span class="c"># Print type of annotation</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">start</span><span class="p">)</span>  <span class="c"># Print start position of annotation</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">end</span><span class="p">)</span>  <span class="c"># Print end position of annotation</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">score</span><span class="p">)</span>  <span class="c"># Print confidence score of annotation</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">strand</span><span class="p">)</span>  <span class="c"># Print strand annotation is on</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">phase</span><span class="p">)</span>  <span class="c"># Print bases until next codon</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">attributes</span><span class="p">)</span>  <span class="c"># Print attributes of annotation</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>  <span class="c"># Print entry GFF3 entry</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">gff3_iter</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;test.gff3&#39;</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">seqid</span><span class="p">)</span>  <span class="c1"># Print Sequence ID</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">source</span><span class="p">)</span>  <span class="c1"># Print software that performed annotation</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>  <span class="c1"># Print type of annotation</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">start</span><span class="p">)</span>  <span class="c1"># Print start position of annotation</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">end</span><span class="p">)</span>  <span class="c1"># Print end position of annotation</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">score</span><span class="p">)</span>  <span class="c1"># Print confidence score of annotation</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">strand</span><span class="p">)</span>  <span class="c1"># Print strand annotation is on</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">phase</span><span class="p">)</span>  <span class="c1"># Print bases until next codon</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">attributes</span><span class="p">)</span>  <span class="c1"># Print attributes of annotation</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>  <span class="c1"># Print entry GFF3 entry</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">gff3_handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;test.gff3&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">gff3_handle</span><span class="p">)</span>  <span class="c"># Skip first line/entry</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">next_line</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">gff3_handle</span><span class="p">)</span>  <span class="c"># Store next entry</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">gff3_handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;test.gff3&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">gff3_handle</span><span class="p">)</span>  <span class="c1"># Skip first line/entry</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">next_line</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">gff3_handle</span><span class="p">)</span>  <span class="c1"># Store next entry</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">gff3_iter</span><span class="p">(</span><span class="n">gff3_handle</span><span class="p">,</span> <span class="n">start_line</span><span class="o">=</span><span class="n">next_line</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">seqid</span><span class="p">)</span>  <span class="c"># Print Sequence ID</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">source</span><span class="p">)</span>  <span class="c"># Print software that performed annotation</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>  <span class="c"># Print type of annotation</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">start</span><span class="p">)</span>  <span class="c"># Print start position of annotation</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">end</span><span class="p">)</span>  <span class="c"># Print end position of annotation</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">score</span><span class="p">)</span>  <span class="c"># Print confidence score of annotation</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">strand</span><span class="p">)</span>  <span class="c"># Print strand annotation is on</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">phase</span><span class="p">)</span>  <span class="c"># Print bases until next codon</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">attributes</span><span class="p">)</span>  <span class="c"># Print attributes of annotation</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>  <span class="c"># Print entry GFF3 entry</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">seqid</span><span class="p">)</span>  <span class="c1"># Print Sequence ID</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">source</span><span class="p">)</span>  <span class="c1"># Print software that performed annotation</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>  <span class="c1"># Print type of annotation</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">start</span><span class="p">)</span>  <span class="c1"># Print start position of annotation</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">end</span><span class="p">)</span>  <span class="c1"># Print end position of annotation</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">score</span><span class="p">)</span>  <span class="c1"># Print confidence score of annotation</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">strand</span><span class="p">)</span>  <span class="c1"># Print strand annotation is on</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">phase</span><span class="p">)</span>  <span class="c1"># Print bases until next codon</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">attributes</span><span class="p">)</span>  <span class="c1"># Print attributes of annotation</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>  <span class="c1"># Print entry GFF3 entry</span>
 </pre></div>
 </div>
-<div class="last highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">gff3_iter</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;test.gff3&#39;</span><span class="p">),</span> <span class="n">parse_attr</span><span class="o">=</span><span class="k">True</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">seqid</span><span class="p">)</span>  <span class="c"># Print Sequence ID</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">source</span><span class="p">)</span>  <span class="c"># Print software that performed annotation</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>  <span class="c"># Print type of annotation</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">start</span><span class="p">)</span>  <span class="c"># Print start position of annotation</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">end</span><span class="p">)</span>  <span class="c"># Print end position of annotation</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">score</span><span class="p">)</span>  <span class="c"># Print confidence score of annotation</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">strand</span><span class="p">)</span>  <span class="c"># Print strand annotation is on</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">phase</span><span class="p">)</span>  <span class="c"># Print bases until next codon</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s">&#39;attr1&#39;</span><span class="p">])</span>  <span class="c"># Print attribute &#39;attr1&#39;</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s">&#39;attr2&#39;</span><span class="p">])</span>  <span class="c"># Print attribute &#39;attr2&#39;</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>  <span class="c"># Print entry GFF3 entry</span>
+<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">gff3_iter</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;test.gff3&#39;</span><span class="p">),</span> <span class="n">parse_attr</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">seqid</span><span class="p">)</span>  <span class="c1"># Print Sequence ID</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">source</span><span class="p">)</span>  <span class="c1"># Print software that performed annotation</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>  <span class="c1"># Print type of annotation</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">start</span><span class="p">)</span>  <span class="c1"># Print start position of annotation</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">end</span><span class="p">)</span>  <span class="c1"># Print end position of annotation</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">score</span><span class="p">)</span>  <span class="c1"># Print confidence score of annotation</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">strand</span><span class="p">)</span>  <span class="c1"># Print strand annotation is on</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">phase</span><span class="p">)</span>  <span class="c1"># Print bases until next codon</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;attr1&#39;</span><span class="p">])</span>  <span class="c1"># Print attribute &#39;attr1&#39;</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;attr2&#39;</span><span class="p">])</span>  <span class="c1"># Print attribute &#39;attr2&#39;</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>  <span class="c1"># Print entry GFF3 entry</span>
 </pre></div>
 </div>
 </dd>
@@ -497,13 +525,13 @@ format as per convention. bio_utils uses pytests for testing.</p>
 <dt>Args:</dt>
 <dd><dl class="first last docutils">
 <dt>handle (file): SAM file handle, can be any iterator so long as it</dt>
-<dd>it returns subsequent &#8220;lines&#8221; of a SAM entry</dd>
-<dt>start_line (str): Next SAM entry, if &#8216;handle&#8217; has been partially read</dt>
+<dd>it returns subsequent “lines” of a SAM entry</dd>
+<dt>start_line (str): Next SAM entry, if ‘handle’ has been partially read</dt>
 <dd>and you want to start iterating at the next entry, read the next
 SAM entry and pass it to this variable when calling sam_iter.
-See &#8216;Examples.&#8217;</dd>
+See ‘Examples.’</dd>
 <dt>headers (bool): Yields headers if True, else skips lines starting with</dt>
-<dd>&#8220;&#64;&#8221;</dd>
+<dd>“&#64;”</dd>
 </dl>
 </dd>
 <dt>Yields:</dt>
@@ -516,37 +544,37 @@ See &#8216;Examples.&#8217;</dd>
 <dd><p class="first">The following two examples demonstrate how to use sam_iter.
 Note: These doctests will not pass, examples are only in doctest
 format as per convention. bio_utils uses pytests for testing.</p>
-<div class="highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">sam_iter</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;test.sam&#39;</span><span class="p">)):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">qname</span><span class="p">)</span>  <span class="c"># Print query sequence name</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">flag</span><span class="p">)</span>  <span class="c"># Print flag number of alignment</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">rname</span><span class="p">)</span>  <span class="c"># Print reference sequence name</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">pos</span><span class="p">)</span>  <span class="c"># Print starting position of alignment</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">mapq</span><span class="p">)</span>  <span class="c"># Print mapping confidence of alignment</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">cigar</span><span class="p">)</span>  <span class="c"># Print CIGAR string of alignment</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">rnext</span><span class="p">)</span>  <span class="c"># Print paired read name</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">pnext</span><span class="p">)</span>  <span class="c"># Print position of paired read</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">tlen</span><span class="p">)</span>  <span class="c"># Print alignment length of all paired reads</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>  <span class="c"># Print query sequence</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">qual</span><span class="p">)</span>  <span class="c"># Print query quality scores</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>  <span class="c"># Print whole SAM entry</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">sam_iter</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;test.sam&#39;</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">qname</span><span class="p">)</span>  <span class="c1"># Print query sequence name</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">flag</span><span class="p">)</span>  <span class="c1"># Print flag number of alignment</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">rname</span><span class="p">)</span>  <span class="c1"># Print reference sequence name</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">pos</span><span class="p">)</span>  <span class="c1"># Print starting position of alignment</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">mapq</span><span class="p">)</span>  <span class="c1"># Print mapping confidence of alignment</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">cigar</span><span class="p">)</span>  <span class="c1"># Print CIGAR string of alignment</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">rnext</span><span class="p">)</span>  <span class="c1"># Print paired read name</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">pnext</span><span class="p">)</span>  <span class="c1"># Print position of paired read</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">tlen</span><span class="p">)</span>  <span class="c1"># Print alignment length of all paired reads</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>  <span class="c1"># Print query sequence</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">qual</span><span class="p">)</span>  <span class="c1"># Print query quality scores</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>  <span class="c1"># Print whole SAM entry</span>
 </pre></div>
 </div>
-<div class="last highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">sam_handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;test.gff3&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">sam_handle</span><span class="p">)</span>  <span class="c"># Skip first line/entry</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">next_line</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">sam_handle</span><span class="p">)</span>  <span class="c"># Store next entry</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">sam_iter</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;test.sam&#39;</span><span class="p">)):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">qname</span><span class="p">)</span>  <span class="c"># Print query sequence name</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">flag</span><span class="p">)</span>  <span class="c"># Print flag number of alignment</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">rname</span><span class="p">)</span>  <span class="c"># Print reference sequence name</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">pos</span><span class="p">)</span>  <span class="c"># Print starting position of alignment</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">mapq</span><span class="p">)</span>  <span class="c"># Print mapping confidence of alignment</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">cigar</span><span class="p">)</span>  <span class="c"># Print CIGAR string of alignment</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">rnext</span><span class="p">)</span>  <span class="c"># Print paired read name</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">pnext</span><span class="p">)</span>  <span class="c"># Print position of paired read</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">tlen</span><span class="p">)</span>  <span class="c"># Print alignment length of all paired reads</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>  <span class="c"># Print query sequence</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">qual</span><span class="p">)</span>  <span class="c"># Print query quality scores</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>  <span class="c"># Print whole SAM entry</span>
+<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sam_handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;test.gff3&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">sam_handle</span><span class="p">)</span>  <span class="c1"># Skip first line/entry</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">next_line</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">sam_handle</span><span class="p">)</span>  <span class="c1"># Store next entry</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">sam_iter</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;test.sam&#39;</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">qname</span><span class="p">)</span>  <span class="c1"># Print query sequence name</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">flag</span><span class="p">)</span>  <span class="c1"># Print flag number of alignment</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">rname</span><span class="p">)</span>  <span class="c1"># Print reference sequence name</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">pos</span><span class="p">)</span>  <span class="c1"># Print starting position of alignment</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">mapq</span><span class="p">)</span>  <span class="c1"># Print mapping confidence of alignment</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">cigar</span><span class="p">)</span>  <span class="c1"># Print CIGAR string of alignment</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">rnext</span><span class="p">)</span>  <span class="c1"># Print paired read name</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">pnext</span><span class="p">)</span>  <span class="c1"># Print position of paired read</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">tlen</span><span class="p">)</span>  <span class="c1"># Print alignment length of all paired reads</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>  <span class="c1"># Print query sequence</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">qual</span><span class="p">)</span>  <span class="c1"># Print query quality scores</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">())</span>  <span class="c1"># Print whole SAM entry</span>
 </pre></div>
 </div>
 </dd>
@@ -558,15 +586,18 @@ format as per convention. bio_utils uses pytests for testing.</p>
 
 
            </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="verifiers.html" class="btn btn-neutral float-right" title="Verifiers" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="verifiers.html" class="btn btn-neutral float-right" title="Verifiers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="classes.html" class="btn btn-neutral" title="Classes" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="classes.html" class="btn btn-neutral" title="Classes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -597,10 +628,11 @@ format as per convention. bio_utils uses pytests for testing.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.0.2',
+            VERSION:'1.1.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="_static/jquery.js"></script>

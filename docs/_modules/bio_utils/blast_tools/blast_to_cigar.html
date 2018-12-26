@@ -8,9 +8,11 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>bio_utils.blast_tools.blast_to_cigar &mdash; bio_utils 1.0.2 documentation</title>
+  <title>bio_utils.blast_tools.blast_to_cigar &mdash; bio_utils 1.1.2 documentation</title>
   
 
+  
+  
   
   
 
@@ -30,7 +32,10 @@
   
 
   
-    <link rel="top" title="bio_utils 1.0.2 documentation" href="../../../index.html"/>
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="bio_utils 1.1.2 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -40,6 +45,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -80,7 +86,10 @@
           
             
             
-                <ul>
+              
+            
+            
+              <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../classes.html">Classes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../iterators.html">Iterators</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../verifiers.html">Verifiers</a></li>
@@ -99,8 +108,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../../../index.html">bio_utils</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">bio_utils</a>
+        
       </nav>
 
 
@@ -113,26 +124,43 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../../../index.html">Docs</a> &raquo;</li>
-      
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
           <li><a href="../../index.html">Module code</a> &raquo;</li>
-      
-    <li>bio_utils.blast_tools.blast_to_cigar</li>
+        
+      <li>bio_utils.blast_tools.blast_to_cigar</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
   <h1>Source code for bio_utils.blast_tools.blast_to_cigar</h1><div class="highlight"><pre>
-<span class="c">#! /usr/bin/env python</span>
+<span></span><span class="ch">#! /usr/bin/env python</span>
 
 <span class="sd">&quot;&quot;&quot;Translates a BLAST XML alignment into a CIGAR line</span>
 
@@ -155,15 +183,15 @@
 <span class="sd">    along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;Alex Hyer&#39;</span>
-<span class="n">__email__</span> <span class="o">=</span> <span class="s">&#39;theonehyer@gmail.com&#39;</span>
-<span class="n">__license__</span> <span class="o">=</span> <span class="s">&#39;GPLv3&#39;</span>
-<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s">&#39;Alex Hyer&#39;</span>
-<span class="n">__status__</span> <span class="o">=</span> <span class="s">&#39;Production&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s">&#39;2.0.1&#39;</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Alex Hyer&#39;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;theonehyer@gmail.com&#39;</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;GPLv3&#39;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Alex Hyer&#39;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Production&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;2.0.1&#39;</span>
 
 
-<div class="viewcode-block" id="blast_to_cigar"><a class="viewcode-back" href="../../../blast_tools.html#bio_utils.blast_tools.blast_to_cigar">[docs]</a><span class="k">def</span> <span class="nf">blast_to_cigar</span><span class="p">(</span><span class="n">query_seq</span><span class="p">,</span> <span class="n">match_seq</span><span class="p">,</span> <span class="n">subject_seq</span><span class="p">,</span> <span class="n">cigar_age</span><span class="o">=</span><span class="s">&#39;new&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="blast_to_cigar"><a class="viewcode-back" href="../../../blast_tools.html#bio_utils.blast_tools.blast_to_cigar">[docs]</a><span class="k">def</span> <span class="nf">blast_to_cigar</span><span class="p">(</span><span class="n">query_seq</span><span class="p">,</span> <span class="n">match_seq</span><span class="p">,</span> <span class="n">subject_seq</span><span class="p">,</span> <span class="n">cigar_age</span><span class="o">=</span><span class="s1">&#39;new&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;converts BLAST alignment into a old or new CIGAR line</span>
 
 <span class="sd">    Args:</span>
@@ -196,37 +224,37 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">query_seq</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">match_seq</span><span class="p">)</span> \
             <span class="ow">or</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">query_seq</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">subject_seq</span><span class="p">)</span> \
             <span class="ow">or</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">subject_seq</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">match_seq</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;query_seq, match_seq, and subject_seq not same &#39;</span>
-                         <span class="s">&#39;lengths.&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;query_seq, match_seq, and subject_seq not same &#39;</span>
+                         <span class="s1">&#39;lengths.&#39;</span><span class="p">)</span>
 
-    <span class="c"># Translate XML alignment to CIGAR characters</span>
+    <span class="c1"># Translate XML alignment to CIGAR characters</span>
     <span class="n">cigar_line_raw</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">query</span><span class="p">,</span> <span class="n">match</span><span class="p">,</span> <span class="n">subject</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">query_seq</span><span class="p">,</span> <span class="n">match_seq</span><span class="p">,</span> <span class="n">subject_seq</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">query</span> <span class="o">==</span> <span class="s">&#39;-&#39;</span><span class="p">:</span>  <span class="c"># Deletion</span>
-            <span class="n">cigar_line_raw</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;D&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">query</span> <span class="o">==</span> <span class="s1">&#39;-&#39;</span><span class="p">:</span>  <span class="c1"># Deletion</span>
+            <span class="n">cigar_line_raw</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;D&#39;</span><span class="p">)</span>
             <span class="k">continue</span>
-        <span class="k">elif</span> <span class="n">subject</span> <span class="o">==</span> <span class="s">&#39;-&#39;</span><span class="p">:</span>  <span class="c"># Insertion</span>
-            <span class="n">cigar_line_raw</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;I&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">subject</span> <span class="o">==</span> <span class="s1">&#39;-&#39;</span><span class="p">:</span>  <span class="c1"># Insertion</span>
+            <span class="n">cigar_line_raw</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;I&#39;</span><span class="p">)</span>
             <span class="k">continue</span>
-        <span class="k">elif</span> <span class="n">match</span> <span class="o">==</span> <span class="s">&#39;+&#39;</span> <span class="ow">or</span> <span class="n">match</span> <span class="o">==</span> <span class="s">&#39;|&#39;</span> <span class="ow">or</span> <span class="n">match</span><span class="o">.</span><span class="n">isalpha</span><span class="p">():</span>  <span class="c"># Match</span>
-            <span class="k">if</span> <span class="n">match</span> <span class="o">!=</span> <span class="s">&#39;+&#39;</span> <span class="ow">and</span> <span class="n">cigar_age</span> <span class="o">==</span> <span class="s">&#39;new&#39;</span><span class="p">:</span>  <span class="c"># Positive match</span>
-                <span class="n">cigar_line_raw</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">match</span> <span class="o">==</span> <span class="s1">&#39;+&#39;</span> <span class="ow">or</span> <span class="n">match</span> <span class="o">==</span> <span class="s1">&#39;|&#39;</span> <span class="ow">or</span> <span class="n">match</span><span class="o">.</span><span class="n">isalpha</span><span class="p">():</span>  <span class="c1"># Match</span>
+            <span class="k">if</span> <span class="n">match</span> <span class="o">!=</span> <span class="s1">&#39;+&#39;</span> <span class="ow">and</span> <span class="n">cigar_age</span> <span class="o">==</span> <span class="s1">&#39;new&#39;</span><span class="p">:</span>  <span class="c1"># Positive match</span>
+                <span class="n">cigar_line_raw</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">)</span>
                 <span class="k">continue</span>
-            <span class="k">elif</span> <span class="n">match</span> <span class="o">==</span> <span class="s">&#39;+&#39;</span> <span class="ow">and</span> <span class="n">cigar_age</span> <span class="o">==</span> <span class="s">&#39;new&#39;</span><span class="p">:</span>  <span class="c"># Mismatch</span>
-                <span class="n">cigar_line_raw</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;X&#39;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">match</span> <span class="o">==</span> <span class="s1">&#39;+&#39;</span> <span class="ow">and</span> <span class="n">cigar_age</span> <span class="o">==</span> <span class="s1">&#39;new&#39;</span><span class="p">:</span>  <span class="c1"># Mismatch</span>
+                <span class="n">cigar_line_raw</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">)</span>
                 <span class="k">continue</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">cigar_line_raw</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;M&#39;</span><span class="p">)</span>
+                <span class="n">cigar_line_raw</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;M&#39;</span><span class="p">)</span>
                 <span class="k">continue</span>
-        <span class="k">elif</span> <span class="n">cigar_age</span> <span class="o">==</span> <span class="s">&#39;new&#39;</span><span class="p">:</span>
-            <span class="n">cigar_line_raw</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;X&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">cigar_age</span> <span class="o">==</span> <span class="s1">&#39;new&#39;</span><span class="p">:</span>
+            <span class="n">cigar_line_raw</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">)</span>
             <span class="k">continue</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">cigar_line_raw</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;M&#39;</span><span class="p">)</span>
+            <span class="n">cigar_line_raw</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;M&#39;</span><span class="p">)</span>
 
-    <span class="c"># Replace repeat characters with numbers</span>
+    <span class="c1"># Replace repeat characters with numbers</span>
     <span class="n">cigar_line</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">last_position</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+    <span class="n">last_position</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
     <span class="n">repeats</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">cigar_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cigar_line_raw</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cigar_line_raw</span><span class="p">):</span>
@@ -244,9 +272,12 @@
             <span class="n">cigar_line</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">letter</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="n">last_position</span> <span class="o">=</span> <span class="n">letter</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
-    <span class="k">return</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cigar_line</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cigar_line</span><span class="p">)</span></div>
 </pre></div>
 
+           </div>
+           <div class="articleComments">
+            
            </div>
           </div>
           <footer>
@@ -278,10 +309,11 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'1.0.2',
+            VERSION:'1.1.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="../../../_static/jquery.js"></script>

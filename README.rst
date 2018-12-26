@@ -2,7 +2,7 @@
 bio_utils
 =========
 
-.. image:: logo/bio_utils_logo_360.png
+.. image:: logo/bio_utils_logo_120.png
 
 
 Summary

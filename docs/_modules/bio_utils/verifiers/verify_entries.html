@@ -8,9 +8,11 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>bio_utils.verifiers.verify_entries &mdash; bio_utils 1.0.2 documentation</title>
+  <title>bio_utils.verifiers.verify_entries &mdash; bio_utils 1.1.2 documentation</title>
   
 
+  
+  
   
   
 
@@ -30,7 +32,10 @@
   
 
   
-    <link rel="top" title="bio_utils 1.0.2 documentation" href="../../../index.html"/>
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="bio_utils 1.1.2 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -40,6 +45,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -80,7 +86,10 @@
           
             
             
-                <ul>
+              
+            
+            
+              <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../classes.html">Classes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../iterators.html">Iterators</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../verifiers.html">Verifiers</a></li>
@@ -99,8 +108,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../../../index.html">bio_utils</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">bio_utils</a>
+        
       </nav>
 
 
@@ -113,26 +124,43 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../../../index.html">Docs</a> &raquo;</li>
-      
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
           <li><a href="../../index.html">Module code</a> &raquo;</li>
-      
-    <li>bio_utils.verifiers.verify_entries</li>
+        
+      <li>bio_utils.verifiers.verify_entries</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
   <h1>Source code for bio_utils.verifiers.verify_entries</h1><div class="highlight"><pre>
-<span class="c">#! /usr/bin/env python</span>
+<span></span><span class="ch">#! /usr/bin/env python</span>
 
 <span class="sd">&quot;&quot;&quot;General function for analyzing entries against a regex</span>
 
@@ -159,12 +187,12 @@
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
-<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;Alex Hyer&#39;</span>
-<span class="n">__email__</span> <span class="o">=</span> <span class="s">&#39;theonehyer@gmail.com&#39;</span>
-<span class="n">__license__</span> <span class="o">=</span> <span class="s">&#39;GPLv3&#39;</span>
-<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s">&#39;Alex Hyer&#39;</span>
-<span class="n">__status__</span> <span class="o">=</span> <span class="s">&#39;Production&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s">&#39;2.0.1&#39;</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Alex Hyer&#39;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;theonehyer@gmail.com&#39;</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;GPLv3&#39;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Alex Hyer&#39;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Production&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;2.0.1&#39;</span>
 
 <span class="k">class</span> <span class="nc">FormatError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Exception to store errors when bad format found</span>
@@ -197,16 +225,16 @@
 <span class="sd">        bio_utils.verifiers.verify_entries.FormatError: Error with format!</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">subject</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">part</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">subject</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">part</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">template</span> <span class="o">=</span> <span class="n">template</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">subject</span> <span class="o">=</span> <span class="n">subject</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">part</span> <span class="o">=</span> <span class="n">part</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span>
 
-        <span class="c"># Only print error if message given so that errors can be used to</span>
-        <span class="c"># convey data on error for intelligent handling downstream</span>
+        <span class="c1"># Only print error if message given so that errors can be used to</span>
+        <span class="c1"># convey data on error for intelligent handling downstream</span>
         <span class="k">if</span> <span class="n">message</span><span class="p">:</span>
-            <span class="nb">super</span><span class="p">(</span><span class="ne">Exception</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+            <span class="nb">super</span><span class="p">(</span><span class="ne">Exception</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="entry_verifier"><a class="viewcode-back" href="../../../verifiers.html#bio_utils.verifiers.entry_verifier">[docs]</a><span class="k">def</span> <span class="nf">entry_verifier</span><span class="p">(</span><span class="n">entries</span><span class="p">,</span> <span class="n">regex</span><span class="p">,</span> <span class="n">delimiter</span><span class="p">):</span>
@@ -233,37 +261,40 @@
 <span class="sd">        &gt;&gt;&gt; entry_verifier(entry, regex, &#39;\\n&#39;)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">cregex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">regex</span><span class="p">)</span>  <span class="c"># Compiling saves time if many entries given</span>
+    <span class="n">cregex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">regex</span><span class="p">)</span>  <span class="c1"># Compiling saves time if many entries given</span>
 
-    <span class="c"># Encode raw delimiter in order to split a bad entry</span>
-    <span class="n">python_version</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">decoder</span> <span class="o">=</span> <span class="s">&#39;unicode-escape&#39;</span> <span class="k">if</span> <span class="n">python_version</span> <span class="o">==</span> <span class="mi">3</span> <span class="k">else</span> <span class="s">&#39;string-escape&#39;</span>
+    <span class="c1"># Encode raw delimiter in order to split a bad entry</span>
+    <span class="n">python_version</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">decoder</span> <span class="o">=</span> <span class="s1">&#39;unicode-escape&#39;</span> <span class="k">if</span> <span class="n">python_version</span> <span class="o">==</span> <span class="mi">3</span> <span class="k">else</span> <span class="s1">&#39;string-escape&#39;</span>
     <span class="n">dedelimiter</span> <span class="o">=</span> <span class="n">codecs</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">delimiter</span><span class="p">,</span> <span class="n">decoder</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">:</span>
         <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">cregex</span><span class="p">,</span> <span class="n">entry</span><span class="p">)</span>
 
-        <span class="c"># Match failed, check regex and entry parts for error</span>
+        <span class="c1"># Match failed, check regex and entry parts for error</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">match</span><span class="p">:</span>
             <span class="n">split_regex</span> <span class="o">=</span> <span class="n">regex</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">delimiter</span><span class="p">)</span>
             <span class="n">split_entry</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">dedelimiter</span><span class="p">)</span>
-            <span class="n">part</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c"># &quot;Enumerate&quot; zipped iter</span>
+            <span class="n">part</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># &quot;Enumerate&quot; zipped iter</span>
             <span class="k">for</span> <span class="n">regex_segment</span><span class="p">,</span> <span class="n">entry_segment</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">split_regex</span><span class="p">,</span> <span class="n">split_entry</span><span class="p">):</span>
-                <span class="c"># Ensure regex_segment only matches entire entry_segment</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">regex_segment</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;^&#39;</span><span class="p">:</span>
-                    <span class="n">regex_segment</span> <span class="o">=</span> <span class="s">&#39;^&#39;</span> <span class="o">+</span> <span class="n">regex_segment</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">regex_segment</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;$&#39;</span><span class="p">:</span>
-                    <span class="n">regex_segment</span> <span class="o">+=</span> <span class="s">&#39;$&#39;</span>
+                <span class="c1"># Ensure regex_segment only matches entire entry_segment</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">regex_segment</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;^&#39;</span><span class="p">:</span>
+                    <span class="n">regex_segment</span> <span class="o">=</span> <span class="s1">&#39;^&#39;</span> <span class="o">+</span> <span class="n">regex_segment</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">regex_segment</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;$&#39;</span><span class="p">:</span>
+                    <span class="n">regex_segment</span> <span class="o">+=</span> <span class="s1">&#39;$&#39;</span>
 
-                <span class="c"># If segment fails, raise error and store info on failure</span>
+                <span class="c1"># If segment fails, raise error and store info on failure</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">regex_segment</span><span class="p">,</span> <span class="n">entry_segment</span><span class="p">):</span>
                     <span class="k">raise</span> <span class="n">FormatError</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="n">regex_segment</span><span class="p">,</span>
                                       <span class="n">subject</span><span class="o">=</span><span class="n">entry_segment</span><span class="p">,</span>
                                       <span class="n">part</span><span class="o">=</span><span class="n">part</span><span class="p">)</span>
 
-                <span class="n">part</span> <span class="o">+=</span> <span class="mi">1</span>  <span class="c"># Increase enumeration</span></div>
+                <span class="n">part</span> <span class="o">+=</span> <span class="mi">1</span>  <span class="c1"># Increase enumeration</span></div>
 </pre></div>
 
+           </div>
+           <div class="articleComments">
+            
            </div>
           </div>
           <footer>
@@ -295,10 +326,11 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'1.0.2',
+            VERSION:'1.1.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="../../../_static/jquery.js"></script>

@@ -8,9 +8,11 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Contributing &mdash; bio_utils 1.0.2 documentation</title>
+  <title>Contributing &mdash; bio_utils 1.1.2 documentation</title>
   
 
+  
+  
   
   
 
@@ -30,7 +32,10 @@
   
 
   
-    <link rel="top" title="bio_utils 1.0.2 documentation" href="index.html"/>
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="bio_utils 1.1.2 documentation" href="index.html"/>
         <link rel="next" title="Roadmap" href="roadmap.html"/>
         <link rel="prev" title="Blast Tools" href="blast_tools.html"/> 
 
@@ -41,6 +46,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -81,7 +87,10 @@
           
             
             
-                <ul class="current">
+              
+            
+            
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="classes.html">Classes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="iterators.html">Iterators</a></li>
 <li class="toctree-l1"><a class="reference internal" href="verifiers.html">Verifiers</a></li>
@@ -105,7 +114,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#script-requirements">Script Requirements</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#follow-pep">Follow PEP!</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#only-one-or-a-few-related-importable-functions-per-script">Only One or a Few Related Importable Functions per Script</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#no-end-functions">No &#8220;End&#8221; Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#no-end-functions">No “End” Functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#no-command-line-programs">No Command-Line Programs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#docstrings-for-each-script-class-and-function">Docstrings for Each Script, Class, AND Function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#metadata-and-copyright">Metadata and Copyright</a></li>
@@ -132,8 +141,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">bio_utils</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">bio_utils</a>
+        
       </nav>
 
 
@@ -142,23 +153,40 @@
         <div class="rst-content">
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="index.html">Docs</a> &raquo;</li>
-      
-    <li>Contributing</li>
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Contributing</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
-            <a href="_sources/contributing.txt" rel="nofollow"> View page source</a>
+            
+            <a href="_sources/contributing.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -197,15 +225,15 @@ time contributing, please read the rest of this document first.</p>
 </li>
 <li><p class="first">Get a <a class="reference external" href="https://github.com/">GitHub</a> account</p>
 </li>
-<li><p class="first">Fork the <a class="reference external" href="https://github.com/Brazelton-Lab/bio_utils">repo</a> (&#8216;fork&#8217; button)</p>
+<li><p class="first">Fork the <a class="reference external" href="https://github.com/Brazelton-Lab/bio_utils">repo</a> (‘fork’ button)</p>
 </li>
 <li><p class="first">Clone your copy of bio_utils:</p>
-<div class="highlight-default"><div class="highlight"><pre><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/&lt;</span><span class="n">your</span> <span class="n">GitHub</span> <span class="n">account</span> <span class="n">username</span><span class="o">&gt;/</span><span class="n">bio_utils</span><span class="o">.</span><span class="n">git</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/&lt;</span><span class="n">your</span> <span class="n">GitHub</span> <span class="n">account</span> <span class="n">username</span><span class="o">&gt;/</span><span class="n">bio_utils</span><span class="o">.</span><span class="n">git</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Connect the &#8220;official&#8221; bio_utils repo to your fork:</p>
-<div class="highlight-default"><div class="highlight"><pre><span class="n">git</span> <span class="n">remote</span> <span class="n">add</span> <span class="n">braz</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">Brazelton</span><span class="o">-</span><span class="n">Lab</span><span class="o">/</span><span class="n">bio_utils</span><span class="o">.</span><span class="n">git</span>
+<li><p class="first">Connect the “official” bio_utils repo to your fork:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">remote</span> <span class="n">add</span> <span class="n">braz</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">Brazelton</span><span class="o">-</span><span class="n">Lab</span><span class="o">/</span><span class="n">bio_utils</span><span class="o">.</span><span class="n">git</span>
 </pre></div>
 </div>
 </li>
@@ -214,8 +242,8 @@ time contributing, please read the rest of this document first.</p>
 <div class="section" id="actually-contributing">
 <h3>Actually Contributing<a class="headerlink" href="#actually-contributing" title="Permalink to this headline">¶</a></h3>
 <p>Before editing anything, run the following command to make sure your copy of
-bio_utils is up-to-date with the &#8220;official&#8221; branch:</p>
-<div class="highlight-default"><div class="highlight"><pre><span class="n">git</span> <span class="n">pull</span> <span class="n">braz</span> <span class="n">master</span>
+bio_utils is up-to-date with the “official” branch:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">pull</span> <span class="n">braz</span> <span class="n">master</span>
 </pre></div>
 </div>
 <p>After editing or adding files, perform the following steps:</p>
@@ -223,34 +251,34 @@ bio_utils is up-to-date with the &#8220;official&#8221; branch:</p>
 <li><p class="first">Write a unit <a class="reference external" href="http://docs.pytest.org/en/latest/getting-started.html">test</a> if you wrote a new script.</p>
 </li>
 <li><p class="first">Run unit tests and do not continue with this workflow unless they pass:</p>
-<div class="highlight-default"><div class="highlight"><pre><span class="n">cd</span> <span class="o">&lt;</span><span class="n">main</span> <span class="n">directory</span> <span class="n">of</span> <span class="n">git</span> <span class="n">repo</span><span class="o">&gt;</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">&lt;</span><span class="n">main</span> <span class="n">directory</span> <span class="n">of</span> <span class="n">git</span> <span class="n">repo</span><span class="o">&gt;</span>
 <span class="n">py</span><span class="o">.</span><span class="n">test</span>
 </pre></div>
 </div>
 </li>
 <li><p class="first">Add files to your git commit:</p>
-<div class="highlight-default"><div class="highlight"><pre><span class="n">git</span> <span class="n">add</span> <span class="o">&lt;</span><span class="n">file</span><span class="o">&gt;</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">add</span> <span class="o">&lt;</span><span class="n">file</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 </li>
 <li><p class="first">Update ChangeLog.rst:</p>
-<div class="highlight-default"><div class="highlight"><pre><span class="n">gitchangelog</span> <span class="o">&gt;</span> <span class="n">ChangeLog</span><span class="o">.</span><span class="n">rst</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">gitchangelog</span> <span class="o">&gt;</span> <span class="n">ChangeLog</span><span class="o">.</span><span class="n">rst</span>
 </pre></div>
 </div>
 </li>
 <li><p class="first">Commit your changes, add a detailed message in whatever text editor appears:</p>
-<div class="highlight-default"><div class="highlight"><pre><span class="n">git</span> <span class="n">commit</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">commit</span>
 </pre></div>
 </div>
 </li>
 <li><p class="first">Push your commit to GitHub:</p>
-<div class="highlight-default"><div class="highlight"><pre><span class="n">git</span> <span class="n">push</span> <span class="n">origin</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">push</span> <span class="n">origin</span>
 </pre></div>
 </div>
 </li>
-<li><p class="first">Repeat steps 1-6 until you want to merge your changes to the &#8220;official&#8221; repo</p>
+<li><p class="first">Repeat steps 1-6 until you want to merge your changes to the “official” repo</p>
 </li>
-<li><p class="first">To merge your changes, go to you GitHub copy of bio_utils and click &#8216;Compare &amp; pull request&#8217;</p>
+<li><p class="first">To merge your changes, go to you GitHub copy of bio_utils and click ‘Compare &amp; pull request’</p>
 </li>
 <li><p class="first">In your pull request mention &#64;TheOneHyer for review</p>
 </li>
@@ -263,7 +291,7 @@ bio_utils is up-to-date with the &#8220;official&#8221; branch:</p>
 <h3>Simple-to-Use/Intuitive<a class="headerlink" href="#simple-to-use-intuitive" title="Permalink to this headline">¶</a></h3>
 <p>A software library is analogous to a toolkit. Like a real-world toolkit, it
 should be organized so that any single tool can be found without any real
-effort. Once a tool is found, it&#8217;s function should be obvious based on it&#8217;s
+effort. Once a tool is found, it’s function should be obvious based on it’s
 name, e.g. a screwdriver drives a screw through material. To translate this
 analogy to computer terms, each script should be a single tool whose name
 reflects its function.</p>
@@ -271,7 +299,7 @@ reflects its function.</p>
 <div class="section" id="asap-as-simple-as-possible">
 <h3>ASAP (As Simple As Possible)<a class="headerlink" href="#asap-as-simple-as-possible" title="Permalink to this headline">¶</a></h3>
 <p>A screwdriver drives a screw, a hammer applies normal force, and a wrench
-applies torque. Each of these tools&#8217; use is fairly singular and unique. Each
+applies torque. Each of these tools’ use is fairly singular and unique. Each
 script in a library should have a single, unique function. To say that in more
 confusing terms: each tool should do one thing and one thing only, and said
 thing shall not have already been done. Additionally, each script should be
@@ -283,7 +311,7 @@ each script should be
 <h3>Heavily Documented<a class="headerlink" href="#heavily-documented" title="Permalink to this headline">¶</a></h3>
 <p>A library is used by developers writing a program. This obvious statement
 should lead to an obvious conclusion: a library is of no use if a programmer
-doesn&#8217;t know/can&#8217;t find out what any given tool does. Thus, each script should
+doesn’t know/can’t find out what any given tool does. Thus, each script should
 be very documented heavily. While, it is better to document more than less,
 there is such a thing as too much documentation. There comes a point where
 documentation is too repetitive and confuses the reader more than helping them;
@@ -293,19 +321,19 @@ avoid this.</p>
 <h3>Logically Organized<a class="headerlink" href="#logically-organized" title="Permalink to this headline">¶</a></h3>
 <p>This point was basically made with the first Core Principle but will be
 re-iterated/elaborated on here. When opening a toolkit, it should be easy to
-figure out where a tool is because &#8220;tools of a feather should be stored
-together&#8221;. Therefore, a library should have a hierarchical structure grouping
+figure out where a tool is because “tools of a feather should be stored
+together”. Therefore, a library should have a hierarchical structure grouping
 similar tools. All tools fit into at least some category so there should never
-be a &#8220;miscellaneous&#8221; category.</p>
+be a “miscellaneous” category.</p>
 </div>
 <div class="section" id="up-to-date">
 <h3>Up-to-Date<a class="headerlink" href="#up-to-date" title="Permalink to this headline">¶</a></h3>
 <p>An outdated library is not particularly useful. What constitutes an outdated
-library is quite subjective as some tools may never need updating after they&#8217;re
+library is quite subjective as some tools may never need updating after they’re
 initially written. However, this is not normally the case as new functions
 become desirable and various standards change. An up-to-date library should
 always support the latest file conventions and adhere to current coding
-standards withing both the library and the library&#8217;s coding language.</p>
+standards withing both the library and the library’s coding language.</p>
 </div>
 <div class="section" id="fast">
 <h3>Fast<a class="headerlink" href="#fast" title="Permalink to this headline">¶</a></h3>
@@ -320,7 +348,7 @@ intermediate favoring ASAP over speed.</p>
 <div class="section" id="script-requirements">
 <h2>Script Requirements<a class="headerlink" href="#script-requirements" title="Permalink to this headline">¶</a></h2>
 <p>This section is as a practical coding guide to implement the above principles
-in bio_utils&#8217; scripts.</p>
+in bio_utils’ scripts.</p>
 <div class="section" id="follow-pep">
 <h3>Follow PEP!<a class="headerlink" href="#follow-pep" title="Permalink to this headline">¶</a></h3>
 <p>Python already has multiple cannon code style guides, versioning systems, etc.;
@@ -339,15 +367,15 @@ Specifying Dependencies</p>
 <h3>Only One or a Few Related Importable Functions per Script<a class="headerlink" href="#only-one-or-a-few-related-importable-functions-per-script" title="Permalink to this headline">¶</a></h3>
 <p>Each script should only contain a few related functions at most. Most scripts
 should only have a single function. This helps keep everything logically and
-hierarchically organized. Let&#8217;s go over a simple example to demonstrate the
+hierarchically organized. Let’s go over a simple example to demonstrate the
 benefits of this approach:</p>
 <p>One could write a script called fasta.py that contains all library functions
 dealing with FASTA files. This seems convenient because if a developer wants
 to do something with a FASTA file, s/he only needs to look at one script to see
 if the functionality they want exists. However, they have to open and look
-through the whole file to see if what they want exists. Also, they can&#8217;t get
+through the whole file to see if what they want exists. Also, they can’t get
 any information on categorical functions such as what iterators available in
-bio_utils. By creating a sub-package called &#8220;iterators&#8221; in bio_utils and
+bio_utils. By creating a sub-package called “iterators” in bio_utils and
 placing a fasta.py script containing a single function (iterating through
 a FASTA file), a developer can see what iterators are available and understand
 the function of fasta.py at the same time without needing to open a file! Also,
@@ -355,12 +383,12 @@ by placing a fasta.py in each appropriate sub-package (with the package-
 corresponding functionality), a developer can simply search for files named
 fasta.py to glean everything they can do with a FASTA file in bio_utils.
 This also makes imports more obvious and clear to a reader.</p>
-<p>If multiple functions are all related to a single &#8220;thing&#8221; within the same
+<p>If multiple functions are all related to a single “thing” within the same
 sub-package, then it is appropriate to include multiple functions in a single
 script. Doing so is simply a best judgement call.</p>
 </div>
 <div class="section" id="no-end-functions">
-<h3>No &#8220;End&#8221; Functions<a class="headerlink" href="#no-end-functions" title="Permalink to this headline">¶</a></h3>
+<h3>No “End” Functions<a class="headerlink" href="#no-end-functions" title="Permalink to this headline">¶</a></h3>
 <p>As aforementioned, a software library is analogous to a toolbox. To that end,
 each script should perform and return data but never execute an ultimatum. The
 developer needs to have maximal control over their script; they should not have
@@ -388,12 +416,11 @@ then it should be made into one. As an example, each of the verifiers double as
 command-line programs that take a single file as their only argument and print
 whether or not the file is properly formatted. When a script in bio_utils
 doubles as a program, it should:</p>
-<ol class="arabic">
-<li><p class="first">Simply call it&#8217;s own importable function</p>
-</li>
+<ol class="arabic simple">
+<li>Simply call it’s own importable function</li>
 <li><dl class="first docutils">
 <dt>The program should support the following (if applicable):</dt>
-<dd><ul class="first last simple">
+<dd><ul class="first last">
 <li>Reading and writing compressed files</li>
 <li>Piping</li>
 <li>One or zero positional arguments</li>
@@ -420,9 +447,9 @@ about each function. Full API should also be described in our Sphinx</p>
 <div class="section" id="metadata-and-copyright">
 <h3>Metadata and Copyright<a class="headerlink" href="#metadata-and-copyright" title="Permalink to this headline">¶</a></h3>
 <p>All scripts must start with the following code:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c">#! /usr/bin/env python</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="ch">#! /usr/bin/env python</span>
 
-<span class="c"># from __future__ imports go here</span>
+<span class="c1"># from __future__ imports go here</span>
 
 <span class="sd">&quot;&quot;&quot;&lt;one-liner describing software&gt;</span>
 
@@ -447,15 +474,15 @@ about each function. Full API should also be described in our Sphinx</p>
 <span class="sd">    along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;&lt;authors&gt;&#39;</span>
-<span class="n">__email__</span> <span class="o">=</span> <span class="s">&#39;&lt;email of lead author or maintainer&gt;&#39;</span>
-<span class="n">__license__</span> <span class="o">=</span> <span class="s">&#39;GPLv3&#39;</span>
-<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s">&#39;&lt;maintainer of script&gt;&#39;</span>
-<span class="n">__status__</span> <span class="o">=</span> <span class="s">&#39;&lt;production level of script&gt;&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s">&#39;&lt;script version&gt;&#39;</span>
-<span class="n">__credits__</span> <span class="o">=</span> <span class="s">&#39;&lt;credit for legally borrowed code if appropriate&gt;&#39;</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;&lt;authors&gt;&#39;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;&lt;email of lead author or maintainer&gt;&#39;</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;GPLv3&#39;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;&lt;maintainer of script&gt;&#39;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;&lt;production level of script&gt;&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;&lt;script version&gt;&#39;</span>
+<span class="n">__credits__</span> <span class="o">=</span> <span class="s1">&#39;&lt;credit for legally borrowed code if appropriate&gt;&#39;</span>
 
-<span class="c"># imports, then rest of script</span>
+<span class="c1"># imports, then rest of script</span>
 </pre></div>
 </div>
 </div>
@@ -468,17 +495,17 @@ appropriate to start a new one.</p>
 <h3>2+ Scripts per Package<a class="headerlink" href="#scripts-per-package" title="Permalink to this headline">¶</a></h3>
 <p>While you can have a package with just a single script, try for at least two
 scripts per package. The reasoning behind this is simple, a package with a
-single script feels like an unnecessary &#8220;package&#8221; in the import statement
+single script feels like an unnecessary “package” in the import statement
 and chances are you can think of a second script useful to the concept driving
-the sub-package. If a script truly doesn&#8217;t fit in any other sub-package, try
+the sub-package. If a script truly doesn’t fit in any other sub-package, try
 to think of a second function fitting the schema and code it. bio_utils will
-never have a &#8220;misc&#8221; package.</p>
+never have a “misc” package.</p>
 </div>
 <div class="section" id="import-at-package-level">
 <h3>Import at Package Level<a class="headerlink" href="#import-at-package-level" title="Permalink to this headline">¶</a></h3>
 <p>Since each script should have only one (or a few functions), they should be
-imported at the package level—in the &#8220;__init__.py&#8221; file—so that a programmer
-doesn&#8217;t have to write redundant words in import statements. For example:</p>
+imported at the package level—in the “__init__.py” file—so that a programmer
+doesn’t have to write redundant words in import statements. For example:</p>
 <p>from bio_utils.iterators import sam_iter (package level = better)</p>
 <p>from bio_utils.iterators.sam import sam_iter (file level = worse)</p>
 </div>
@@ -486,7 +513,7 @@ doesn&#8217;t have to write redundant words in import statements. For example:</
 <h3>Own Documentation Page<a class="headerlink" href="#own-documentation-page" title="Permalink to this headline">¶</a></h3>
 <p>Each sub-package must have its own web page in the documentation following this
 format:</p>
-<div class="highlight-default"><div class="highlight"><pre><span class="o">=====</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">=====</span>
 <span class="n">Title</span>
 <span class="o">=====</span>
 
@@ -514,15 +541,18 @@ format:</p>
 
 
            </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="roadmap.html" class="btn btn-neutral float-right" title="Roadmap" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="roadmap.html" class="btn btn-neutral float-right" title="Roadmap" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="blast_tools.html" class="btn btn-neutral" title="Blast Tools" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="blast_tools.html" class="btn btn-neutral" title="Blast Tools" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -553,10 +583,11 @@ format:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.0.2',
+            VERSION:'1.1.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="_static/jquery.js"></script>

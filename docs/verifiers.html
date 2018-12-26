@@ -8,9 +8,11 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Verifiers &mdash; bio_utils 1.0.2 documentation</title>
+  <title>Verifiers &mdash; bio_utils 1.1.2 documentation</title>
   
 
+  
+  
   
   
 
@@ -30,7 +32,10 @@
   
 
   
-    <link rel="top" title="bio_utils 1.0.2 documentation" href="index.html"/>
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="bio_utils 1.1.2 documentation" href="index.html"/>
         <link rel="next" title="Blast Tools" href="blast_tools.html"/>
         <link rel="prev" title="Iterators" href="iterators.html"/> 
 
@@ -41,6 +46,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -81,7 +87,10 @@
           
             
             
-                <ul class="current">
+              
+            
+            
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="classes.html">Classes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="iterators.html">Iterators</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Verifiers</a><ul>
@@ -110,8 +119,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">bio_utils</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">bio_utils</a>
+        
       </nav>
 
 
@@ -120,23 +131,40 @@
         <div class="rst-content">
           
 
- 
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="index.html">Docs</a> &raquo;</li>
-      
-    <li>Verifiers</li>
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Verifiers</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
-            <a href="_sources/verifiers.txt" rel="nofollow"> View page source</a>
+            
+            <a href="_sources/verifiers.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
@@ -162,7 +190,7 @@ along with this program.  If not, see &lt;<a class="reference external" href="ht
 </div></blockquote>
 <div class="section" id="introduction">
 <h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
-<p>The bio_util&#8217;s verifiers subpackage contains numerous functions that verify the
+<p>The bio_util’s verifiers subpackage contains numerous functions that verify the
 data of a biological file format, i.e. they ensure a given file is properly
 formatted. These function check file entries against a regex matching a
 given file format. If the match fails, the verifier will subdivide the entry
@@ -199,9 +227,9 @@ to produce an accurate error message.</p>
 <dt>Raises:</dt>
 <dd>FormatError: Class containing regex match error data</dd>
 <dt>Example:</dt>
-<dd><div class="first last highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">regex</span> <span class="o">=</span> <span class="s">r&#39;^&gt;.+\n[ACGTU]+\n$&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="p">[</span><span class="s">r&#39;&gt;entry1\nAGGGACTA\n&#39;</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">entry_verifier</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">regex</span><span class="p">,</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+<dd><div class="first last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">regex</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;^&gt;.+\n[ACGTU]+\n$&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="p">[</span><span class="sa">r</span><span class="s1">&#39;&gt;entry1\nAGGGACTA\n&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry_verifier</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="n">regex</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd>
@@ -224,9 +252,9 @@ to produce an accurate error message.</p>
 <dt>Raises:</dt>
 <dd>FormatError: Error when B6/M8 format incorrect with descriptive message</dd>
 <dt>Example:</dt>
-<dd><div class="first last highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">bio_utils.iterators</span> <span class="k">import</span> <span class="n">b6_iter</span>
+<dd><div class="first last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">bio_utils.iterators</span> <span class="k">import</span> <span class="n">b6_iter</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">entries</span> <span class="o">=</span> <span class="s">&#39;query1   subject1        86.03   1782    226     18      6038    7812    &#39;</span>         <span class="o">...</span>           <span class="s">&#39;755762 753997  0.0     1890{0}&#39;</span>         <span class="o">...</span>           <span class="s">&#39;query2  subject2        85.46   1176    165     5       1213    2385    &#39;</span>         <span class="o">...</span>           <span class="s">&#39;1154754        1153582 0.0     1219&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entries</span> <span class="o">=</span> <span class="s1">&#39;query1   subject1        86.03   1782    226     18      6038    7812    &#39;</span>         <span class="o">...</span>           <span class="s1">&#39;755762 753997  0.0     1890</span><span class="si">{0}</span><span class="s1">&#39;</span>         <span class="o">...</span>           <span class="s1">&#39;query2  subject2        85.46   1176    165     5       1213    2385    &#39;</span>         <span class="o">...</span>           <span class="s1">&#39;1154754        1153582 0.0     1219&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b6_entries</span> <span class="o">=</span> <span class="n">b6_iter</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">entries</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="p">)))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">b6_verifier</span><span class="p">(</span><span class="n">b6_entries</span><span class="p">)</span>
 </pre></div>
@@ -239,7 +267,7 @@ to produce an accurate error message.</p>
 <div class="section" id="binary-guesser">
 <h2>binary_guesser<a class="headerlink" href="#binary-guesser" title="Permalink to this headline">¶</a></h2>
 <p>Heuristically guess whether a file is binary or text. While not technically a
-&#8220;verifier&#8221;, this function fits in this subpackage well as it helps confirm
+“verifier”, this function fits in this subpackage well as it helps confirm
 a generic property of the file before use by a program.</p>
 <dl class="function">
 <dt id="bio_utils.verifiers.binary_guesser">
@@ -261,7 +289,7 @@ then returns to location in file when handle passed to binary_guesser.</p>
 <dd><p class="first">The following example demonstrate how to use binary_guesser.
 Note: These doctests will not pass, examples are only in doctest
 format as per convention. bio_utils uses pytests for testing.</p>
-<div class="last highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">binary_guesser</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;test.binary&#39;</span><span class="p">))</span>
+<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">binary_guesser</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;test.binary&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
 </dd>
@@ -284,9 +312,9 @@ format as per convention. bio_utils uses pytests for testing.</p>
 <dt>Raises:</dt>
 <dd>FormatError: Error when FASTA format incorrect with descriptive message</dd>
 <dt>Example:</dt>
-<dd><div class="first last highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">bio_utils.iterators</span> <span class="k">import</span> <span class="n">fasta_iter</span>
+<dd><div class="first last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">bio_utils.iterators</span> <span class="k">import</span> <span class="n">fasta_iter</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">entries</span> <span class="o">=</span> <span class="s">r&#39;&gt;entry1{0}AAGGATTCG{0}&#39;</span>         <span class="o">...</span>           <span class="s">r&#39;&gt;entry{0}AGGTCCCCCG{0}&#39;</span>         <span class="o">...</span>           <span class="s">r&#39;&gt;entry3{0}GCCTAGC{0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entries</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;&gt;entry1</span><span class="si">{0}</span><span class="s1">AAGGATTCG</span><span class="si">{0}</span><span class="s1">&#39;</span>         <span class="o">...</span>           <span class="sa">r</span><span class="s1">&#39;&gt;entry</span><span class="si">{0}</span><span class="s1">AGGTCCCCCG</span><span class="si">{0}</span><span class="s1">&#39;</span>         <span class="o">...</span>           <span class="sa">r</span><span class="s1">&#39;&gt;entry3</span><span class="si">{0}</span><span class="s1">GCCTAGC</span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fasta_entries</span> <span class="o">=</span> <span class="n">fasta_iter</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">entries</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="p">)))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fasta_verifier</span><span class="p">(</span><span class="n">fasta_entries</span><span class="p">)</span>
 </pre></div>
@@ -311,9 +339,9 @@ format as per convention. bio_utils uses pytests for testing.</p>
 <dt>Raises:</dt>
 <dd>FormatError: Error when FASTQ format incorrect with descriptive message</dd>
 <dt>Example:</dt>
-<dd><div class="first last highlight-default"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">bio_utils.iterators</span> <span class="k">import</span> <span class="n">fastq_iter</span>
+<dd><div class="first last highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">bio_utils.iterators</span> <span class="k">import</span> <span class="n">fastq_iter</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">entries</span> <span class="o">=</span> <span class="s">r&#39;@entry1{0}AAGGATTCG{0}+{0}112234432{0}&#39;</span>         <span class="o">...</span>           <span class="s">r&#39;@entry{0}AGGTCCCCCG{0}+{0}4229888884{0}&#39;</span>         <span class="o">...</span>           <span class="s">r&#39;@entry3{0}GCCTAGC{0}9ddsa5n&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entries</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;@entry1</span><span class="si">{0}</span><span class="s1">AAGGATTCG</span><span class="si">{0}</span><span class="s1">+</span><span class="si">{0}</span><span class="s1">112234432</span><span class="si">{0}</span><span class="s1">&#39;</span>         <span class="o">...</span>           <span class="sa">r</span><span class="s1">&#39;@entry</span><span class="si">{0}</span><span class="s1">AGGTCCCCCG</span><span class="si">{0}</span><span class="s1">+</span><span class="si">{0}</span><span class="s1">4229888884</span><span class="si">{0}</span><span class="s1">&#39;</span>         <span class="o">...</span>           <span class="sa">r</span><span class="s1">&#39;@entry3</span><span class="si">{0}</span><span class="s1">GCCTAGC</span><span class="si">{0}</span><span class="s1">9ddsa5n&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fastq_entries</span> <span class="o">=</span> <span class="n">fastq_iter</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">entries</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="p">)))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fastq_verifier</span><span class="p">(</span><span class="n">fastq_entries</span><span class="p">)</span>
 </pre></div>
@@ -363,15 +391,18 @@ format as per convention. bio_utils uses pytests for testing.</p>
 
 
            </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="blast_tools.html" class="btn btn-neutral float-right" title="Blast Tools" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="blast_tools.html" class="btn btn-neutral float-right" title="Blast Tools" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="iterators.html" class="btn btn-neutral" title="Iterators" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="iterators.html" class="btn btn-neutral" title="Iterators" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -402,10 +433,11 @@ format as per convention. bio_utils uses pytests for testing.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.0.2',
+            VERSION:'1.1.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="_static/jquery.js"></script>

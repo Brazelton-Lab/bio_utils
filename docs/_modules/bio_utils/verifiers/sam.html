@@ -8,9 +8,11 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>bio_utils.verifiers.sam &mdash; bio_utils 1.0.2 documentation</title>
+  <title>bio_utils.verifiers.sam &mdash; bio_utils 1.1.2 documentation</title>
   
 
+  
+  
   
   
 
@@ -30,7 +32,10 @@
   
 
   
-    <link rel="top" title="bio_utils 1.0.2 documentation" href="../../../index.html"/>
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="bio_utils 1.1.2 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -40,6 +45,7 @@
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
@@ -80,7 +86,10 @@
           
             
             
-                <ul>
+              
+            
+            
+              <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../classes.html">Classes</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../iterators.html">Iterators</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../verifiers.html">Verifiers</a></li>
@@ -99,8 +108,10 @@
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../../../index.html">bio_utils</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">bio_utils</a>
+        
       </nav>
 
 
@@ -113,28 +124,45 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="../../../index.html">Docs</a> &raquo;</li>
-      
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
           <li><a href="../../index.html">Module code</a> &raquo;</li>
-      
-    <li>bio_utils.verifiers.sam</li>
+        
+      <li>bio_utils.verifiers.sam</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
+            
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
   <h1>Source code for bio_utils.verifiers.sam</h1><div class="highlight"><pre>
-<span class="c">#! /usr/bin/env python</span>
+<span></span><span class="ch">#! /usr/bin/env python</span>
 
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
 
 <span class="sd">&quot;&quot;&quot;Verifies a SAM file</span>
 
@@ -162,21 +190,21 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">argparse</span>
-<span class="kn">from</span> <span class="nn">bio_utils.verifiers</span> <span class="kn">import</span> <span class="n">entry_verifier</span>
-<span class="kn">from</span> <span class="nn">bio_utils.verifiers</span> <span class="kn">import</span> <span class="n">FormatError</span>
-<span class="kn">from</span> <span class="nn">bio_utils.iterators</span> <span class="kn">import</span> <span class="n">sam_iter</span>
+<span class="kn">from</span> <span class="nn">bio_utils.verifiers</span> <span class="k">import</span> <span class="n">entry_verifier</span>
+<span class="kn">from</span> <span class="nn">bio_utils.verifiers</span> <span class="k">import</span> <span class="n">FormatError</span>
+<span class="kn">from</span> <span class="nn">bio_utils.iterators</span> <span class="k">import</span> <span class="n">sam_iter</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
-<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;Alex Hyer&#39;</span>
-<span class="n">__email__</span> <span class="o">=</span> <span class="s">&#39;theonehyer@gmail.com&#39;</span>
-<span class="n">__license__</span> <span class="o">=</span> <span class="s">&#39;GPLv3&#39;</span>
-<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s">&#39;Alex Hyer&#39;</span>
-<span class="n">__status__</span> <span class="o">=</span> <span class="s">&#39;Production&#39;</span>
-<span class="n">__version__</span> <span class="o">=</span> <span class="s">&#39;2.0.0&#39;</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Alex Hyer&#39;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;theonehyer@gmail.com&#39;</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s1">&#39;GPLv3&#39;</span>
+<span class="n">__maintainer__</span> <span class="o">=</span> <span class="s1">&#39;Alex Hyer&#39;</span>
+<span class="n">__status__</span> <span class="o">=</span> <span class="s1">&#39;Production&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;2.0.0&#39;</span>
 
 
-<div class="viewcode-block" id="sam_verifier"><a class="viewcode-back" href="../../../verifiers.html#bio_utils.verifiers.sam_verifier">[docs]</a><span class="k">def</span> <span class="nf">sam_verifier</span><span class="p">(</span><span class="n">entries</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="sam_verifier"><a class="viewcode-back" href="../../../verifiers.html#bio_utils.verifiers.sam_verifier">[docs]</a><span class="k">def</span> <span class="nf">sam_verifier</span><span class="p">(</span><span class="n">entries</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Raises error if invalid SAM format detected</span>
 
 <span class="sd">    Args:</span>
@@ -188,91 +216,91 @@
 <span class="sd">        FormatError: Error when SAM format incorrect with descriptive message</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">regex</span> <span class="o">=</span> <span class="s">r&#39;^[!-?A-~]{1,255}\t&#39;</span> \
-            <span class="o">+</span> <span class="s">r&#39;([0-9]{1,4}|[0-5][0-9]{4}|&#39;</span> \
-            <span class="o">+</span> <span class="s">r&#39;[0-9]{1,4}|[1-5][0-9]{4}|&#39;</span> \
-            <span class="o">+</span> <span class="s">r&#39;6[0-4][0-9]{3}|65[0-4][0-9]{2}|&#39;</span> \
-            <span class="o">+</span> <span class="s">r&#39;655[0-2][0-9]|6553[0-7])\t&#39;</span> \
-            <span class="o">+</span> <span class="s">r&#39;\*|[!-()+-&lt;&gt;-~][!-~]*\t&#39;</span> \
-            <span class="o">+</span> <span class="s">r&#39;([0-9]{1,9}|1[0-9]{9}|2(0[0-9]{8}|&#39;</span> \
-            <span class="o">+</span> <span class="s">r&#39;1([0-3][0-9]{7}|4([0-6][0-9]{6}|&#39;</span> \
-            <span class="o">+</span> <span class="s">r&#39;7([0-3][0-9]{5}|4([0-7][0-9]{4}|&#39;</span> \
-            <span class="o">+</span> <span class="s">r&#39;8([0-2][0-9]{3}|3([0-5][0-9]{2}|&#39;</span> \
-            <span class="o">+</span> <span class="s">r&#39;6([0-3][0-9]|4[0-7])))))))))\t&#39;</span> \
-            <span class="o">+</span> <span class="s">r&#39;([0-9]{1,2}|1[0-9]{2}|&#39;</span> \
-            <span class="o">+</span> <span class="s">r&#39;2[0-4][0-9]|25[0-5])\t&#39;</span> \
-            <span class="o">+</span> <span class="s">r&#39;\*|([0-9]+[MIDNSHPX=])+\t&#39;</span> \
-            <span class="o">+</span> <span class="s">r&#39;\*|=|[!-()+-&lt;&gt;-~][!-~]*\t&#39;</span> \
-            <span class="o">+</span> <span class="s">r&#39;([0-9]{1,9}|1[0-9]{9}|2(0[0-9]{8}|&#39;</span> \
-            <span class="o">+</span> <span class="s">r&#39;1([0-3][0-9]{7}|4([0-6][0-9]{6}|&#39;</span> \
-            <span class="o">+</span> <span class="s">r&#39;7([0-3][0-9]{5}|4([0-7][0-9]{4}|&#39;</span> \
-            <span class="o">+</span> <span class="s">r&#39;8([0-2][0-9]{3}|3([0-5][0-9]{2}|&#39;</span> \
-            <span class="o">+</span> <span class="s">r&#39;6([0-3][0-9]|4[0-7])))))))))\t&#39;</span> \
-            <span class="o">+</span> <span class="s">r&#39;-?([0-9]{1,9}|1[0-9]{9}|2(0[0-9]{8}|&#39;</span> \
-            <span class="o">+</span> <span class="s">r&#39;1([0-3][0-9]{7}|4([0-6][0-9]{6}|&#39;</span> \
-            <span class="o">+</span> <span class="s">r&#39;7([0-3][0-9]{5}|4([0-7][0-9]{4}|&#39;</span> \
-            <span class="o">+</span> <span class="s">r&#39;8([0-2][0-9]{3}|3([0-5][0-9]{2}|&#39;</span> \
-            <span class="o">+</span> <span class="s">r&#39;6([0-3][0-9]|4[0-7])))))))))\t&#39;</span> \
-            <span class="o">+</span> <span class="s">r&#39;\*|[A-Za-z=.]+\t&#39;</span> \
-            <span class="o">+</span> <span class="s">r&#39;[!-~]+{0}$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="p">)</span>
-    <span class="n">delimiter</span> <span class="o">=</span> <span class="s">r&#39;\t&#39;</span>
+    <span class="n">regex</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;^[!-?A-~]{1,255}\t&#39;</span> \
+            <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;([0-9]{1,4}|[0-5][0-9]</span><span class="si">{4}</span><span class="s1">|&#39;</span> \
+            <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;[0-9]{1,4}|[1-5][0-9]</span><span class="si">{4}</span><span class="s1">|&#39;</span> \
+            <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;6[0-4][0-9]</span><span class="si">{3}</span><span class="s1">|65[0-4][0-9]</span><span class="si">{2}</span><span class="s1">|&#39;</span> \
+            <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;655[0-2][0-9]|6553[0-7])\t&#39;</span> \
+            <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;\*|[!-()+-&lt;&gt;-~][!-~]*\t&#39;</span> \
+            <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;([0-9]{1,9}|1[0-9]</span><span class="si">{9}</span><span class="s1">|2(0[0-9]</span><span class="si">{8}</span><span class="s1">|&#39;</span> \
+            <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;1([0-3][0-9]</span><span class="si">{7}</span><span class="s1">|4([0-6][0-9]</span><span class="si">{6}</span><span class="s1">|&#39;</span> \
+            <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;7([0-3][0-9]</span><span class="si">{5}</span><span class="s1">|4([0-7][0-9]</span><span class="si">{4}</span><span class="s1">|&#39;</span> \
+            <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;8([0-2][0-9]</span><span class="si">{3}</span><span class="s1">|3([0-5][0-9]</span><span class="si">{2}</span><span class="s1">|&#39;</span> \
+            <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;6([0-3][0-9]|4[0-7])))))))))\t&#39;</span> \
+            <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;([0-9]{1,2}|1[0-9]</span><span class="si">{2}</span><span class="s1">|&#39;</span> \
+            <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;2[0-4][0-9]|25[0-5])\t&#39;</span> \
+            <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;\*|([0-9]+[MIDNSHPX=])+\t&#39;</span> \
+            <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;\*|=|[!-()+-&lt;&gt;-~][!-~]*\t&#39;</span> \
+            <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;([0-9]{1,9}|1[0-9]</span><span class="si">{9}</span><span class="s1">|2(0[0-9]</span><span class="si">{8}</span><span class="s1">|&#39;</span> \
+            <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;1([0-3][0-9]</span><span class="si">{7}</span><span class="s1">|4([0-6][0-9]</span><span class="si">{6}</span><span class="s1">|&#39;</span> \
+            <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;7([0-3][0-9]</span><span class="si">{5}</span><span class="s1">|4([0-7][0-9]</span><span class="si">{4}</span><span class="s1">|&#39;</span> \
+            <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;8([0-2][0-9]</span><span class="si">{3}</span><span class="s1">|3([0-5][0-9]</span><span class="si">{2}</span><span class="s1">|&#39;</span> \
+            <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;6([0-3][0-9]|4[0-7])))))))))\t&#39;</span> \
+            <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;-?([0-9]{1,9}|1[0-9]</span><span class="si">{9}</span><span class="s1">|2(0[0-9]</span><span class="si">{8}</span><span class="s1">|&#39;</span> \
+            <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;1([0-3][0-9]</span><span class="si">{7}</span><span class="s1">|4([0-6][0-9]</span><span class="si">{6}</span><span class="s1">|&#39;</span> \
+            <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;7([0-3][0-9]</span><span class="si">{5}</span><span class="s1">|4([0-7][0-9]</span><span class="si">{4}</span><span class="s1">|&#39;</span> \
+            <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;8([0-2][0-9]</span><span class="si">{3}</span><span class="s1">|3([0-5][0-9]</span><span class="si">{2}</span><span class="s1">|&#39;</span> \
+            <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;6([0-3][0-9]|4[0-7])))))))))\t&#39;</span> \
+            <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;\*|[A-Za-z=.]+\t&#39;</span> \
+            <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;[!-~]+</span><span class="si">{0}</span><span class="s1">$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="p">)</span>
+    <span class="n">delimiter</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;\t&#39;</span>
 
     <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">entry_verifier</span><span class="p">([</span><span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">()],</span> <span class="n">regex</span><span class="p">,</span> <span class="n">delimiter</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">FormatError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-            <span class="c"># Format info on what entry error came from</span>
+            <span class="c1"># Format info on what entry error came from</span>
             <span class="k">if</span> <span class="n">line</span><span class="p">:</span>
-                <span class="n">intro</span> <span class="o">=</span> <span class="s">&#39;Line {0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
+                <span class="n">intro</span> <span class="o">=</span> <span class="s1">&#39;Line </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
             <span class="k">elif</span> <span class="n">error</span><span class="o">.</span><span class="n">part</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">intro</span> <span class="o">=</span> <span class="s">&#39;An entry with reference {0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">rname</span><span class="p">)</span>
+                <span class="n">intro</span> <span class="o">=</span> <span class="s1">&#39;An entry with reference </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">rname</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">intro</span> <span class="o">=</span> <span class="s">&#39;An entry with query {0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">qname</span><span class="p">)</span>
+                <span class="n">intro</span> <span class="o">=</span> <span class="s1">&#39;An entry with query </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">qname</span><span class="p">)</span>
 
-            <span class="c"># Generate error</span>
+            <span class="c1"># Generate error</span>
             <span class="k">if</span> <span class="n">error</span><span class="o">.</span><span class="n">part</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">qname</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;{0} has no query name&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1"> has no query name&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
                 <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">qname</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">255</span><span class="p">:</span>
-                    <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;{0} query name must be less than 255 &#39;</span> \
-                          <span class="s">&#39;characters&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1"> query name must be less than 255 &#39;</span> \
+                          <span class="s1">&#39;characters&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;{0} query name contains characters not in &#39;</span> \
-                          <span class="s">&#39;[!-?A-~]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1"> query name contains characters not in &#39;</span> \
+                          <span class="s1">&#39;[!-?A-~]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">error</span><span class="o">.</span><span class="n">part</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;{0} flag not in range [0-(2^31-1)]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1"> flag not in range [0-(2^31-1)]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">error</span><span class="o">.</span><span class="n">part</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">rname</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;{0} has no reference name&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1"> has no reference name&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;{0} reference name has characters not in &#39;</span> \
-                          <span class="s">&#39;[!-()+-&lt;&gt;-~][!-~]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1"> reference name has characters not in &#39;</span> \
+                          <span class="s1">&#39;[!-()+-&lt;&gt;-~][!-~]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">error</span><span class="o">.</span><span class="n">part</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;{0} leftmost position not in range &#39;</span> \
-                      <span class="s">&#39;[0-(2^31-1)]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1"> leftmost position not in range &#39;</span> \
+                      <span class="s1">&#39;[0-(2^31-1)]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">error</span><span class="o">.</span><span class="n">part</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;{0} mapping quality not in range &#39;</span> \
-                      <span class="s">&#39;[0-(2^8-1)]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1"> mapping quality not in range &#39;</span> \
+                      <span class="s1">&#39;[0-(2^8-1)]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">error</span><span class="o">.</span><span class="n">part</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;{0} CIGAR string has characters not in &#39;</span> \
-                      <span class="s">&#39;[0-9MIDNSHPX=]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1"> CIGAR string has characters not in &#39;</span> \
+                      <span class="s1">&#39;[0-9MIDNSHPX=]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">error</span><span class="o">.</span><span class="n">part</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;{0} mate read name has characters not in &#39;</span> \
-                      <span class="s">&#39;[!-()+-&lt;&gt;-~][!-~]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1"> mate read name has characters not in &#39;</span> \
+                      <span class="s1">&#39;[!-()+-&lt;&gt;-~][!-~]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">error</span><span class="o">.</span><span class="n">part</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;{0} mate read position not in range &#39;</span> \
-                      <span class="s">&#39;[0-(2^31-1)]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1"> mate read position not in range &#39;</span> \
+                      <span class="s1">&#39;[0-(2^31-1)]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">error</span><span class="o">.</span><span class="n">part</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;{0} template length not in range &#39;</span> \
-                      <span class="s">&#39;[(-2^31+1)-(2^31-1)]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1"> template length not in range &#39;</span> \
+                      <span class="s1">&#39;[(-2^31+1)-(2^31-1)]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">error</span><span class="o">.</span><span class="n">part</span> <span class="o">==</span> <span class="mi">9</span><span class="p">:</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;{0} sequence has characters not in &#39;</span> \
-                      <span class="s">&#39;[A-Za-z=.]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1"> sequence has characters not in &#39;</span> \
+                      <span class="s1">&#39;[A-Za-z=.]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">error</span><span class="o">.</span><span class="n">part</span> <span class="o">==</span> <span class="mi">10</span><span class="p">:</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;{0} quality scores has characters not in &#39;</span> \
-                      <span class="s">&#39;[!-~]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1"> quality scores has characters not in &#39;</span> \
+                      <span class="s1">&#39;[!-~]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;{0}: Unknown Error: Likely a Bug&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">: Unknown Error: Likely a Bug&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">intro</span><span class="p">)</span>
             <span class="k">raise</span> <span class="n">FormatError</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">line</span><span class="p">:</span>
@@ -280,29 +308,32 @@
 
 
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
-    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="n">__doc__</span><span class="p">,</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="vm">__doc__</span><span class="p">,</span>
                                      <span class="n">formatter_class</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span>
                                      <span class="n">RawDescriptionHelpFormatter</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;sam&#39;</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s">&#39;SAM file to verify [Default: STDIN]&#39;</span><span class="p">,</span>
-                        <span class="nb">type</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">FileType</span><span class="p">(</span><span class="s">&#39;rU&#39;</span><span class="p">),</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;sam&#39;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;SAM file to verify [Default: STDIN]&#39;</span><span class="p">,</span>
+                        <span class="nb">type</span><span class="o">=</span><span class="n">argparse</span><span class="o">.</span><span class="n">FileType</span><span class="p">(</span><span class="s1">&#39;rU&#39;</span><span class="p">),</span>
                         <span class="n">default</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;-q&#39;</span><span class="p">,</span> <span class="s">&#39;--quiet&#39;</span><span class="p">,</span>
-                        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Suppresses message when file is good&#39;</span><span class="p">,</span>
-                        <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_false&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-q&#39;</span><span class="p">,</span> <span class="s1">&#39;--quiet&#39;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Suppresses message when file is good&#39;</span><span class="p">,</span>
+                        <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_false&#39;</span><span class="p">)</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
 
-    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sam_iter</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">sam</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">True</span><span class="p">)):</span>
+    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sam_iter</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">sam</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">True</span><span class="p">)):</span>
         <span class="n">sam_verifier</span><span class="p">(</span><span class="n">entry</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span><span class="o">=</span><span class="n">entry</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="o">.</span><span class="n">quiet</span><span class="p">:</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&#39;{0} is valid&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">sam</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0}</span><span class="s1"> is valid&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">sam</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
 
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span>
     <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
 
+           </div>
+           <div class="articleComments">
+            
            </div>
           </div>
           <footer>
@@ -334,10 +365,11 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'1.0.2',
+            VERSION:'1.1.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
       <script type="text/javascript" src="../../../_static/jquery.js"></script>
