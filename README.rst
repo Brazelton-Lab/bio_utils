@@ -2,6 +2,8 @@
 bio_utils
 =========
 
+.. image:: logo/bio_utils_logo_360.png
+
 
 Summary
 =======
