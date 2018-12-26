@@ -6,7 +6,7 @@ bio_utils: library of common bioinformatic functions
 :Date: |today|
 :Version: |version|
 
-.. image:: ../logo/bio_utils_logo_120.png
+.. image:: images/bio_utils_logo_120.png
 
 .. automodule:: bio_utils
 
