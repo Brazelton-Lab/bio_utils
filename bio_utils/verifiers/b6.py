@@ -28,7 +28,7 @@ Copyright:
 """
 
 import argparse
-from bio_utils.iterators import b6_iter
+from bio_utils.iterators import B6Reader
 from bio_utils.verifiers import entry_verifier
 from bio_utils.verifiers import FormatError
 import os
@@ -39,7 +39,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '2.1.3'
+__version__ = '2.1.4'
 
 
 def b6_verifier(entries, line=None):
@@ -136,7 +136,8 @@ def main():
                         action='store_false')
     args = parser.parse_args()
 
-    for entry in enumerate(b6_iter(args.b6)):
+    b6_reader = B6Reader(args.b6)
+    for entry in enumerate(b6_reader.iterate()):
         b6_verifier([entry[1]], line=entry[0]+1)
     if not args.quiet:
         print('{0} is valid').format(args.b6.name)

@@ -24,7 +24,7 @@ Copyright:
 from setuptools import setup
 
 setup(name='bio_utils',
-      version='1.3.0',
+      version='1.3.1',
       description='library of common bioinformatic tasks',
       classifiers=[
           'Development Status :: 5 - Production/Stable',

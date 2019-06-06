@@ -28,7 +28,7 @@ Copyright:
 """
 
 import argparse
-from bio_utils.iterators import gff3_iter
+from bio_utils.iterators import GFF3Reader
 from bio_utils.verifiers import entry_verifier
 from bio_utils.verifiers import FormatError
 import os
@@ -39,7 +39,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '2.0.1'
+__version__ = '2.0.2'
 
 
 # noinspection PyTypeChecker
@@ -113,7 +113,8 @@ def main():
                         action='store_false')
     args = parser.parse_args()
 
-    for entry in enumerate(gff3_iter(args.gff3, headers=True)):
+    gff_reader = GFF3Reader(args.gff3)
+    for entry in enumerate(gff_reader.iterate(headers=True)):
         gff3_verifier([entry[1]], line=entry[0] + 1)
     if not args.quiet:
         print('{0} is valid').format(args.gff3.name)

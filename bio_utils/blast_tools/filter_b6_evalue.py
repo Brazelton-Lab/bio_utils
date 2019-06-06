@@ -29,7 +29,7 @@ Copyright:
 """
 
 import argparse
-from bio_utils.iterators import b6_iter
+from bio_utils.iterators import B6Reader
 import sys
 
 __author__ = 'William Brazelton, Alex Hyer'
@@ -37,7 +37,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '2.0.0'
+__version__ = '2.0.1'
 
 
 def b6_evalue_filter(handle, e_value, *args, **kwargs):
@@ -65,7 +65,8 @@ def b6_evalue_filter(handle, e_value, *args, **kwargs):
         ...     print(entry.evalue)  # Print E-value of filtered entry
     """
 
-    for entry in b6_iter(handle, *args, **kwargs):
+    b6_reader = B6Reader(handle)
+    for entry in b6_reader.iterate(*args, **kwargs):
         if entry.evalue <= e_value:
             yield entry
 

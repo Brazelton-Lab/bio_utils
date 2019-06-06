@@ -30,7 +30,7 @@ __email__ = 'theonehyer@gmail.com'
 __license__ = 'GPLv3'
 __maintainer__ = 'Alex Hyer'
 __status__ = 'Production'
-__version__ = '5.0.0'
+__version__ = '5.0.1'
 
 
 class FormatError(Exception):
@@ -107,10 +107,10 @@ class B6Entry:
         none_type = type(None)
 
         if default:  # Default order of format specifiers
-            ordered_vals = ['query', 'subject', 'identity', 'length', 
-                            'mismatches', 'gaps', 'query_start', 'query_end', 
-                            'subject_start', 'subject_end', 'evalue', 
-                            'bitscore']
+            ordered_vals = [getattr(self, i) for i in ['query', 'subject', 
+                            'identity', 'length', 'mismatches', 'gaps', 
+                            'query_start', 'query_end', 'subject_start', 
+                            'subject_end', 'evalue', 'bitscore']]
         else:  # Original order of B6 entry format specifiers
             try:
                 ordered_vals = [self.custom_fs[i] if i in self.custom_fs 
