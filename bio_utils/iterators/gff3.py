@@ -121,8 +121,8 @@ class GFF3Entry:
             feature_strand in ['+', '.'])):
             return False
 
-        iv_1 = set(range(feature.start, feature.end + 1))
-        iv_2 = set(range(self.start, self.end + 1))
+        iv_1 = set(range(feature.start, feature.end ))
+        iv_2 = set(range(self.start, self.end))
 
         if len(iv_1.intersection(iv_2)) > 0:
             return True
