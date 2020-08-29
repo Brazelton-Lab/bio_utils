@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 """Returns query sequence from BLAST hits below a specified E-Value
 

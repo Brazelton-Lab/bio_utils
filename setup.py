@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 """Setup file to build and install bio_utils PyPI package
 
@@ -24,7 +24,7 @@ Copyright:
 from setuptools import setup
 
 setup(name='bio_utils',
-      version='1.3.1',
+      version='1.3.2',
       description='library of common bioinformatic tasks',
       classifiers=[
           'Development Status :: 5 - Production/Stable',
@@ -39,7 +39,7 @@ setup(name='bio_utils',
       keywords='bioinformatics iterators verifiers verify iterate utilities',
       url='https://github.com/Brazelton-Lab/bio_utils/',
       download_url='https://github.com/Brazelton-Lab/metameta/tarball/'
-                   '1.1.6',
+                   '1.3.2',
       author='Alex Hyer',
       author_email='theonehyer@gmail.com',
       license='GPLv3',

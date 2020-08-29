@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 """Iterator for GFF3 files
 
@@ -36,8 +36,8 @@ class FormatError(Exception):
     """A simple exception that is raised when an input file is formatted
     incorrectly
     """
-    def __init__(self,*args,**kwargs):
-        Exception.__init__(self,*args,**kwargs)
+    def __init__(self, *args, **kwargs):
+        Exception.__init__(self, *args, **kwargs)
 
 
 class FastaFound(Exception):
@@ -99,7 +99,7 @@ class GFF3Entry:
         self.phase = None
         self.attributes = None
 
-    def overlap(self, feature, stranded: bool=False):
+    def overlap(self, feature, stranded: bool = False):
         """Determine if a feature's position overlaps with the entry
 
         Args:
@@ -121,7 +121,7 @@ class GFF3Entry:
             feature_strand in ['+', '.'])):
             return False
 
-        iv_1 = set(range(feature.start, feature.end ))
+        iv_1 = set(range(feature.start, feature.end))
         iv_2 = set(range(self.start, self.end))
 
         if len(iv_1.intersection(iv_2)) > 0:

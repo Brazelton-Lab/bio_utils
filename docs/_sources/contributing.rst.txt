@@ -279,7 +279,7 @@ All scripts must start with the following code:
 
 .. code-block:: python
 
-    #! /usr/bin/env python
+    #! /usr/bin/env python3
 
     # from __future__ imports go here
 
