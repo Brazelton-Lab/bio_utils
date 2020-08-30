@@ -24,7 +24,7 @@ Copyright:
 from setuptools import setup
 
 setup(name='bio_utils',
-      version='1.3.3',
+      version='1.3.4',
       description='library of common bioinformatic tasks',
       classifiers=[
           'Development Status :: 5 - Production/Stable',
@@ -38,8 +38,8 @@ setup(name='bio_utils',
       ],
       keywords='bioinformatics iterators verifiers verify iterate utilities',
       url='https://github.com/Brazelton-Lab/bio_utils/',
-      download_url='https://github.com/Brazelton-Lab/bio_utils/tarball/'
-                   '1.3.3',
+      download_url='https://github.com/Brazelton-Lab/bio_utils/archive/'
+                   '1.3.4.tar.gz',
       author='Alex Hyer',
       author_email='theonehyer@gmail.com',
       license='GPLv3',
